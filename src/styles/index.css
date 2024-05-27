@@ -1,0 +1,14 @@
+@import './fonts.css';
+@import './colours.css';
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer base {
+  html {
+    min-height: 100vh;
+    font-family: 'iransans-x';
+    scroll-behavior: smooth;
+  }
+}

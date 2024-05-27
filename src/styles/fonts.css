@@ -1,0 +1,37 @@
+@layer base {
+  @font-face {
+    font-family: 'iransans-x';
+    src:
+      url('@/assets/fonts/iran-sans-x-extra-bold.woff') format('woff'),
+      url('@/assets/fonts/iran-sans-x-extra-bold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variant-ligatures: normal;
+  }
+
+  @font-face {
+    font-family: 'iransans-x';
+    src:
+      url('@/assets/fonts/iran-sans-x-regular.woff') format('woff'),
+      url('@/assets/fonts/iran-sans-x-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variation-ligatures: normal;
+  }
+
+  @font-face {
+    font-family: 'iransans-x';
+    src:
+      url('@/assets/fonts/iran-sans-x-demi-bold.woff') format('woff'),
+      url('@/assets/fonts/iran-sans-x-demi-bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variation-ligatures: normal;
+  }
+}
