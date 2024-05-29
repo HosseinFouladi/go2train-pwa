@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import InputPassword from '@/components/input-password/input-password.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen">
-    <InputPassword placeholder="یه چیزی"  />
-  </div>
+  <div class="flex items-center justify-center min-h-screen"></div>
 </template>

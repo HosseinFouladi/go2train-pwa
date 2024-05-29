@@ -1,3 +1,4 @@
 export type InputPasswordProps = {
-  error?: boolean;
+  error?: boolean
+  messages?: Array<string>
 }
