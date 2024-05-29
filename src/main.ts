@@ -11,6 +11,7 @@ import AuthLayout from '@/layouts/auth-layout.vue'
 
 const app = createApp(App)
 
+
 app.component(Layouts.AuthLayout, AuthLayout)
 app.use(createPinia())
 app.use(router)
