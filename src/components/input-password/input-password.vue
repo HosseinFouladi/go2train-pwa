@@ -16,13 +16,13 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
 </script>
 
 <template>
-  <div class="flex flex-col gap-0.5">
+  <div class="flex w-full flex-col gap-0.5">
     <div
-      class="relative text-secondary-600 hover:text-secondary-700 focus:text-secondary-900"
+      class="relative w-full text-secondary-600 hover:text-secondary-700 focus:text-secondary-900"
     >
       <button
         @click="toggleShowPassword"
-        class="absolute inset-y-0 end-0 flex items-center pe-3"
+        class="absolute inset-y-0 flex items-center end-0 pe-3"
       >
         <EyeIcon />
       </button>
@@ -32,7 +32,7 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
           cn(
             'text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
             'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
-            'h-[52px] text-secondary-900 max-w-60 w-full focus:outline-none rounded-[14px] p-3',
+            'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
                 error

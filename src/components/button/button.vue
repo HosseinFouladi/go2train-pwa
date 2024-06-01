@@ -6,7 +6,7 @@ import SpinnerIcon from '@/components/icons/spinner/index.vue'
 
 const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
   withDefaults(defineProps<ButtonProps>(), {
-    size: 'lg',
+    size: 'md',
     fluid: false,
     mode: 'primary',
     isLoading: false,
@@ -20,8 +20,8 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
     v-bind="$attrs"
     :class="
       cn(
-        'font-demi-bold',
-        'flex items-center justify-between font-demi-bold',
+        'font-demi-bold w-full',
+        'flex items-center justify-center font-demi-bold',
         'text-neutral-white rounded-[14px] shadow-lg duration-200',
         buttonTheme[variant][disabled ? 'disabled' : mode],
         {
@@ -38,7 +38,7 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
     "
     :disabled="disabled"
   >
-    <Component v-if="iconLeft" :is="iconLeft" />
+    <Component v-if="iconRight" :is="iconRight" />
     <span
       :class="
         cn({
@@ -51,6 +51,6 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
       <span v-if="isLoading"><SpinnerIcon class="animate-spin" /></span>
       <span v-if="!isLoading">{{ label }}</span>
     </span>
-    <Component v-if="iconRight" :is="iconRight" />
+    <Component v-if="iconLeft" :is="iconLeft" />
   </button>
 </template>

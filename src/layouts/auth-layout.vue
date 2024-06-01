@@ -3,20 +3,17 @@ import { cn } from '@/utils'
 </script>
 
 <template>
-  <div
-    class="flex flex-col tablet:flex-row justify-between w-full h-full min-h-screen bg-background-default"
-  >
+  <div class="flex flex-col-reverse lg:flex-row bg-background-default">
+    <div class="w-full px-4 lg:px-0">
+      <slot />
+    </div>
     <div
       :class="
         cn(
-          'w-full bg-auth-layout bg-cover min-h-[248px] mobile:min-h-[374px] tablet:min-h-screen',
-          'max-mobile:rounded-b-[68px] max-tablet:rounded-b-[78px] tablet:rounded-r-[78px]'
+          'w-full hidden sm:inline-flex bg-auth-layout bg-cover h-[338px] lg:h-screen rounded-b-[78px] rounded-tr-none lg:rounded-bl-none  lg:rounded-r-[78px]'
         )
       "
     />
-    <div class="w-full">
-      <slot />
-    </div>
   </div>
 </template>
 

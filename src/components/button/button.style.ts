@@ -11,7 +11,8 @@ export const buttonTheme: ButtonTheme = {
     danger: 'bg-danger-500 hover:bg-danger-600 active:bg-danger-700 ',
     primary: 'bg-primary-500 hover:bg-primary-600 active:bg-primary-700',
     success: 'bg-success-500 hover:bg-success-600 active:bg-success-700',
-    disabled: 'bg-secondary-200 text-neutral-white'
+    disabled: 'bg-secondary-200 text-neutral-white',
+    secondary: ''
   },
   outlined: {
     danger:
@@ -20,7 +21,8 @@ export const buttonTheme: ButtonTheme = {
       'bg-neutral-white text-primary-500 hover:bg-primary-50 active:bg-primary-100 border border-primary-500',
     success:
       'bg-neutral-white text-success-500 hover:bg-success-50 active:bg-success-100 border border-success-500',
-    disabled: 'bg-neutral-white text-secondary-200 border border-secondary-200'
+    disabled: 'bg-neutral-white text-secondary-200 border border-secondary-200',
+    secondary: 'bg-neutral-white border border-secondary-500 text-secondary-500'
   },
   text: {
     danger:
@@ -29,6 +31,7 @@ export const buttonTheme: ButtonTheme = {
       'bg-transparent text-primary-500 hover:bg-primary-50 hover:shadow-md active:bg-primary-100 active:shadow-lg shadow-none',
     success:
       'bg-transparent text-success-500 hover:bg-success-50 hover:shadow-md active:bg-success-100 active:shadow-lg shadow-none',
-    disabled: 'bg-transparent text-secondary-200 shadow-none'
+    disabled: 'bg-transparent text-secondary-200 shadow-none',
+    secondary: ''
   }
 }

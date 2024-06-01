@@ -12,13 +12,19 @@ const router = createRouter({
       path: '/sign-in',
       name: 'sign-in',
       meta: { layout: Layouts.AuthLayout },
-      component: () => import('@/views/sign-in-view.vue')
+      component: () => import('@/views/auth/sign-in-view.vue')
     },
     {
       path: '/sign-up',
       name: 'sign-up',
       meta: { layout: Layouts.AuthLayout },
-      component: () => import('../views/sign-up-view.vue')
+      component: () => import('@/views/auth/sign-up-view.vue')
+    },
+    {
+      path: '/forget-password',
+      name: 'forget-password',
+      meta: { layout: Layouts.AuthLayout },
+      component: () => import('@/views/auth/forget-password.vue')
     }
   ]
 })

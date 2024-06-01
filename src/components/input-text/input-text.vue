@@ -7,13 +7,21 @@ import type { InputTextProps } from './input-text'
 const props = withDefaults(defineProps<InputTextProps>(), {
   error: false,
   iconLeft: undefined,
-  iconRight: undefined
+  iconRight: undefined,
+  fluid: false
 })
 </script>
 
 <template>
   <div
-    class="relative text-secondary-600 hover:text-secondary-700 focus:text-secondary-900"
+    :class="
+      cn(
+        'relative max-w-80 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
+        {
+          'max-w-full': props.fluid
+        }
+      )
+    "
   >
     <div class="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
       <Component :is="props.iconLeft" />
@@ -23,7 +31,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
         cn(
           'text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
           'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
-          'h-[52px] text-secondary-900 max-w-60 w-full focus:outline-none rounded-[14px] p-3',
+          'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
           {
             'border-danger-500 hover:border-danger-500 focus:border-danger-500':
               error,
