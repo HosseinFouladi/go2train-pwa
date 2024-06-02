@@ -1,0 +1,5 @@
+export { default as AppleIcon } from './apple/index.vue'
+export { default as GoogleIcon } from './google/index.vue'
+export { default as EyeIcon } from './eye/index.vue'
+export { default as SpinnerIcon } from './spinner/index.vue'
+export { default as WarningIcon } from './warning/index.vue'

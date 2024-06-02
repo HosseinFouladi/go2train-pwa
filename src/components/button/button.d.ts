@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { ClassValue } from 'clsx'
 
 export type ButtonProps = {
   label: string
@@ -11,3 +12,8 @@ export type ButtonProps = {
   iconLeft?: Component
   disabled?: boolean
 }
+
+export type ButtonTheme = Record<
+  Required<ButtonProps>['variant'],
+  Record<Required<ButtonProps>['mode'], ClassValue>
+>

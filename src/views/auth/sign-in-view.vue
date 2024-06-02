@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import InputText from '@/components/input-text/input-text.vue'
-import InputPassword from '@/components/input-password/input-password.vue'
-import Checkbox from '@/components/checkbox/index.vue'
-import Button from '@/components/button/button.vue'
-import LinkText from '@/components/link-text/index.vue'
-import Divider from '@/components/divider/index.vue'
-import GoogleIcon from '@/components/icons/google/index.vue'
-import AppleIcon from '@/components/icons/apple/index.vue'
-import AuthContainer from './components/auth-container.vue'
+import {
+  Button,
+  Divider,
+  Checkbox,
+  LinkText,
+  InputText,
+  InputPassword
+} from '@/components'
+import { AuthContainer } from '@/views/auth/components'
+import { GoogleIcon, AppleIcon } from '@/components/icons'
 </script>
 
 <template>

@@ -1,5 +1,9 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { AuthHeader } from '@/views/auth/components'
+</script>
 
 <template>
-  <div>forget password</div>
+  <div>
+    <AuthHeader title="فراموشی رمز عبور" />
+  </div>
 </template>

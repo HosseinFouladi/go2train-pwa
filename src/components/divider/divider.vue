@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { cn } from '@/utils'
-import type { ClassValue } from 'clsx'
 import { defineProps } from 'vue'
+import type { ClassValue } from 'clsx'
+
+import { cn } from '@/utils'
 
 withDefaults(defineProps<{ sx: ClassValue }>(), {
   sx: ''

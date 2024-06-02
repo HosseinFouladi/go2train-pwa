@@ -2,10 +2,9 @@
 import { cn } from '@/utils'
 import { defineProps, ref, withDefaults } from 'vue'
 
-import type { InputPasswordProps } from './input-password'
-
-import EyeIcon from '@/components/icons/eye/index.vue'
-import InputInfo from '@/components/input-info/input-info.vue'
+import { InputInfo } from '@/components'
+import { EyeIcon } from '@/components/icons'
+import type { InputPasswordProps } from '.'
 
 const { error } = withDefaults(defineProps<InputPasswordProps>(), {
   error: false

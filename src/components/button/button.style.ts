@@ -1,10 +1,4 @@
-import type { ClassValue } from 'clsx'
-import type { ButtonProps } from './button'
-
-export type ButtonTheme = Record<
-  Required<ButtonProps>['variant'],
-  Record<Required<ButtonProps>['mode'], ClassValue>
->
+import type { ButtonTheme } from './button'
 
 export const buttonTheme: ButtonTheme = {
   filled: {

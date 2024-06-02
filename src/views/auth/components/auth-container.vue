@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import AuthTabs from '@/components/auth-tabs/index.vue'
-import Logo from '@/components/logo/index.vue'
+import { AuthTabs, Logo } from '@/components'
 </script>
 
 <template>
