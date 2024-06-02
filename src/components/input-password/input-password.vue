@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { cn } from '@/utils'
-import { defineProps, ref, withDefaults } from 'vue'
 
 import { InputInfo } from '@/components'
 import { EyeIcon } from '@/components/icons'
