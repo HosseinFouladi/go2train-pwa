@@ -11,7 +11,7 @@ const props = defineProps<{ title: string }>()
 <template>
   <div class="flex items-end w-full h-20 max-w-sm mx-auto lg:h-24">
     <div class="relative flex items-center justify-center w-full">
-      <span @click="() => goBack()" class="absolute right-0 p-4 cursor-pointer">
+      <span @click="() => goBack()" class="absolute p-4 cursor-pointer -right-4">
         <ArrowRightIcon />
       </span>
       <span class="font-demi-bold text-h6 md:text-h5">

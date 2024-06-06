@@ -10,7 +10,7 @@ const props = defineProps<{ title: string }>()
   >
     <AuthHeader :title="props.title" />
     <div
-      class="flex items-center justify-center flex-1 h-full mt-0 sm:mt-16 lg:mt-0"
+      class="flex flex-col items-center justify-center flex-1 h-full sm:mt-16 lg:mt-0"
     >
       <slot />
     </div>
