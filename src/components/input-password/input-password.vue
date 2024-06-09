@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { cn } from '@/utils'
-import { defineProps, ref, withDefaults } from 'vue'
 
 import { InputInfo } from '@/components'
-import { EyeIcon } from '@/components/icons'
+import { EyeIcon, EyeSlashIcon } from '@/components/icons'
 import type { InputPasswordProps } from '.'
 
 const { error } = withDefaults(defineProps<InputPasswordProps>(), {
-  error: false
+  error: false,
+  toggle: true
 })
 
 const showPassword = ref<boolean>(false)
@@ -20,10 +21,12 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
       class="relative w-full text-secondary-600 hover:text-secondary-700 focus:text-secondary-900"
     >
       <button
+        v-if="toggle"
         @click="toggleShowPassword"
         class="absolute inset-y-0 flex items-center end-0 pe-3"
       >
-        <EyeIcon />
+        <EyeIcon v-if="!showPassword" />
+        <EyeSlashIcon v-if="showPassword" />
       </button>
       <input
         :type="showPassword ? 'text' : 'password'"

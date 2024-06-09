@@ -7,10 +7,9 @@ import App from './App.vue'
 
 import router from '@/router'
 import { Layouts } from '@/constants'
-import AuthLayout from '@/layouts/auth-layout.vue'
+import { AuthLayout } from '@/layouts'
 
 const app = createApp(App)
-
 
 app.component(Layouts.AuthLayout, AuthLayout)
 app.use(createPinia())

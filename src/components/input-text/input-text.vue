@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { cn } from '@/utils'
-import { defineProps, withDefaults } from 'vue'
 
 import type { InputTextProps } from './input-text'
 
@@ -23,13 +22,13 @@ const props = withDefaults(defineProps<InputTextProps>(), {
       )
     "
   >
-    <div class="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
+    <div class="absolute inset-y-0 flex items-center pointer-events-none end-0 pe-3">
       <Component :is="props.iconLeft" />
     </div>
     <input
       :class="
         cn(
-          'text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
+          'text-secondary-600 text-st-one hover:text-secondary-700 focus:text-secondary-900',
           'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
           'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
           {
@@ -44,7 +43,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
     />
     <div
       v-if="props.iconRight"
-      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3"
     >
       <Component :is="props.iconRight" />
     </div>

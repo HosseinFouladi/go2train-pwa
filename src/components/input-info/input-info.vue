@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, withDefaults } from 'vue'
 import { WarningIcon } from '@/components/icons'
 
 const props = withDefaults(defineProps<{ label: string }>(), {

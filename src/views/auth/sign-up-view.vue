@@ -1,43 +1,24 @@
 <script setup lang="ts">
-import {
-  Button,
-  Divider,
-  Checkbox,
-  LinkText,
-  InputText,
-  InputPassword
-} from '@/components'
+import { h } from 'vue'
+import { Button, InputText } from '@/components'
 import { AuthContainer } from '@/views/auth/components'
-import { GoogleIcon, AppleIcon } from '@/components/icons'
+import { TickSquaredIcon } from '@/components/icons'
 </script>
 
 <template>
   <AuthContainer>
     <div class="w-full">
-      <div class="flex flex-col gap-8 my-9">
-        <InputText :fluid="true" placeholder="نام کاربری خود را وارد کنید ..." />
-        <InputPassword placeholder="رمز عبور ..." />
+      <div class="flex flex-col gap-3 text-center">
+        <h3 class="text-st-one font-demi-bold">رمز عبور خود را بازنشانی کنید</h3>
+        <p class="text-st-two text-secondary-500">
+          رمز عبور جدید باید شامل حداقل ۸ کاراکتر، یک حرف کوچک و یک حرف بزرگ باشد.
+        </p>
       </div>
-      <div class="flex flex-row items-center justify-between my-3">
-        <Checkbox label="‌ذخیره اطلاعات ورود" />
-        <LinkText to="forget-password" label="فراموشی رمز عبور" />
-      </div>
+      <InputText
+        fluid
+        :iconLeft="h(TickSquaredIcon, { class: 'text-success-500' })"
+      />
       <Button fluid label="ورود به پنل" />
-      <Divider sx="py-[16px]" />
-      <div class="flex flex-col w-full gap-4 sm:flex-row lg:flex-col">
-        <Button
-          mode="secondary"
-          variant="outlined"
-          label="ورود با اپل"
-          :iconRight="AppleIcon"
-        />
-        <Button
-          mode="secondary"
-          variant="outlined"
-          label="ورود با گوگل"
-          :iconRight="GoogleIcon"
-        />
-      </div>
     </div>
   </AuthContainer>
 </template>
