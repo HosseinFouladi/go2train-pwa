@@ -19,7 +19,37 @@ const router = createRouter({
       path: '/sign-up',
       name: 'sign-up',
       meta: { layout: Layouts.AuthLayout },
-      component: () => import('@/views/auth/sign-up-view.vue')
+      component: () => import('@/views/auth/sign-up/choose-username-view.vue')
+    },
+    {
+      path: '/sign-up/choose-password',
+      name: 'choose-password',
+      meta: { layout: Layouts.AuthLayout },
+      component: () => import('@/views/auth/sign-up/choose-password-view.vue')
+    },
+    {
+      path: '/sign-up/choose-email-or-number',
+      name: 'choose-email-or-number',
+      meta: { layout: Layouts.AuthLayout },
+      component: () => import('@/views/auth/sign-up/choose-email-or-number-view.vue')
+    },
+    {
+      path: '/sign-up/confirm-code-email',
+      name: 'confirmation-code-email',
+      meta: { layout: Layouts.AuthLayout },
+      component: () =>
+        import(
+          '@/views/auth/sign-up/code-confirmation/confirm-code-via-email-view.vue'
+        )
+    },
+    {
+      path: '/sign-up/confirm-code-mobile',
+      name: 'confirmation-code-mobile',
+      meta: { layout: Layouts.AuthLayout },
+      component: () =>
+        import(
+          '@/views/auth/sign-up/code-confirmation/confirm-code-via-mobile-view.vue'
+        )
     },
     {
       path: '/forget-password',

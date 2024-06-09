@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { WarningIcon } from '@/components/icons'
 
-const props = withDefaults(defineProps<{ label: string }>(), {
-  label: undefined
+const props = withDefaults(defineProps<{ error?: string }>(), {
+  error: undefined
 })
 </script>
 
 <template>
   <span
-    class="inline-flex text-danger-600 flex-row items-center text-st-two font-regular gap-[6px]"
+    class="inline-flex h-5 max-h-5 text-danger-600 flex-row items-center text-st-two font-regular gap-[6px]"
   >
-    <span>
-      <WarningIcon />
+    <span v-if="props.error">
+      <span>
+        <WarningIcon />
+      </span>
+      <span>{{ props.error }}</span>
     </span>
-    <span>{{ props.label }}</span>
   </span>
 </template>

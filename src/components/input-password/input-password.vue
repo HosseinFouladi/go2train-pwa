@@ -7,7 +7,7 @@ import { EyeIcon, EyeSlashIcon } from '@/components/icons'
 import type { InputPasswordProps } from '.'
 
 const { error } = withDefaults(defineProps<InputPasswordProps>(), {
-  error: false,
+  error: undefined,
   toggle: true
 })
 
@@ -44,7 +44,7 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
         v-bind="$attrs"
       />
     </div>
-    <InputInfo v-if="error" label="این یک ارور است" />
+    <InputInfo :error="error" />
   </div>
 </template>
 
