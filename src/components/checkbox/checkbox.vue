@@ -3,9 +3,9 @@ const props = withDefaults(defineProps<{ label: string }>(), {})
 </script>
 
 <template>
-  <div class="inline-flex items-center">
+  <div class="inline-flex items-center gap-2">
     <label
-      class="relative flex items-center pl-3 rounded-full cursor-pointer"
+      class="relative flex items-center rounded-full cursor-pointer"
       htmlFor="ripple-on"
       data-ripple-dark="true"
     >

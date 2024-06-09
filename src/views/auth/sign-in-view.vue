@@ -18,7 +18,7 @@ import { GoogleIcon, AppleIcon } from '@/components/icons'
         <InputText :fluid="true" placeholder="نام کاربری خود را وارد کنید ..." />
         <InputPassword placeholder="رمز عبور ..." />
       </div>
-      <div class="flex flex-row items-center justify-between my-3">
+      <div class="flex flex-row items-center justify-between gap-4 my-3">
         <Checkbox label="‌ذخیره اطلاعات ورود" />
         <LinkText to="/forget-password" label="فراموشی رمز عبور" />
       </div>

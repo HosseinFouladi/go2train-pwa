@@ -34,4 +34,34 @@
     font-kerning: normal;
     font-variation-ligatures: normal;
   }
+
+  @font-face {
+    font-family: 'inter';
+    src: url('@/assets/fonts/inter-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variation-ligatures: normal;
+  }
+
+  @font-face {
+    font-family: 'inter';
+    src: url('@/assets/fonts/inter-semi-bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variation-ligatures: normal;
+  }
+
+  @font-face {
+    font-family: 'inter';
+    src: url('@/assets/fonts/inter-extra-bold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    font-kerning: normal;
+    font-variation-ligatures: normal;
+  }
 }
