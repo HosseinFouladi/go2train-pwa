@@ -29,14 +29,24 @@ const userLogin = async (params: UserLoginParams) => {
     ...params
   }).catch((error) => {
     const serverError = error.response.data.message
-    serverError.forEach((e: { id: 'password' | 'username'; content: string }) => {
-      form.setFieldMeta(e.id, (meta) => ({
-        ...meta,
-        errorMap: {
-          onServer: e.content
+    serverError.forEach(
+      (e: { id: 'password' | 'username' | 'all'; content: string }) => {
+        if (e.id === 'all') {
+          return form.setFieldMeta('password', (meta) => ({
+            ...meta,
+            errorMap: {
+              onServer: e.content
+            }
+          }))
         }
-      }))
-    })
+        form.setFieldMeta(e.id, (meta) => ({
+          ...meta,
+          errorMap: {
+            onServer: e.content
+          }
+        }))
+      }
+    )
   })
 }
 
@@ -85,10 +95,10 @@ const { mutate: loginMutation } = useUserLoginMutation()
         <LinkText to="/forget-password" label="فراموشی رمز عبور" />
       </div>
       <Button
-        @click="() => form.handleSubmit()"
         fluid
         type="submit"
         label="ورود به پنل"
+        @click="() => form.handleSubmit()"
       />
       <Divider sx="py-[16px]" />
       <div class="flex flex-col w-full gap-4 sm:flex-row lg:flex-col">

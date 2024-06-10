@@ -6,6 +6,7 @@ import { createPinia } from 'pinia'
 import VueTelInput from 'vue-tel-input'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
+
 import { queryClientConfig, telInputGlobalOptions } from '@/constants'
 
 import App from './App.vue'

@@ -10,6 +10,10 @@ export default {
       ...Font.Sizes.LargsScreens,
       ...Font.Sizes.SmallScreens
     },
+    fontFamily: {
+      iransans: ['iransans-x'],
+      inter: ['inter'],
+    },
     colors: { ...Colours },
 
     extend: {
