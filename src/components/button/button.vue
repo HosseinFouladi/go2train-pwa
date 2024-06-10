@@ -4,6 +4,10 @@ import type { ButtonProps } from './button'
 import { buttonTheme } from './button.style'
 import { SpinnerIcon } from '@/components/icons'
 
+defineOptions({
+  inheritAttrs: false
+})
+
 const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
   withDefaults(defineProps<ButtonProps>(), {
     size: 'md',
@@ -17,7 +21,6 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
 
 <template>
   <button
-    v-bind="$attrs"
     :class="
       cn(
         'font-demi-bold w-full',
@@ -37,6 +40,7 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
       )
     "
     :disabled="disabled"
+    v-bind="$attrs"
   >
     <Component v-if="iconRight" :is="iconRight" />
     <span

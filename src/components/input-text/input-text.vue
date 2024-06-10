@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { cn } from '@/utils'
+import type { InputTextProps } from '.'
 
-import type { InputTextProps } from './input-text'
+defineOptions({
+  inheritAttrs: false
+})
 
 const props = withDefaults(defineProps<InputTextProps>(), {
   error: undefined,
@@ -36,7 +39,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
             'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
-                error,
+                props.state.meta.errors.length > 0,
               'ps-8': !!props.iconRight,
               'pe-3': !!props.iconLeft
             }
@@ -51,7 +54,9 @@ const props = withDefaults(defineProps<InputTextProps>(), {
         <Component :is="props.iconRight" />
       </div>
     </div>
-    <span class="block h-5 max-h-5">{{ props.error }}</span>
+    <div class="block h-5 max-h-5">
+      <span :key="err || ''" v-for="err in props.state.meta.errors">{{ err }}</span>
+    </div>
   </div>
 </template>
 
