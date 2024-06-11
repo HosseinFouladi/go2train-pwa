@@ -6,8 +6,8 @@ import { InputInfo } from '@/components'
 import { EyeIcon, EyeSlashIcon } from '@/components/icons'
 import type { InputPasswordProps } from '.'
 
-const { error } = withDefaults(defineProps<InputPasswordProps>(), {
-  error: undefined,
+const props = withDefaults(defineProps<InputPasswordProps>(), {
+  state: undefined,
   toggle: true
 })
 
@@ -21,6 +21,7 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
       class="relative w-full text-secondary-600 hover:text-secondary-700 focus:text-secondary-900"
     >
       <button
+      type="button"
         v-if="toggle"
         @click="toggleShowPassword"
         class="absolute inset-y-0 flex items-center end-0 pe-3"
@@ -37,14 +38,16 @@ const toggleShowPassword = () => (showPassword.value = !showPassword.value)
             'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
-                error
+                props.state.meta.errors.length > 0
             }
           )
         "
         v-bind="$attrs"
       />
     </div>
-    <InputInfo :error="error" />
+    <div class="h-8">
+      <InputInfo :key="err || ''" v-for="err in props.state.meta.errors" :error="err" />
+    </div>
   </div>
 </template>
 

@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { WarningIcon } from '@/components/icons'
+import type { ValidationError } from '@tanstack/vue-form'
 
-const props = withDefaults(defineProps<{ error?: string }>(), {
+const props = withDefaults(defineProps<{ error?: ValidationError }>(), {
   error: undefined
 })
 </script>
 
 <template>
-  <span
-    class="inline-flex h-5 max-h-5 text-danger-600 flex-row items-center text-st-two font-regular gap-[6px]"
+  <div
+    class="h-5 text-danger-600 flex flex-row items-center text-st-two font-regular gap-[6px]"
   >
-    <span v-if="props.error">
-      <span>
-        <WarningIcon />
-      </span>
-      <span>{{ props.error }}</span>
+    <span class="inline-block">
+      <WarningIcon />
     </span>
-  </span>
+    <span class="inline-block">{{ props.error }}</span>
+  </div>
 </template>

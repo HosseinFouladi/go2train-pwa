@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { cn } from '@/utils'
+import type { InputTextProps } from '.'
+import InputInfo from '@/components/input-info';
 
-import type { InputTextProps } from './input-text'
+defineOptions({
+  inheritAttrs: false
+})
 
 const props = withDefaults(defineProps<InputTextProps>(), {
-  error: undefined,
+  state: undefined,
   iconLeft: undefined,
   iconRight: undefined,
   fluid: false
@@ -15,7 +19,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
   <div
     :class="
       cn(
-        'max-w-80 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
+        'max-w-80 flex flex-col gap-1 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
         {
           'max-w-full': props.fluid
         }
@@ -36,7 +40,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
             'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
-                error,
+                props.state.meta.errors.length > 0,
               'ps-8': !!props.iconRight,
               'pe-3': !!props.iconLeft
             }
@@ -51,7 +55,9 @@ const props = withDefaults(defineProps<InputTextProps>(), {
         <Component :is="props.iconRight" />
       </div>
     </div>
-    <span class="block h-5 max-h-5">{{ props.error }}</span>
+    <div class="h-8">
+      <InputInfo :key="err || ''" v-for="err in props.state.meta.errors"  :error="err" />
+    </div>
   </div>
 </template>
 
