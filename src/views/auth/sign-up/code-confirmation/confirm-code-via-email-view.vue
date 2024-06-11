@@ -1,6 +1,15 @@
 <script lang="ts" setup>
+import { useForm } from '@tanstack/vue-form'
+
 import { InputText, Button } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
+
+const form = useForm({
+  defaultValues: {
+    code: ''
+  },
+  onSubmit: ({ value: { code } }) => console.log({ code })
+})
 </script>
 
 <template>
@@ -13,10 +22,31 @@ import { AuthContainerWithNav } from '@/views/auth/components'
           کد تأیید شما به example@gmail.com ارسال شد.
         </p>
       </div>
-      <div class="flex flex-col gap-10">
-        <InputText fluid placeholder="رمز عبور جدیدتان..." />
-        <Button label="بعدی" />
-      </div>
+      <form
+        @submit="
+          (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }
+        "
+      >
+        <div class="flex flex-col gap-10">
+          <form.Field name="code">
+            <template v-slot="{ field, state }">
+              <InputText
+                fluid
+                :state="state"
+                @blur="field.handleBlur"
+                :value="field.state.value"
+                @input="(e) => field.handleChange(e.target.value)"
+                placeholder="رمز عبور جدیدتان..."
+              />
+            </template>
+          </form.Field>
+          <Button type="submit" label="بعدی" />
+        </div>
+      </form>
     </div>
   </AuthContainerWithNav>
 </template>

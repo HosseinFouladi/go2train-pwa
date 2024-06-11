@@ -79,7 +79,7 @@ const form = useForm({
             </div>
             <form.Field
               name="username"
-              :asyncDebounceMs="500"
+              :asyncDebounceMs="300"
               :validators="{
                 // @ts-ignore
                 onChangeAsync: ({ value }) =>
