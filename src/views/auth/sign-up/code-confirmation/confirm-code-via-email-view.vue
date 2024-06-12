@@ -1,14 +1,76 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
+import { useMutation } from '@tanstack/vue-query'
 
-import { InputText, Button } from '@/components'
+import { ENDPOINTS } from '@/api'
+import { ApiClient } from '@/utils'
+import { InputText, Button, CountDown } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
+
+const route = useRoute()
+
+type FieldServerError<T> = { id: T; content: string }
+type VerifyCodeParams = { username: string; code: string }
+
+const verifyCode = async (params: VerifyCodeParams) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.VerifyCode, {
+    ...params
+  }).catch((error) => {
+    const serverError = error.response.data.message
+    serverError.forEach((e: FieldServerError<number>) => {
+      form.setFieldMeta('code', (meta) => {
+        return { ...meta, errorMap: { onServer: e.content } }
+      })
+    })
+  })
+}
+
+const useVerifyCodeMutation = () => {
+  return useMutation({
+    mutationFn: (params: VerifyCodeParams) => verifyCode(params),
+    onSuccess(data, variables, context) {
+      console.log({ data, variables, context })
+    }
+  })
+}
+
+type SendCodeParams = { username: string }
+
+const sendCode = async (params: SendCodeParams) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
+      const serverError = error.response.data.message
+      serverError.forEach((e: FieldServerError<number>) => {
+        form.setFieldMeta('code', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
+      })
+    }
+  )
+}
+
+const useSendCodeMutation = () => {
+  return useMutation({
+    mutationFn: (params: SendCodeParams) => sendCode(params),
+    onSuccess(data, variables, context) {
+      console.log({ data, variables, context })
+    }
+  })
+}
+
+const { mutate: handleSendCode } = useSendCodeMutation()
+
+const { mutate: handleVerifyCode } = useVerifyCodeMutation()
 
 const form = useForm({
   defaultValues: {
     code: ''
   },
-  onSubmit: ({ value: { code } }) => console.log({ code })
+  onSubmit: ({ value: { code } }) => {
+    handleVerifyCode({ username: route.query.email as string, code })
+    form.reset()
+  }
 })
 </script>
 
@@ -19,7 +81,7 @@ const form = useForm({
       <div class="flex flex-col gap-3 text-center">
         <h3 class="text-h6 font-extra-bold">کد تأیید را وارد کنید</h3>
         <p class="text-st-one text-secondary-500">
-          کد تأیید شما به example@gmail.com ارسال شد.
+          کد تأیید شما به {{ route.query.email }} ارسال شد.
         </p>
       </div>
       <form
@@ -44,7 +106,14 @@ const form = useForm({
               />
             </template>
           </form.Field>
-          <Button type="submit" label="بعدی" />
+          <div class="space-y-2">
+            <CountDown
+              :onClick="
+                () => handleSendCode({ username: route.query.email as string })
+              "
+            />
+            <Button type="submit" label="بعدی" />
+          </div>
         </div>
       </form>
     </div>

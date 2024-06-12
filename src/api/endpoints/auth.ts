@@ -3,6 +3,7 @@ export const AuthEndpoints = Object.freeze({
   Register: {
     CheckUsername: '/auth/register/check-username',
     CreateUser: '/auth/register/user',
-    SendCode: '/auth/register/send-code'
+    SendCode: '/auth/register/send-code',
+    VerifyCode: '/auth/register/verify-code'
   }
 })

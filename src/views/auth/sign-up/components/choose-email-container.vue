@@ -28,7 +28,12 @@ const sendCode = async (params: SendCodeParams) => {
 const useSendCodeMutation = () => {
   return useMutation({
     mutationFn: (params: SendCodeParams) => sendCode(params),
-    onSuccess: () => router.replace({ path: '/sign-up/confirm-code-email' })
+    onSuccess: () => {
+      router.replace({
+        path: '/sign-up/confirm-code-email',
+        query: { email: form.state.values.email }
+      })
+    }
   })
 }
 
