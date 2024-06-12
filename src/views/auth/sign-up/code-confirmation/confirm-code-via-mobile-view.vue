@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
+import { useMutation } from '@tanstack/vue-query'
 
 import { ENDPOINTS } from '@/api'
 import { ApiClient } from '@/utils'
 import { InputText, Button, CountDown } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
-import { useMutation } from '@tanstack/vue-query'
 
 const route = useRoute()
 

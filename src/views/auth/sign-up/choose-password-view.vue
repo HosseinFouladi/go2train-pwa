@@ -56,6 +56,7 @@ const useCreateUserMutation = () => {
   return useMutation({
     mutationFn: (params: CreateUserParams) => createUser(params),
     onSuccess: (response) => {
+      // TODO: Update Typing for the API Responses
       // @ts-ignore
       const token = R.pipe(
         response.data.results,
