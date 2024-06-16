@@ -29,8 +29,8 @@ const verifyCode = async (params: VerifyCodeParams) => {
 const useVerifyCodeMutation = () => {
   return useMutation({
     mutationFn: (params: VerifyCodeParams) => verifyCode(params),
-    onSuccess(data, variables, context) {
-      console.log({ data, variables, context })
+    onSuccess: (props) => {
+      console.log(props)
     }
   })
 }

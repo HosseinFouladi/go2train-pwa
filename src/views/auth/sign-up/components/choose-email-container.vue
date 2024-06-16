@@ -21,6 +21,7 @@ const sendCode = async (params: SendCodeParams) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
+      throw error.response.data
     }
   )
 }

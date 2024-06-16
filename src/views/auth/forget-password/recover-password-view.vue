@@ -1,6 +1,71 @@
 <script lang="ts" setup>
-import { AuthContainerWithNav } from '@/views/auth/components'
+import { first } from 'remeda'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import { useForm } from '@tanstack/vue-form'
+import { useMutation } from '@tanstack/vue-query'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+import { ENDPOINTS } from '@/api'
+import { ApiClient } from '@/utils'
+import { useUserInfoStore } from '@/store'
 import { InputPassword, Avatar, Button } from '@/components'
+import { AuthContainerWithNav } from '@/views/auth/components'
+
+const userInfoStore = useUserInfoStore()
+const { user } = storeToRefs(userInfoStore)
+
+type ConfirmPasswordParams = {
+  username: string
+  password: string
+  password_confirmation: string
+}
+const confirmPassword = async (params: ConfirmPasswordParams) => {
+  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.ChangePassword, { ...params })
+}
+
+const router = useRouter()
+
+const useConfirmPasswordMutation = () => {
+  return useMutation({
+    mutationFn: (params: ConfirmPasswordParams) => confirmPassword(params),
+    onSuccess(props) {
+      // @ts-ignore
+      const msg = first(props.message).content
+      Swal.fire({
+        icon: 'success',
+        title: 'عملیات موفق',
+        text: msg,
+        confirmButtonText: 'باشه',
+        backdrop: true,
+        customClass: {
+          title: '!text-h5 !font-demi-bold !font-iransans',
+          htmlContainer: '!text-st-two !text-secondary-700',
+          popup: 'appearance-none rounded-3xl',
+          confirmButton: 'text-primary-500 !text-bt-s !font-demi-bold',
+          icon: 'appearance-none'
+        },
+        buttonsStyling: false
+      }).then(() => router.replace({ path: '/' }))
+    }
+  })
+}
+
+const { mutate: handleConfirmPassword } = useConfirmPasswordMutation()
+
+const form = useForm({
+  defaultValues: {
+    password: '',
+    confirmPassword: ''
+  },
+  onSubmit: ({ value: { password, confirmPassword } }) =>
+    handleConfirmPassword({
+      password_confirmation: confirmPassword,
+      password: password,
+      // @ts-ignore
+      username: user.value.username
+    })
+})
 </script>
 
 <template>
@@ -15,15 +80,44 @@ import { InputPassword, Avatar, Button } from '@/components'
           رمز عبور جدید باید شامل حداقل ۸ کاراکتر، یک حرف کوچک و یک حرف بزرگ باشد.
         </p>
       </div>
-      <div class="flex flex-col gap-10">
-        <InputPassword fluid placeholder="رمز عبور جدیدتان..." />
-        <InputPassword
-          fluid
-          :toggle="false"
-          placeholder="تکرار رمز عبور جدیدتان..."
-        />
-        <Button label="بازنشانی رمز عبور" />
-      </div>
+      <form
+        @submit="
+          (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }
+        "
+      >
+        <div class="flex flex-col gap-10">
+          <form.Field name="password">
+            <template v-slot="{ field, state }">
+              <InputPassword
+                fluid
+                :state="state"
+                @blur="field.handleBlur"
+                :value="field.state.value"
+                @input="(e) => field.handleChange(e.target.value)"
+                placeholder="رمز عبور جدیدتان..."
+              />
+            </template>
+          </form.Field>
+          <form.Field name="confirmPassword">
+            <template v-slot="{ field, state }">
+              <InputPassword
+                fluid
+                :state="state"
+                @blur="field.handleBlur"
+                :value="field.state.value"
+                @input="(e) => field.handleChange(e.target.value)"
+                :toggle="false"
+                placeholder="تکرار رمز عبور جدیدتان..."
+              />
+            </template>
+          </form.Field>
+          <Button label="بازنشانی رمز عبور" />
+        </div>
+      </form>
     </div>
   </AuthContainerWithNav>
 </template>

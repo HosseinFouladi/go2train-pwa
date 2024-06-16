@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@/utils'
 import type { InputTextProps } from '.'
-import InputInfo from '@/components/input-info';
+import InputInfo from '@/components/input-info'
 
 defineOptions({
   inheritAttrs: false
@@ -55,8 +55,12 @@ const props = withDefaults(defineProps<InputTextProps>(), {
         <Component :is="props.iconRight" />
       </div>
     </div>
-    <div class="h-8">
-      <InputInfo :key="err || ''" v-for="err in props.state.meta.errors"  :error="err" />
+    <div class="min-h-8">
+      <InputInfo
+        :key="err || ''"
+        v-for="err in props.state.meta.errors"
+        :error="err"
+      />
     </div>
   </div>
 </template>

@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{ error?: ValidationError }>(), {
 
 <template>
   <div
-    class="h-5 text-danger-600 flex flex-row items-center text-st-two font-regular gap-[6px]"
+    class="min-h-8 pb-2 text-danger-600 flex flex-row items-center text-st-two font-regular gap-[6px]"
   >
     <span class="inline-block">
       <WarningIcon />

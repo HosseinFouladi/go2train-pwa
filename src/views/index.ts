@@ -1,4 +1,4 @@
-export { SignInView, SignUpView } from './auth'
+export { SignInView } from './auth'
 export {
   FindAccountView,
   RecoverPasswordView,

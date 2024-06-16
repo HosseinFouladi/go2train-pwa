@@ -58,15 +58,15 @@ const router = createRouter({
       component: () => import('@/views/auth/forget-password/find-account-view.vue')
     },
     {
-      path: '/confirmation-code',
-      name: 'confirmation-code',
+      path: '/forget-password/confirm-code',
+      name: 'forget-password-confirm-code',
       meta: { layout: Layouts.AuthLayout },
       component: () =>
         import('@/views/auth/forget-password/confirmation-code-view.vue')
     },
     {
-      path: '/recover-password',
-      name: 'recover-password',
+      path: '/forget-password/recover-password',
+      name: 'forget-password-recover-password',
       meta: { layout: Layouts.AuthLayout },
       component: () =>
         import('@/views/auth/forget-password/recover-password-view.vue')

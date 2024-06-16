@@ -22,7 +22,7 @@ export default {
         lg: '0px 4px 6.1px 0px rgba(19, 19, 20, 0.20);'
       },
       backgroundImage: {
-        'auth-layout': "url('./src/assets/images/auth-layout.jpg')"
+        'auth-layout': "url('./src/assets/images/login.webp')"
       },
       // breakpoints are tailwinds default
       screens: {}

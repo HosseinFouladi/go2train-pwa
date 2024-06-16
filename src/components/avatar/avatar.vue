@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
 const props = withDefaults(defineProps<{ image?: string; label?: string }>(), {})
 </script>
 
@@ -7,11 +8,7 @@ const props = withDefaults(defineProps<{ image?: string; label?: string }>(), {}
     <div class="h-[78px] w-[78px] rounded-full overflow-hidden">
       <img
         class="object-cover w-full h-full"
-        :src="
-          props.image
-            ? props.image
-            : 'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-        "
+        :src="props.image ? props.image : AvatarPlaceholder"
       />
     </div>
     <span class="text-st-one font-demi-bold">{{ props.label }}</span>
