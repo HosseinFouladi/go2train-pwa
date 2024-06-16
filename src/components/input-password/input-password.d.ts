@@ -1,4 +1,7 @@
+import type { FieldApi } from '@tanstack/vue-form'
+
 export type InputPasswordProps = {
-  error?: boolean
+  state: FieldApi<any, any, any, any>['state']
   messages?: Array<string>
+  toggle?: boolean
 }

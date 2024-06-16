@@ -2,11 +2,12 @@
 import { cn } from '@/utils'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+
 const { path } = useRoute()
 
 const tabs = computed(() => [
-  { name: 'ورود', href: '/sign-in', current: path === '/sign-in' },
-  { name: 'ثبت نام', href: '/sign-up', current: path === '/sign-up' }
+  { name: 'ورود', href: '/sign-in', current: path.includes('/sign-in') },
+  { name: 'ثبت نام', href: '/sign-up', current: path.includes('/sign-up') }
 ])
 </script>
 

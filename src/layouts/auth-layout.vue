@@ -10,7 +10,7 @@ import { cn } from '@/utils'
     <div
       :class="
         cn(
-          'w-full hidden sm:inline-flex bg-auth-layout bg-cover h-[338px] lg:h-screen rounded-b-[78px] rounded-tr-none lg:rounded-bl-none  lg:rounded-r-[78px]'
+          'w-full hidden sm:inline-flex bg-auth-layout bg-cover bg-center bg-no-repeat h-[338px] lg:h-screen rounded-b-[78px] rounded-tr-none lg:rounded-bl-none  lg:rounded-r-[78px]'
         )
       "
     />
