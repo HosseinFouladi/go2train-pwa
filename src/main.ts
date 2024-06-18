@@ -13,8 +13,6 @@ import VueAppleLogin from 'vue-apple-login'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Lara from '@primevue/themes/lara'
-import Nora from '@primevue/themes/nora'
-import Aura from '@primevue/themes/aura'
 
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -24,7 +22,7 @@ import { queryClientConfig, telInputGlobalOptions } from '@/constants'
 import App from './App.vue'
 
 import router from '@/router'
-import { Layouts } from '@/constants'
+import { Layouts, GoogleLoginConfig, AppleLoginConfig } from '@/constants'
 import { AuthLayout } from '@/layouts'
 
 const app = createApp(App)
@@ -40,9 +38,6 @@ app.use(VueQueryPlugin, queryClientConfig)
 // @ts-ignore
 app.use(VueTelInput, telInputGlobalOptions)
 app.use(VueSweetalert2)
-app.use(VueGoogleLogin, {
-  clientId: '91885605070-kb6849b1e825rgiugogr4he0s9e9uohq.apps.googleusercontent.com'
-})
 app.use(PrimeVue, {
   theme: {
     preset: Lara
@@ -50,12 +45,7 @@ app.use(PrimeVue, {
 })
 app.use(ToastService)
 
-app.use(VueAppleLogin, {
-  clientId: 'com.example.signin',
-  scope: 'name email',
-  redirectURI: 'https://example.com',
-  state: 'this is state',
-  usePopup: true
-})
+app.use(VueGoogleLogin, GoogleLoginConfig)
+app.use(VueAppleLogin, AppleLoginConfig)
 
 app.mount('#app')
