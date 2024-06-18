@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
+import FindAccountAvatar from '@/assets/images/find-account-avatar.jpg'
 
 import { ENDPOINTS } from '@/api'
 import { ApiClient, Array } from '@/utils'
@@ -56,7 +57,7 @@ const form = useForm({
 <template>
   <AuthContainerWithNav title="فراموشی رمز عبور">
     <div class="flex flex-[2_2_0%] w-full sm:mb-8 lg:mb-0 justify-center">
-      <Avatar image="/src/assets/images/find-account-avatar.jpg" />
+      <Avatar :image="FindAccountAvatar" />
     </div>
     <div class="flex flex-col flex-[4_4_0%] max-w-sm gap-14">
       <div class="flex flex-col gap-3 text-center">
