@@ -8,16 +8,16 @@ export const GoogleLoginConfig = {
     theme: 'outline'
   },
   idConfiguration: {
-    hosted_domain: 'https://train-auth-front.go2tr.work/',
     client_id:
-      '91885605070-kb6849b1e825rgiugogr4he0s9e9uohq.apps.googleusercontent.com'
+      '91885605070-kb6849b1e825rgiugogr4he0s9e9uohq.apps.googleusercontent.com',
+    scope: 'email profile openid'
   }
 } as const
 
 export const AppleLoginConfig = {
-  clientId: 'com.example.signin',
+  clientId: 'co.go2train.web',
   scope: 'name email',
   redirectURI: 'https://train-auth-front.go2tr.work/sign-in/',
-  state: 'this is stateInitial user authentication request',
+  state: 'Initial user authentication request',
   usePopup: true
 } as const
