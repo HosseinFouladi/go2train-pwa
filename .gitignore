@@ -29,4 +29,4 @@ coverage
 
 *.tsbuildinfo
 .env
-components.d.ts
+vite.config.ts.timestamp-*
