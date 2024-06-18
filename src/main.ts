@@ -10,6 +10,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import VueGoogleLogin from 'vue3-google-login'
 // @ts-ignore
 import VueAppleLogin from 'vue-apple-login'
+import PrimeVue from 'primevue/config'
 
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -38,6 +39,7 @@ app.use(VueSweetalert2)
 app.use(VueGoogleLogin, {
   clientId: '91885605070-kb6849b1e825rgiugogr4he0s9e9uohq.apps.googleusercontent.com'
 })
+app.use(PrimeVue)
 
 app.use(VueAppleLogin, {
   clientId: 'com.example.signin',
