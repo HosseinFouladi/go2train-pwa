@@ -29,3 +29,4 @@ coverage
 
 *.tsbuildinfo
 .env
+components.d.ts

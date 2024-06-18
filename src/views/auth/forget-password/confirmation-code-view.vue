@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import Toast from 'primevue/toast'
 import { storeToRefs } from 'pinia'
+import { useToast } from 'primevue/usetoast'
 import { useForm } from '@tanstack/vue-form'
 import { useRouter, useRoute } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
@@ -10,6 +13,7 @@ import { useUserInfoStore } from '@/store'
 import { Avatar, InputText, Button } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
 
+const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const userInfoStore = useUserInfoStore()
@@ -47,6 +51,19 @@ const form = useForm({
   onSubmit({ value: { code } }) {
     handleCheckCode({ username: route.query.username as string, code })
   }
+})
+
+onMounted(() => {
+  toast.add({
+    summary: 'کد ورود فرستاده شد',
+    detail: [
+      'یک کد ورود به',
+      route.query.username.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, '$1***@$2'),
+      'برایتان ارسال شده است تا بتوانید به حسابتان وارد شوید.'
+    ].join(' '),
+    severity: 'success',
+    life: 3000
+  })
 })
 </script>
 
@@ -91,4 +108,16 @@ const form = useForm({
       </form>
     </div>
   </AuthContainerWithNav>
+
+  <Toast dir="rtl" class="text-right" severity="success" position="top-center" />
 </template>
+
+<style>
+.p-toast-message {
+  border: none !important;
+}
+[data-pc-section='buttoncontainer'] {
+  width: 24px !important;
+  height: 24px !important;
+}
+</style>
