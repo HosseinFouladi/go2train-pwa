@@ -1,0 +1,10 @@
+include:
+  - project: "g2/train/pipeline"
+    ref: main
+    file: .gitlab-ci.yml
+
+info:
+  image: alpine
+  stage: info
+  script:
+    - echo "Viva DevOps Team :)"

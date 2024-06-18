@@ -1,0 +1,22 @@
+services:
+  auth-front:
+    image: registry.go2tr.ir/g2/train/go2train-auth-frontend/auth-front:${CI_PIPELINE_ID}-prod
+    container_name: auth-front
+    restart: always
+    env_file:
+      - ./.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.auth-front.entrypoints=websecure"
+      - "traefik.http.routers.auth-front.rule=Host(`train-auth-front.go2tr.work`)"
+      - "traefik.http.services.auth-front.loadbalancer.server.port=3000"
+      - "traefik.http.routers.auth-front.tls=true"
+      - "traefik.http.routers.auth-front.tls.certresolver=cloudflare"
+    networks:
+      - proxy
+    
+
+networks:
+  proxy:
+    external: true
