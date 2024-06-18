@@ -43,6 +43,9 @@ const useCheckUsernameMutation = () => {
 }
 
 const selectSuggestedUsername = (username: string) => {
+  form.setFieldMeta('username', (meta) => {
+    return { ...meta, errorMap: { ...meta.errorMap, onServer: undefined } }
+  })
   form.setFieldValue('username', username)
   handleCheckUsername({ username })
 }
