@@ -1,0 +1,22 @@
+FROM node:20-alpine as  builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn
+RUN yarn run build-only
+
+FROM node:20-alpine as release
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=builder /app/dist/ ./dist
+
+RUN npm i -g serve
+
+EXPOSE 3000
+
+CMD ["serve", "-l", "tcp://0.0.0.0:3000", "-s", "dist"]
