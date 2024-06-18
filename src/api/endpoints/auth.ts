@@ -1,14 +1,14 @@
 export const AuthEndpoints = Object.freeze({
-  Login: '/auth/login',
+  Login: '/v2/auth/login',
   Register: {
-    CheckUsername: '/auth/register/check-username',
-    CreateUser: '/auth/register/user',
-    SendCode: '/auth/register/send-code',
-    VerifyCode: '/auth/register/verify-code'
+    CheckUsername: '/v2/auth/register/check-username',
+    CreateUser: '/v2/auth/register/user',
+    SendCode: '/v2/auth/register/send-code',
+    VerifyCode: '/v2/auth/register/verify-code'
   },
   ForgetPassword: {
-    SendCode: '/auth/forget-password/send-code',
-    CheckCode: '/auth/forget-password/check-code',
-    ChangePassword: '/auth/forget-password/change-password'
+    SendCode: '/v2/auth/forget-password/send-code',
+    CheckCode: '/v2/auth/forget-password/check-code',
+    ChangePassword: '/v2/auth/forget-password/change-password'
   }
 })
