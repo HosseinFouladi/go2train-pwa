@@ -7,6 +7,7 @@ import VueTelInput from 'vue-tel-input'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import GoogleLogin from 'vue3-google-login'
 
 import PrimeVue from 'primevue/config'
 import Lara from '@primevue/themes/lara'
@@ -42,5 +43,8 @@ app.use(PrimeVue, {
   }
 })
 app.use(ToastService)
+app.use(GoogleLogin, {
+  clientId: import.meta.env.VITE_APPLE_CLIENT_ID
+})
 
 app.mount('#app')
