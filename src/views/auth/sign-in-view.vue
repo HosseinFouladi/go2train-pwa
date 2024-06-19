@@ -9,13 +9,14 @@ import {
   InputText,
   InputPassword
 } from '@/components'
+import { useOs } from '@/hooks'
 import { ENDPOINTS } from '@/api'
-import { ApiClient } from '@/utils'
 import { type UserLoginParams } from '@/queries'
 import { AuthContainer } from '@/views/auth/components'
-import { GoogleLogin } from 'vue3-google-login'
-import { onMounted } from 'vue'
+import { AppleIcon, GoogleIcon } from '@/components/icons'
+import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
 
+const operatingSystem = useOs()
 const form = useForm({
   defaultValues: {
     password: '',
@@ -103,41 +104,22 @@ const { mutate: loginMutation } = useUserLoginMutation()
       />
       <Divider sx="py-[16px]" />
       <div class="flex flex-row w-full gap-4">
-        <div class="border border-0.5 h-[40px] border-[#dadce0] rounded">
-          <vue-apple-login
-            color="white"
-            :border="false"
-            :radius="0"
-            height="38px"
-          ></vue-apple-login>
-        </div>
-        <GoogleLogin
-          dir="ltr"
-          style="margin-left: 2px"
-          logoSize="large"
-          class="google-signin"
-          :callback="() => console.log('logged in')"
-        >
-        </GoogleLogin>
+        <Button
+          label="ورود با اپل"
+          mode="secondary"
+          variant="outlined"
+          :iconLeft="AppleIcon"
+          @click="loginWithApple"
+          v-if="operatingSystem === 'macos' || operatingSystem === 'ios'"
+        />
+        <Button
+          @click="loginWithGoogle"
+          mode="secondary"
+          variant="outlined"
+          :iconLeft="GoogleIcon"
+          label="ورود با گوگل"
+        />
       </div>
     </div>
   </AuthContainer>
 </template>
-
-<style>
-.google-signin {
-  left: -1rem;
-}
-.g-btn {
-  width: 100% !important;
-}
-
-#appleid-signin {
-  height: 40px;
-  width: 100% !important;
-}
-
-#container {
-  background-color: orangered;
-}
-</style>
