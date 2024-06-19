@@ -7,12 +7,10 @@ import VueTelInput from 'vue-tel-input'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import VueGoogleLogin from 'vue3-google-login'
-// @ts-ignore
-import VueAppleLogin from 'vue-apple-login'
+
 import PrimeVue from 'primevue/config'
-import ToastService from 'primevue/toastservice'
 import Lara from '@primevue/themes/lara'
+import ToastService from 'primevue/toastservice'
 
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
@@ -22,12 +20,12 @@ import { queryClientConfig, telInputGlobalOptions } from '@/constants'
 import App from './App.vue'
 
 import router from '@/router'
-import { Layouts, GoogleLoginConfig, AppleLoginConfig } from '@/constants'
+import { Layouts } from '@/constants'
 import { AuthLayout } from '@/layouts'
 
 const app = createApp(App)
-const pinia = createPinia()
 
+const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 app.component(Layouts.AuthLayout, AuthLayout)
@@ -44,8 +42,5 @@ app.use(PrimeVue, {
   }
 })
 app.use(ToastService)
-
-app.use(VueGoogleLogin, GoogleLoginConfig)
-app.use(VueAppleLogin, AppleLoginConfig)
 
 app.mount('#app')

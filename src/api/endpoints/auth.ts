@@ -1,5 +1,6 @@
 export const AuthEndpoints = Object.freeze({
   Login: '/v2/auth/login',
+  External: '/v3/auth/external',
   Register: {
     CheckUsername: '/v2/auth/register/check-username',
     CreateUser: '/v2/auth/register/user',
