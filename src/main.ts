@@ -44,7 +44,7 @@ app.use(PrimeVue, {
 })
 app.use(ToastService)
 app.use(GoogleLogin, {
-  clientId: import.meta.env.VITE_APPLE_CLIENT_ID
+  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
 })
 
 app.mount('#app')
