@@ -39,17 +39,19 @@ const route = useRoute()
 const router = useRouter()
 
 const createUser = async (params: CreateUserParams) => {
-  return ApiClient.post<ApiResponseType<CreateUserApiResponse, 'all' | 'password'>>(
-    ENDPOINTS.Auth.Register.CreateUser,
-    { ...params }
-  ).catch((error) => {
-    const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
-      form.setFieldMeta('password', (meta) => {
-        return { ...meta, errorMap: { onServer: e.content } }
+  return ApiClient.version('v2')
+    .post<ApiResponseType<CreateUserApiResponse, 'all' | 'password'>>(
+      ENDPOINTS.Auth.Register.CreateUser,
+      { ...params }
+    )
+    .catch((error) => {
+      const serverError = error.response.data.message
+      serverError.forEach((e: FieldServerError<number>) => {
+        form.setFieldMeta('password', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
       })
     })
-  })
 }
 
 const useCreateUserMutation = () => {
@@ -57,15 +59,17 @@ const useCreateUserMutation = () => {
     mutationFn: (params: CreateUserParams) => createUser(params),
     onSuccess: (response) => {
       // TODO: Update Typing for the API Responses
-      // @ts-ignore
       const token = R.pipe(
-        response.data.results,
+        // @ts-ignore
+        response.data.data.results,
+        // @ts-ignore
         R.find((obj) => 'token' in obj),
+        // @ts-ignore
         R.prop('token')
       ) as string
-      setAuthCredentials(token, () =>
-        router.replace({ path: '/sign-up/choose-email-or-number' })
-      )
+      setAuthCredentials(token, () => {
+        router.push({ path: '/sign-up/choose-email-or-number' })
+      })
     }
   })
 }

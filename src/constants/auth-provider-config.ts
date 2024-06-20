@@ -1,8 +1,7 @@
-export const GoogleLoginConfig = {
-  idConfiguration: {
-    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    scope: 'email profile openid'
-  }
+import { type GoogleLoginOptions } from './auth-provider-config.types'
+
+export const GoogleLoginConfig: GoogleLoginOptions = {
+  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
 } as const
 
 export const AppleLoginConfig = {
