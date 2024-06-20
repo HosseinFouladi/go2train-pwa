@@ -4,46 +4,20 @@ import { useForm } from '@tanstack/vue-form'
 import { useRoute, useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 
-import { Button, InputPassword } from '@/components'
+import { ENDPOINTS } from '@/api'
 import { ApiClient, setAuthCredentials } from '@/utils'
-import { ENDPOINTS, type ApiResponseType } from '@/api'
+import { Button, InputPassword } from '@/components'
 import { AuthContainer } from '@/views/auth/components'
 
 type FieldServerError<T> = { id: T; content: string }
 type CreateUserParams = { username: string; password: string }
-
-export type User = {
-  id: number
-  name: any
-  email: any
-  mobile: any
-  username: string
-  avatar: any
-  score: any
-  prefer_language: any
-  is_register_complete: boolean
-  invite_code: any
-  role: string
-  followings_count: number
-  followers_count: number
-  location: any
-  is_whitelist: boolean
-  bio: any
-}
-export type CreateUserApiResponse = {
-  token: string
-  user: User
-}
 
 const route = useRoute()
 const router = useRouter()
 
 const createUser = async (params: CreateUserParams) => {
   return ApiClient.version('v2')
-    .post<ApiResponseType<CreateUserApiResponse, 'all' | 'password'>>(
-      ENDPOINTS.Auth.Register.CreateUser,
-      { ...params }
-    )
+    .post(ENDPOINTS.Auth.Register.CreateUser, { ...params })
     .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
@@ -66,15 +40,15 @@ const useCreateUserMutation = () => {
         R.find((obj) => 'token' in obj),
         // @ts-ignore
         R.prop('token')
-      ) as string
-      setAuthCredentials(token, () => {
+      ) as unknown as string
+      setAuthCredentials(token, () =>
         router.push({ path: '/sign-up/choose-email-or-number' })
-      })
+      )
     }
   })
 }
 
-const { mutate: handleCreateUser, data } = useCreateUserMutation()
+const { mutate: handleCreateUser } = useCreateUserMutation()
 
 const form = useForm({
   defaultValues: {

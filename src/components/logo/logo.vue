@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{ class?: ClassValue }>(), { class: '' })
   >
     <svg
       fill="none"
-      height="auto"
       viewBox="0 0 244 64"
       width="100%"
       xmlns="http://www.w3.org/2000/svg"
