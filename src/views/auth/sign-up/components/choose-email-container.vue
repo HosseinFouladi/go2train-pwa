@@ -6,6 +6,8 @@ import { useMutation } from '@tanstack/vue-query'
 import { ENDPOINTS } from '@/api'
 import { ApiClient } from '@/utils'
 import { InputText, Button } from '@/components'
+import Cookies from 'js-cookie'
+import { COOKIE_KEYS } from '@/constants'
 
 type SendCodeParams = { username: string }
 type FieldServerError<T> = { id: T; content: string }

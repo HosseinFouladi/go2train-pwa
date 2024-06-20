@@ -31,10 +31,7 @@ const verifyCode = async (params: VerifyCodeParams) => {
 
 const useVerifyCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: VerifyCodeParams) => verifyCode(params),
-    onSuccess(data, variables, context) {
-      console.log({ data, variables, context })
-    }
+    mutationFn: (params: VerifyCodeParams) => verifyCode(params)
   })
 }
 
@@ -55,10 +52,7 @@ const sendCode = async (params: SendCodeParams) => {
 
 const useSendCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: SendCodeParams) => sendCode(params),
-    onSuccess(data, variables, context) {
-      console.log({ data, variables, context })
-    }
+    mutationFn: (params: SendCodeParams) => sendCode(params)
   })
 }
 

@@ -4,7 +4,6 @@ import { ENDPOINTS } from '@/api'
 import { ApiClient } from '@/utils'
 
 export const loginWithGoogle = async () => {
-  console.log({ google_client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID })
   googleTokenLogin({
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
   })
