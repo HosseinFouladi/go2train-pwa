@@ -16,7 +16,11 @@ import ToastService from 'primevue/toastservice'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
-import { queryClientConfig, telInputGlobalOptions } from '@/constants'
+import {
+  GoogleLoginConfig,
+  queryClientConfig,
+  telInputGlobalOptions
+} from '@/constants'
 
 import App from './App.vue'
 
@@ -43,8 +47,6 @@ app.use(PrimeVue, {
   }
 })
 app.use(ToastService)
-app.use(GoogleLogin, {
-  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
-})
+app.use(GoogleLogin, GoogleLoginConfig)
 
 app.mount('#app')

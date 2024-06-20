@@ -20,16 +20,16 @@ type SendCodeParams = { username: string }
 type FieldServerError<T> = { id: T; content: string }
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.SendCode, { ...params }).catch(
-    (error) => {
+  return ApiClient.version('v2')
+    .post(ENDPOINTS.Auth.ForgetPassword.SendCode, { ...params })
+    .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('username', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    }
-  )
+    })
 }
 
 const useSendCodeMutation = () => {
@@ -38,7 +38,7 @@ const useSendCodeMutation = () => {
     onSuccess: (response) => {
       // @ts-ignore
       user.value = Array.first(response.data.results).user
-      router.replace({
+      router.push({
         path: '/forget-password/confirm-code',
         query: { username: form.getFieldValue('username') }
       })

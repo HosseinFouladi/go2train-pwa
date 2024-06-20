@@ -22,18 +22,20 @@ type CheckUsernameParams = {
 const suggestedUsernames = ref<Array<string> | undefined>(undefined)
 
 const checkUsername = async (params: CheckUsernameParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.CheckUsername, {
-    ...params
-  }).catch((error) => {
-    const suggestedUsernamesServer = error.response.data.data.results.suggestions
-    suggestedUsernames.value = suggestedUsernamesServer
-    const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
-      form.setFieldMeta('username', (meta) => {
-        return { ...meta, errorMap: { onServer: e.content } }
+  return ApiClient.version('v2')
+    .post(ENDPOINTS.Auth.Register.CheckUsername, {
+      ...params
+    })
+    .catch((error) => {
+      const suggestedUsernamesServer = error.response.data.data.results.suggestions
+      suggestedUsernames.value = suggestedUsernamesServer
+      const serverError = error.response.data.message
+      serverError.forEach((e: FieldServerError<number>) => {
+        form.setFieldMeta('username', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
       })
     })
-  })
 }
 
 const useCheckUsernameMutation = () => {
@@ -118,7 +120,7 @@ const form = useForm({
           label="بعدی"
           @click="
             () =>
-              router.replace({
+              router.push({
                 path: '/sign-up/choose-password',
                 query: { username: form.state.values.username }
               })

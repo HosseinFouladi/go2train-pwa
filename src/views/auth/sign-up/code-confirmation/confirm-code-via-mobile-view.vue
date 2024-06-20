@@ -15,16 +15,18 @@ type FieldServerError<T> = { id: T; content: string }
 type VerifyCodeParams = { username: string; code: string }
 
 const verifyCode = async (params: VerifyCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.VerifyCode, {
-    ...params
-  }).catch((error) => {
-    const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
-      form.setFieldMeta('code', (meta) => {
-        return { ...meta, errorMap: { onServer: e.content } }
+  return ApiClient.version('v2')
+    .post(ENDPOINTS.Auth.Register.VerifyCode, {
+      ...params
+    })
+    .catch((error) => {
+      const serverError = error.response.data.message
+      serverError.forEach((e: FieldServerError<number>) => {
+        form.setFieldMeta('code', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
       })
     })
-  })
 }
 
 const useVerifyCodeMutation = () => {
@@ -39,16 +41,16 @@ const useVerifyCodeMutation = () => {
 type SendCodeParams = { username: string }
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
-    (error) => {
+  return ApiClient.version('v2')
+    .post(ENDPOINTS.Auth.Register.SendCode, { ...params })
+    .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('code', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    }
-  )
+    })
 }
 
 const useSendCodeMutation = () => {

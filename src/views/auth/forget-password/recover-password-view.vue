@@ -21,7 +21,9 @@ type ConfirmPasswordParams = {
   password_confirmation: string
 }
 const confirmPassword = async (params: ConfirmPasswordParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.ChangePassword, { ...params })
+  return ApiClient.version('v2').post(ENDPOINTS.Auth.ForgetPassword.ChangePassword, {
+    ...params
+  })
 }
 
 const router = useRouter()

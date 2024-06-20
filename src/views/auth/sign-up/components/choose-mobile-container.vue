@@ -13,8 +13,9 @@ type FieldServerError<T> = { id: T; content: string }
 const router = useRouter()
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
-    (error) => {
+  return ApiClient.version('v2')
+    .post(ENDPOINTS.Auth.Register.SendCode, { ...params })
+    .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('mobile', (meta) => {
@@ -22,15 +23,14 @@ const sendCode = async (params: SendCodeParams) => {
         })
       })
       throw error.response.data
-    }
-  )
+    })
 }
 
 const useSendCodeMutation = () => {
   return useMutation({
     mutationFn: (params: SendCodeParams) => sendCode(params),
     onSuccess: () => {
-      router.replace({
+      router.push({
         path: '/sign-up/confirm-code-mobile',
         query: { mobile: form.state.values.mobile.split(' ').join('') }
       })
