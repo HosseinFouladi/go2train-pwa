@@ -1,4 +1,3 @@
-export { Layouts } from './layouts'
 export { COOKIE_KEYS } from './cookye-keys'
 export { telInputGlobalOptions } from './tel-input-global-options'
 export {

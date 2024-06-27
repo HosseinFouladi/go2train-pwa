@@ -25,15 +25,12 @@ import {
 import App from './App.vue'
 
 import router from '@/router'
-import { Layouts } from '@/constants'
-import { AuthLayout } from '@/layouts'
 
 const app = createApp(App)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-app.component(Layouts.AuthLayout, AuthLayout)
 app.component(VueCountdown.name || 'VueCountDown', VueCountdown)
 app.use(pinia)
 app.use(router)
