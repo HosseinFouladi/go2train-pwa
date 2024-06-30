@@ -1,6 +1,6 @@
 services:
   auth-front:
-    image: registry.go2tr.ir/g2/train/go2train-auth-frontend/auth-front:${CI_PIPELINE_ID}-prod
+    image: registry.go2tr.ir/g2/train/pwa/auth-front:${CI_PIPELINE_ID}-prod
     container_name: auth-front
     restart: always
     # env_file:
