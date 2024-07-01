@@ -748,6 +748,13 @@
     proc-log "^4.0.0"
     which "^4.0.0"
 
+"@persian-tools/persian-tools@^3.5.2":
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/@persian-tools/persian-tools/-/persian-tools-3.5.2.tgz#9247fd02eae9bdfcbae27e18b1cb8c8380e49799"
+  integrity sha512-m5pRaVNYIMfe5S+f1Y+mX4ULgk9SLhfv5zkT80xo9c31rQEZ25OEl3WZqHmmVSXSfSXS6jDizW4qjysaqsC7cw==
+  dependencies:
+    fastest-levenshtein "^1.0.16"
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"

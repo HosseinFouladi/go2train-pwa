@@ -47,3 +47,14 @@ app.use(ToastService)
 app.use(GoogleLogin, GoogleLoginConfig)
 
 app.mount('#app')
+
+declare global {
+  interface String {
+    toPersianDigits(): string
+  }
+}
+
+String.prototype.toPersianDigits = function (): string {
+  const id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
+  return this.replace(/[0-9]/g, (w) => id[+w])
+}

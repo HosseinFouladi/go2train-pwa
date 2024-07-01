@@ -7,12 +7,12 @@ export default {
   theme: {
     fontWeight: Font.Weights,
     fontSize: {
-      ...Font.Sizes.LargsScreens,
-      ...Font.Sizes.SmallScreens
+      ...Font.Sizes.SmallScreens,
+      ...Font.Sizes.LargsScreens
     },
     fontFamily: {
       iransans: ['iransans-x'],
-      inter: ['inter'],
+      inter: ['inter']
     },
     colors: { ...Colours },
 

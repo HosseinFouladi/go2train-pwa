@@ -10,7 +10,7 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
       {
         path: 'subscriptions',
         name: 'user-subscriptions',
-        component: () => import('@/views/subscriptions/subscriptions.vue')
+        component: () => import('@/views/profile/subscriptions.vue')
       }
     ]
   }
