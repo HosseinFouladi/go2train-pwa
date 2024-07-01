@@ -1,6 +1,6 @@
 services:
   pwa:
-    image: registry.go2tr.ir/g2/train/pwa/pwa:${CI_PIPELINE_ID}-prod
+    image: registry.go2tr.ir/g2/train/pwa/pwa:${CI_PIPELINE_ID}-dev
     container_name: pwa
     restart: always
     # env_file:
@@ -9,7 +9,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.pwa.entrypoints=websecure"
-      - "traefik.http.routers.pwa.rule=Host(`pwa.go2train.co`)"
+      - "traefik.http.routers.pwa.rule=Host(`train-pwa.go2tr.work`)"
       - "traefik.http.services.pwa.loadbalancer.server.port=3000"
       - "traefik.http.routers.pwa.tls=true"
       - "traefik.http.routers.pwa.tls.certresolver=cloudflare"
