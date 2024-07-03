@@ -6,3 +6,4 @@ export {
   DEFAULT_STALE_TIME
 } from './vue-query-config'
 export { AppleLoginConfig, GoogleLoginConfig } from './auth-provider-config'
+export { Accounts } from './accounts'

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { PlanCard } from './components'
 import { CrownIcon } from '@/components/icons'
+import { PlanCard, PlanStatusCard } from './components'
 
 const subscription_plans: Array<{
   title: string
@@ -15,9 +15,7 @@ const subscription_plans: Array<{
 
 <template>
   <div class="space-y-6">
-    <div class="w-full p-6 card rounded-2xl bg-neutral-white h-fit">
-      this is heading
-    </div>
+    <PlanStatusCard />
     <div class="w-full p-6 rounded-2xl card h-fit bg-neutral-white">
       <section class="space-y-4">
         <div class="space-y-4">

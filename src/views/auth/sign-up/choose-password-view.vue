@@ -16,16 +16,16 @@ const route = useRoute()
 const router = useRouter()
 
 const createUser = async (params: CreateUserParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.CreateUser, { ...params })
-    .catch((error) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.CreateUser, { ...params }).catch(
+    (error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('password', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    })
+    }
+  )
 }
 
 const useCreateUserMutation = () => {

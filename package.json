@@ -47,6 +47,7 @@
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.6",
     "@types/node": "^20.12.5",
     "@types/qs": "^6.9.15",
     "@types/vue-tel-input": "^2.1.6",

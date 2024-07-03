@@ -10,9 +10,10 @@ export const loginWithGoogle = async () => {
     .then((response) => {
       const { access_token } = response
       // provider value -> google: 1, apple: 2
-      ApiClient.version('v3')
-        .post(ENDPOINTS.Auth.External, { token: access_token, provider: 1 })
-        .then((response) => console.log(response))
+      ApiClient.post(ENDPOINTS.Auth.External, {
+        token: access_token,
+        provider: 1
+      }).then((response) => console.log(response))
     })
     .catch((err) => console.warn(err.message))
 }

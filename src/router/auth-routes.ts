@@ -16,8 +16,13 @@ export const AuthRoutes: Array<RouteRecordRaw> = [
       {
         path: '/sign-up',
         name: 'sign-up',
-        component: () => import('@/views/auth/sign-up/choose-username-view.vue'),
+        redirect: '/sign-up/choose-username',
         children: [
+          {
+            path: 'choose-username',
+            name: 'choose-username',
+            component: () => import('@/views/auth/sign-up/choose-username-view.vue')
+          },
           {
             path: 'choose-password',
             name: 'choose-password',

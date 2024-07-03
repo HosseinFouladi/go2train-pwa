@@ -1,8 +1,7 @@
 import axios, {
   type AxiosResponse,
   type AxiosInstance,
-  type AxiosRequestConfig,
-  type AxiosHeaderValue
+  type AxiosRequestConfig
 } from 'axios'
 import qs from 'qs'
 import Cookies from 'js-cookie'
@@ -11,9 +10,9 @@ import { getUserLocale } from 'get-user-locale'
 
 const CONNECTION_TIMEOUT = 30000
 
-export class ApiClient {
-  static DEFAULT_CONFIG: AxiosRequestConfig = {
-    baseURL: import.meta.env.VITE_API_STAGE_BASE_URL,
+abstract class Base {
+  protected static DEFAULT_CONFIG: AxiosRequestConfig = {
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     timeout: CONNECTION_TIMEOUT,
     withCredentials: false,
     headers: {
@@ -24,85 +23,117 @@ export class ApiClient {
     paramsSerializer: (params) => qs.stringify(params, { indices: false })
   }
 
-  private static axiosInstance: AxiosInstance = axios.create(this.DEFAULT_CONFIG)
+  protected static instance: AxiosInstance = axios.create(this.DEFAULT_CONFIG)
 
   static setToken(token: string): void {
     Cookies.set(COOKIE_KEYS.userToken, token, {
       sameSite: 'strict',
       secure: true
     })
-    this.axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
-  }
-
-  static getToken(): AxiosHeaderValue | undefined {
-    return this.axiosInstance.defaults.headers.common.Authorization
+    this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 
   static removeToken(): void {
     Cookies.remove(COOKIE_KEYS.userToken)
-    delete this.axiosInstance.defaults.headers.common.Authorization
+    delete this.instance.defaults.headers.common.Authorization
+  }
+}
+
+export abstract class ApiClient extends Base {
+  static get<T = void, Error = void, Data = unknown>(
+    url: string,
+    config?: AxiosRequestConfig<Data>
+  ) {
+    return this.send<T, Error>(url, { ...config, method: 'get' })
   }
 
-  static version(version: 'v2' | 'v3') {
-    const baseURL =
-      version === 'v2'
-        ? import.meta.env.VITE_API_STAGE_BASE_URL_V2
-        : import.meta.env.VITE_API_STAGE_BASE_URL_V3
+  static async post<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return await this.send<T, Error>(url, { ...config, method: 'post', data })
+  }
 
-    return {
-      get: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.get<T, R, E>(url, { ...config, baseURL })
+  static async postFormData<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return await this.send<T, Error>(url, {
+      ...config,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'post',
+      data
+    })
+  }
+
+  static put<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return this.send<T, Error>(url, { ...config, method: 'put', data })
+  }
+
+  static putFormData<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return this.send<T, Error>(url, {
+      ...config,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'put',
+      data
+    })
+  }
+
+  static putVideoStream<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return this.send<T, Error>(url, {
+      ...config,
+      headers: {
+        'Content-Type': 'binary/octet-stream',
+        Authorization: undefined,
+        Accept: '*/*'
       },
-      post: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        data?: any,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.post<T, R, E>(url, data, { ...config, baseURL })
-      },
-      postFormData: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        data?: any,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.post<T, R, E>(url, data, {
-          ...{ ...config, baseURL },
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-      },
-      put: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        data?: any,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.put<T, R, E>(url, data, { ...config, baseURL })
-      },
-      putFormData: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        data?: any,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.put<T, R, E>(url, data, {
-          ...{ ...config, baseURL },
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-      },
-      delete: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.delete<T, R, E>(url, { ...config, baseURL })
-      },
-      patch: <T = void, R = AxiosResponse<T>, E = any>(
-        url: string,
-        data?: any,
-        config?: AxiosRequestConfig
-      ) => {
-        return this.axiosInstance.patch<T, R, E>(url, data, { ...config, baseURL })
-      }
-    }
+      method: 'put',
+      timeout: 900000,
+      data,
+      baseURL: ''
+    })
+  }
+
+  static delete<T = void, Error = void>(url: string, config?: AxiosRequestConfig) {
+    return this.send<T, Error>(url, { ...config, method: 'delete' })
+  }
+
+  static patch<T = void, Error = void, Data = unknown>(
+    url: string,
+    data?: Data,
+    config?: AxiosRequestConfig
+  ) {
+    return this.send<T, Error>(url, { ...config, method: 'patch', data })
+  }
+
+  private static async send<T = void, Error = void>(
+    url: string,
+    config?: AxiosRequestConfig
+  ) {
+    const token = Cookies.get(COOKIE_KEYS.userToken)
+
+    if (token)
+      ApiClient.instance.defaults.headers.common.Authorization = `Bearer ${token}`
+
+    const conf = { ...this.DEFAULT_CONFIG, ...config }
+    const response = await ApiClient.instance.request<T, AxiosResponse<T>, Error>({
+      ...conf,
+      url
+    })
+    return response.data
   }
 }

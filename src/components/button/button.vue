@@ -4,10 +4,6 @@ import type { ButtonProps } from './button'
 import { buttonTheme } from './button.style'
 import { SpinnerIcon } from '@/components/icons'
 
-defineOptions({
-  inheritAttrs: false
-})
-
 const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
   withDefaults(defineProps<ButtonProps>(), {
     size: 'md',
@@ -23,7 +19,7 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
   <button
     :class="
       cn(
-        'font-demi-bold w-full',
+        'font-demi-bold',
         'flex items-center justify-center font-demi-bold',
         'text-neutral-white rounded-[14px] shadow-lg duration-200',
         buttonTheme[variant][disabled ? 'disabled' : mode],
@@ -35,6 +31,7 @@ const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
         },
         {
           'w-full': fluid,
+          'w-fit': !fluid,
           'pointer-events-none': disabled
         }
       )

@@ -27,31 +27,29 @@ const form = useForm({
 })
 
 const userLogin = async (params: UserLoginParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Login, {
-      ...params
-    })
-    .catch((error) => {
-      const serverError = error.response.data.message
-      serverError.forEach(
-        (e: { id: 'password' | 'username' | 'all'; content: string }) => {
-          if (e.id === 'all') {
-            return form.setFieldMeta('password', (meta) => ({
-              ...meta,
-              errorMap: {
-                onServer: e.content
-              }
-            }))
-          }
-          form.setFieldMeta(e.id, (meta) => ({
+  return ApiClient.post(ENDPOINTS.Auth.Login, {
+    ...params
+  }).catch((error) => {
+    const serverError = error.response.data.message
+    serverError.forEach(
+      (e: { id: 'password' | 'username' | 'all'; content: string }) => {
+        if (e.id === 'all') {
+          return form.setFieldMeta('password', (meta) => ({
             ...meta,
             errorMap: {
               onServer: e.content
             }
           }))
         }
-      )
-    })
+        form.setFieldMeta(e.id, (meta) => ({
+          ...meta,
+          errorMap: {
+            onServer: e.content
+          }
+        }))
+      }
+    )
+  })
 }
 
 const useUserLoginMutation = () => {
@@ -94,7 +92,7 @@ const { mutate: loginMutation } = useUserLoginMutation()
           </form.Field>
         </form>
       </div>
-      <div class="flex flex-row gap-4 justify-between items-center my-3">
+      <div class="flex flex-row items-center justify-between gap-4 my-3">
         <Checkbox label="‌ذخیره اطلاعات ورود" />
         <LinkText to="/forget-password" label="فراموشی رمز عبور" />
       </div>
@@ -105,7 +103,7 @@ const { mutate: loginMutation } = useUserLoginMutation()
         @click="() => form.handleSubmit()"
       />
       <Divider sx="py-[16px]" />
-      <div class="flex flex-row gap-4 w-full">
+      <div class="flex flex-row w-full gap-4">
         <Button
           label="ورود با اپل"
           mode="secondary"
@@ -115,6 +113,7 @@ const { mutate: loginMutation } = useUserLoginMutation()
           v-if="operatingSystem === 'macos' || operatingSystem === 'ios'"
         />
         <Button
+          fluid
           @click="loginWithGoogle"
           mode="secondary"
           variant="outlined"

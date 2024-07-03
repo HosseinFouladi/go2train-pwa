@@ -23,18 +23,16 @@ type FieldServerError<T> = { id: T; content: string }
 
 type CheckCodeParams = { username: string; code: string }
 const checkCode = async (params: CheckCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.ForgetPassword.CheckCode, {
-      ...params
-    })
-    .catch((error) => {
-      const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
-        form.setFieldMeta('code', (meta) => {
-          return { ...meta, errorMap: { onServer: e.content } }
-        })
+  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.CheckCode, {
+    ...params
+  }).catch((error) => {
+    const serverError = error.response.data.message
+    serverError.forEach((e: FieldServerError<number>) => {
+      form.setFieldMeta('code', (meta) => {
+        return { ...meta, errorMap: { onServer: e.content } }
       })
     })
+  })
 }
 
 const useCheckCodeMutation = () => {
