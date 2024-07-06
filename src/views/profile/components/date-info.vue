@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { format, parseISO } from 'date-fns-jalali'
 
 import { CalendarIcon } from '@/components/icons'
-const props = defineProps<{ date: string; label?: string }>()
-const date = computed(() => format(parseISO(props.date), 'yyyy,MM,dd'))
+const props = defineProps<{ date?: string; label?: string }>()
+const date = computed(() => format(parseISO(props.date || ''), 'yyyy,MM,dd'))
 </script>
 
 <template>

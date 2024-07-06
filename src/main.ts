@@ -1,4 +1,5 @@
 import './styles/index.css'
+import 'vue-final-modal/style.css'
 import 'vue-tel-input/vue-tel-input.css'
 
 import { createApp } from 'vue'
@@ -8,6 +9,7 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import GoogleLogin from 'vue3-google-login'
+import { createVfm } from 'vue-final-modal'
 
 import PrimeVue from 'primevue/config'
 import Lara from '@primevue/themes/lara'
@@ -27,6 +29,7 @@ import App from './App.vue'
 import router from '@/router'
 
 const app = createApp(App)
+const vueFinalModal = createVfm()
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -45,6 +48,7 @@ app.use(PrimeVue, {
 })
 app.use(ToastService)
 app.use(GoogleLogin, GoogleLoginConfig)
+app.use(vueFinalModal)
 
 app.mount('#app')
 

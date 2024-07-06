@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed, h } from 'vue'
+import { computed } from 'vue'
+import { cn } from '@/utils'
 import { differenceInDays, parseISO } from 'date-fns'
 
-import { DateInfo } from '.'
+import { DateInfo, PlanStatusBadge } from '.'
 import { useGetCurrentPlan } from '@/queries'
-import { ClockIcon, ReceiptIcon } from '@/components/icons'
-import { Button, InlineInfo, LineDivider } from '@/components'
+import { InlineInfo, LineDivider } from '@/components'
 
 const { data } = useGetCurrentPlan()
 const currentPlan = computed(() => data.value?.data.results)
@@ -19,24 +19,29 @@ const daysLeft = computed(
 </script>
 
 <template>
-  <section class="w-full p-6 space-y-4 card rounded-2xl bg-neutral-white h-fit">
+  <section
+    v-if="currentPlan?.priority !== 0"
+    class="w-full p-6 space-y-4 card rounded-2xl bg-neutral-white h-fit"
+  >
     <div class="flex items-center justify-between">
-      <div class="flex gap-1">
-        <span class="text-h6 font-demi-bold"
-          >اشتراک فعال شما: {{ currentPlan?.title }}</span
-        >
+      <div
+        :class="
+          cn('flex gap-1', {
+            'text-plan-bronze': currentPlan?.priority === 1,
+            'text-plan-silver': currentPlan?.priority === 2,
+            'text-plan-gold': currentPlan?.priority === 3
+          })
+        "
+      >
+        <span class="text-h6 font-demi-bold">اشتراک فعال شما: </span>
         <span class="text-h6 font-demi-bold text">
-          <!-- {{ Accounts[props.account_type] }} -->
+          {{ currentPlan?.title }}
         </span>
       </div>
-      <Button
-        v-if="daysLeft"
-        disabled
-        size="sm"
-        :fluid="false"
-        variant="outlined"
-        :label="`${daysLeft} روز مانده`"
-        :iconRight="h(ClockIcon, { height: '18', width: '18' })"
+      <PlanStatusBadge
+        :theme="currentPlan?.color"
+        :plan_priority="currentPlan?.priority"
+        :label="daysLeft"
       />
     </div>
     <InlineInfo
@@ -46,16 +51,9 @@ const daysLeft = computed(
     <LineDivider />
     <div class="flex items-center justify-between">
       <div class="flex gap-4 text-text-400">
-        <DateInfo :date="currentPlan?.expired_at" label="زمان خرید‍" />
+        <DateInfo :date="currentPlan?.created_at" label="زمان خرید‍" />
         <DateInfo :date="currentPlan?.expired_at" label="زمان اتمام اشتراک" />
       </div>
-      <Button
-        label="مشاهده فاکتور"
-        :iconRight="ReceiptIcon"
-        variant="text"
-        mode="disabled"
-        size="xs"
-      />
     </div>
   </section>
 </template>

@@ -10,8 +10,9 @@ export type CurrentPlanResponseType = {
   icon: string
   banner: string
   color: string
-  expired_at: any
-  priority: number
+  expired_at: string
+  created_at: string
+  priority: 0 | 1 | 2 | 3
   access_list: AccessList[]
 }
 

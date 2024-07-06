@@ -3,6 +3,11 @@
     --neutral-white: hsl(0, 0%, 100%);
     --neutral-black: hsl(230, 8%, 15%);
 
+
+    --gold: #df9531;
+    --silver: #777777;
+    --bronze: #d57155;
+
     --text-50: #e9e9ea;
     --text-100: #babbbc;
     --text-200: #999a9c;

@@ -1,22 +1,50 @@
 <script setup lang="ts">
 import { cn } from '@/utils'
-import { CheckMark } from '.'
-import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
-
-import type { CallbackPlanResponseType } from '@/queries'
+import { computed } from 'vue'
+import { match, P } from 'ts-pattern'
+import { useModal } from 'vue-final-modal'
 import { useMutation } from '@tanstack/vue-query'
-
-type SubscriptionType = 'priority-1' | 'priority-2' | 'priority-3'
+import type { CallbackPlanResponseType } from '@/queries'
+import {
+  purchaseByCallback,
+  useGetCurrentPlan,
+  type PurchasePlanByCallbackParams
+} from '@/queries'
+import { CheckMark, PurchaseConfirmationModal } from '.'
 
 const props = defineProps<CallbackPlanResponseType>()
 
-const bg_map: Record<
-  SubscriptionType,
-  { bg: string; btn_color: `bg-[#${string}]` }
-> = {
-  'priority-1': { bg: 'bg-bronze-gradient', btn_color: 'bg-[#D57155]' },
-  'priority-2': { bg: 'bg-silver-gradient', btn_color: 'bg-[#777777]' },
-  'priority-3': { bg: 'bg-gold-gradient', btn_color: 'bg-[#DF9531]' }
+type SubscriptionType = 'priority-1' | 'priority-2' | 'priority-3'
+
+const { data: plan } = useGetCurrentPlan()
+const taken = computed(() =>
+  Array.from(
+    { length: plan.value?.data.results.priority ?? 1 },
+    (_, index) => index + 1
+  ).includes(props.priority)
+)
+const priority_status = computed(() => {
+  const delta = props.priority - (plan.value?.data.results.priority ?? 1)
+  return match(delta)
+    .with(P.number.negative(), () => 'taken')
+    .with(P.number.positive(), () => 'can_buy')
+    .with(0, () => 'current')
+    .otherwise(() => '')
+})
+
+const card_theme: Record<SubscriptionType, { bg: string; btn_color: string }> = {
+  'priority-1': {
+    bg: 'bg-bronze-gradient',
+    btn_color: 'bg-[#D57155] border border-plan-bronze'
+  },
+  'priority-2': {
+    bg: 'bg-silver-gradient',
+    btn_color: 'bg-[#777777] border border-plan-silver'
+  },
+  'priority-3': {
+    bg: 'bg-gold-gradient',
+    btn_color: 'bg-[#DF9531] border border-plan-gold'
+  }
 }
 
 const { mutate: purchasePlan } = useMutation({
@@ -27,14 +55,41 @@ const { mutate: purchasePlan } = useMutation({
     window.open(data.results.url, '_blank')
   }
 })
+
+const { open, close } = useModal({
+  component: PurchaseConfirmationModal,
+  attrs: {
+    icon: props.icon,
+    priority: props.priority,
+    price: props.pricing.price,
+    price_unit: props.pricing.unit,
+    onConfirm() {
+      purchasePlan({
+        gateway_id: 1,
+        plan_id: props.priority,
+        plan_price_id: props.pricing.id
+      })
+      close()
+    }
+  },
+  slots: {
+    default: '<p>UseModal: The content of the modal</p>'
+  }
+})
 </script>
 
 <template>
-  <div class="w-full duration-300 flex group hover:scale-[1.05]">
+  <div
+    :class="
+      cn('w-full duration-300 flex group hover:scale-[1.05]', {
+        'pointer-events-none': taken
+      })
+    "
+  >
     <div
       :class="
         cn(
-          bg_map[`priority-${props.priority}`].bg,
+          card_theme[`priority-${props.priority}`].bg,
           'relative w-full p-4 mt-12 flex flex-col justify-between space-y-3 rounded-3xl group-hover:shadow-md duration-300'
         )
       "
@@ -73,21 +128,21 @@ const { mutate: purchasePlan } = useMutation({
         </ul>
       </div>
       <button
-        @click="
-          () =>
-            purchasePlan({
-              gateway_id: 1,
-              plan_id: props.priority,
-              plan_price_id: props.pricing.id
-            })
-        "
+        @click="() => open()"
         :class="[
-          bg_map[`priority-${props.priority}`].btn_color,
+          card_theme[`priority-${props.priority}`].btn_color,
           'w-full rounded-xl py-3 text-neutral-white text-sm-st-one font-demi-bold',
-          `duration-200 hover:brightness-[106%]`
+          `duration-200 hover:brightness-[106%]`,
+          { 'bg-transparent text-text-400': priority_status !== 'can_buy' }
         ]"
       >
-        خرید اشتراک
+        {{
+          match(priority_status)
+            .with('taken', () => 'شامل اشتراک شماست')
+            .with('current', () => 'این اشتراک را دارید!')
+            .with('can_buy', () => 'خرید اشتراک')
+            .otherwise(() => '')
+        }}
       </button>
     </div>
   </div>
