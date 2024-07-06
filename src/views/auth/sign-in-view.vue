@@ -12,15 +12,10 @@ import {
 } from '@/components'
 import { useOs } from '@/hooks'
 import { ENDPOINTS, type ApiResponseType } from '@/api'
-import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
 import { AuthContainer } from '@/views/auth/components'
 import { AppleIcon, GoogleIcon } from '@/components/icons'
-import {
-  ApiClient,
-  loginWithApple,
-  loginWithGoogle,
-  setAuthCredentials
-} from '@/utils'
+import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
+import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
 
 const operatingSystem = useOs()
 
@@ -75,9 +70,7 @@ const userLogin = async (params: UserLoginParams) => {
 const useUserLoginMutation = () => {
   return useMutation({
     mutationFn: (params: UserLoginParams) => userLogin(params),
-    onSettled(data, _error, _variables, _context) {
-      setAuthCredentials(data?.data.results.token as string)
-    }
+    onSuccess(data, _error, _variables, _context) {}
   })
 }
 
