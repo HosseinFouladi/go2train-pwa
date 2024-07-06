@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
+import _ from 'lodash'
 import {
   Button,
   Divider,
@@ -10,13 +11,19 @@ import {
   InputPassword
 } from '@/components'
 import { useOs } from '@/hooks'
-import { ENDPOINTS } from '@/api'
-import { type UserLoginParams } from '@/queries'
+import { ENDPOINTS, type ApiResponseType } from '@/api'
+import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
 import { AuthContainer } from '@/views/auth/components'
 import { AppleIcon, GoogleIcon } from '@/components/icons'
-import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
+import {
+  ApiClient,
+  loginWithApple,
+  loginWithGoogle,
+  setAuthCredentials
+} from '@/utils'
 
 const operatingSystem = useOs()
+
 const form = useForm({
   defaultValues: {
     password: '',
@@ -27,34 +34,50 @@ const form = useForm({
 })
 
 const userLogin = async (params: UserLoginParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Login, {
+  return ApiClient.post<
+    ApiResponseType<
+      UserLoginResponseType,
+      { id: 'all' | 'username' | 'password'; content: string }
+    >
+  >(ENDPOINTS.Auth.Login, {
     ...params
-  }).catch((error) => {
-    const serverError = error.response.data.message
-    serverError.forEach(
-      (e: { id: 'password' | 'username' | 'all'; content: string }) => {
-        if (e.id === 'all') {
-          return form.setFieldMeta('password', (meta) => ({
+  })
+    .then((res) =>
+      _.set(
+        _.cloneDeep(res),
+        'data.results',
+        _.head(res.data.results as any as Array<UserLoginResponseType>)
+      )
+    )
+    .catch((error) => {
+      const serverError = error.response.data.message
+      serverError.forEach(
+        (e: { id: 'password' | 'username' | 'all'; content: string }) => {
+          if (e.id === 'all') {
+            return form.setFieldMeta('password', (meta) => ({
+              ...meta,
+              errorMap: {
+                onServer: e.content
+              }
+            }))
+          }
+          form.setFieldMeta(e.id, (meta) => ({
             ...meta,
             errorMap: {
               onServer: e.content
             }
           }))
         }
-        form.setFieldMeta(e.id, (meta) => ({
-          ...meta,
-          errorMap: {
-            onServer: e.content
-          }
-        }))
-      }
-    )
-  })
+      )
+    })
 }
 
 const useUserLoginMutation = () => {
   return useMutation({
-    mutationFn: (params: UserLoginParams) => userLogin(params)
+    mutationFn: (params: UserLoginParams) => userLogin(params),
+    onSettled(data, _error, _variables, _context) {
+      setAuthCredentials(data?.data.results.token as string)
+    }
   })
 }
 

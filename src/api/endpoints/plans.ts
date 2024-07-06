@@ -1,3 +1,4 @@
 export const PlansEndpoints = Object.freeze({
-  List: '/plans'
+  List: '/plans',
+  PurchaseByCallback: '/plans/subscribe'
 })
