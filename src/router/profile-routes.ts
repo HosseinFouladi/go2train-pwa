@@ -6,6 +6,7 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'profile',
     component: ProfileLayout,
+    meta: { middleware: 'auth' },
     children: [
       {
         path: 'subscriptions',

@@ -117,7 +117,7 @@ const form = useForm({
               />
             </template>
           </form.Field>
-          <Button label="بازنشانی رمز عبور" />
+          <Button fluid label="بازنشانی رمز عبور" />
         </div>
       </form>
     </div>

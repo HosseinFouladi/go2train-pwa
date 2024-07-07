@@ -3,11 +3,11 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
 import { COOKIE_KEYS } from '@/constants'
-import { ApiClient, getToken, setAuthCredentials } from '@/utils'
+import { ApiClient, setAuthCredentials } from '@/utils'
 
 export const useAuthStore = defineStore('auth', () => {
   const errors = ref({})
-  const isAuthenticated = ref(!!getToken())
+  const isAuthenticated = ref(!!Cookies.get(COOKIE_KEYS.userToken))
 
   function setAuth(token: string, cb?: Function) {
     isAuthenticated.value = true
@@ -18,16 +18,13 @@ export const useAuthStore = defineStore('auth', () => {
     cb && typeof cb === 'function' && cb()
   }
 
-  function purgeAuth() {
+  function purgeAuth(cb?: Function) {
     console.log('purgeAuth')
     isAuthenticated.value = false
     errors.value = []
     Cookies.remove(COOKIE_KEYS.userToken)
     ApiClient.removeToken()
-  }
-
-  function login(token: string) {
-    setAuth(token)
+    cb && typeof cb === 'function' && cb()
   }
 
   function logout() {
@@ -37,8 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     errors,
     isAuthenticated,
-    login,
     logout,
+    setAuth,
     purgeAuth
   }
 })

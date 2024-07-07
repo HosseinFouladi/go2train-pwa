@@ -30,7 +30,7 @@ const router = useRouter()
 const useVerifyCodeMutation = () => {
   return useMutation({
     mutationFn: (params: VerifyCodeParams) => verifyCode(params),
-    onSuccess: () => router.push({ name: 'sign-in' })
+    onSuccess: () => router.push({ name: 'user-subscriptions' })
   })
 }
 
@@ -108,7 +108,7 @@ const form = useForm({
                 () => handleSendCode({ username: route.query.email as string })
               "
             />
-            <Button type="submit" label="بعدی" />
+            <Button fluid type="submit" label="بعدی" />
           </div>
         </div>
       </form>

@@ -5,6 +5,7 @@ import { Button } from '@/components'
 const props = defineProps<{
   icon: string
   onConfirm: Function
+  onCancel: Function
   priority: 1 | 2 | 3
   price: number
   price_unit: string
@@ -39,8 +40,8 @@ const props = defineProps<{
       </div>
     </div>
     <div class="flex justify-between w-full gap-4">
-      <Button fluid variant="outlined" label="انصراف" />
-      <Button fluid label="پرداخت" />
+      <Button fluid variant="outlined" label="انصراف" @click="props.onCancel" />
+      <Button fluid label="پرداخت" @click="props.onConfirm" />
     </div>
   </VueFinalModal>
 </template>

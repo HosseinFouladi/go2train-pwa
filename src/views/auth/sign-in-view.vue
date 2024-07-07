@@ -16,6 +16,8 @@ import { AuthContainer } from '@/views/auth/components'
 import { AppleIcon, GoogleIcon } from '@/components/icons'
 import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
 import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
+import { useAuthStore } from '@/stores'
+import { useRouter } from 'vue-router'
 
 const operatingSystem = useOs()
 
@@ -64,17 +66,20 @@ const userLogin = async (params: UserLoginParams) => {
           }))
         }
       )
+      throw new Error(error)
     })
 }
 
-const useUserLoginMutation = () => {
-  return useMutation({
-    mutationFn: (params: UserLoginParams) => userLogin(params),
-    onSuccess(data, _error, _variables, _context) {}
-  })
-}
+const router = useRouter()
+const { setAuth } = useAuthStore()
 
-const { mutate: loginMutation } = useUserLoginMutation()
+const { mutate: loginMutation } = useMutation({
+  mutationFn: (params: UserLoginParams) => userLogin(params),
+  onSuccess(data, variables, context) {
+    const token = data?.data.results.token ?? ''
+    setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
+  }
+})
 </script>
 
 <template>
@@ -130,7 +135,12 @@ const { mutate: loginMutation } = useUserLoginMutation()
         />
         <Button
           fluid
-          @click="loginWithGoogle"
+          @click="
+            () =>
+              loginWithGoogle((token) =>
+                setAuth(token, () => router.push({ name: 'user-subscriptions' }))
+              )
+          "
           mode="secondary"
           variant="outlined"
           :iconLeft="GoogleIcon"

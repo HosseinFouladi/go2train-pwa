@@ -1,3 +1,3 @@
 export const ProfileEndpoints = Object.freeze({
-  CurrentPlan: '/profile/current-plan'
+  CurrentPlan: '/v2/profile/current-plan'
 })

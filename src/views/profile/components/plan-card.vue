@@ -63,13 +63,15 @@ const { open, close } = useModal({
     priority: props.priority,
     price: props.pricing.price,
     price_unit: props.pricing.unit,
+    onCancel() {
+      close()
+    },
     onConfirm() {
       purchasePlan({
         gateway_id: 1,
         plan_id: props.priority,
         plan_price_id: props.pricing.id
       })
-      close()
     }
   },
   slots: {

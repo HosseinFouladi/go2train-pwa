@@ -2,6 +2,10 @@
 import { SidebarItem } from '.'
 import { SidebarConfig } from '@/configs'
 import { LogoutIcon } from '@/components/icons'
+import { useAuthStore } from '@/stores'
+import { useRouter } from 'vue-router'
+const { purgeAuth } = useAuthStore()
+const router = useRouter()
 </script>
 
 <template>
@@ -21,7 +25,7 @@ import { LogoutIcon } from '@/components/icons'
         :icon="LogoutIcon"
         label="خروج از حساب"
         theme="default"
-        @click="() => console.log('hello, world!')"
+        @click="() => purgeAuth(() => router.replace({ name: 'sign-in' }))"
       />
     </div>
   </aside>

@@ -5,11 +5,12 @@ import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
 import FindAccountAvatar from '@/assets/images/find-account-avatar.jpg'
 
-import { ENDPOINTS } from '@/api'
+import { type ApiResponseType, ENDPOINTS } from '@/api'
 import { ApiClient, Array } from '@/utils'
 import { useUserInfoStore } from '@/store'
 import { InputText, Button, Avatar } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
+import type { FindAccountResponseType, User } from '@/queries'
 
 const router = useRouter()
 
@@ -19,27 +20,40 @@ const { user } = storeToRefs(userInfoStore)
 type SendCodeParams = { username: string }
 type FieldServerError<T> = { id: T; content: string }
 
+import _ from 'lodash'
+
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.SendCode, { ...params }).catch(
-    (error) => {
+  return ApiClient.post<
+    ApiResponseType<Array<FindAccountResponseType>, { id: 'all'; content: string }>
+  >(ENDPOINTS.Auth.ForgetPassword.SendCode, { ...params })
+    .then(
+      (res) =>
+        _.set(
+          _.cloneDeep(res),
+          'data.results',
+          _.head(res.data.results)
+        ) as any as Promise<
+          ApiResponseType<FindAccountResponseType, { id: ''; content: '' }>
+        >
+    )
+    .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('username', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    }
-  )
+    })
 }
 
 const useSendCodeMutation = () => {
   return useMutation({
     mutationFn: (params: SendCodeParams) => sendCode(params),
-    onSuccess: (response) => {
-      // @ts-ignore
-      user.value = Array.first(response.data.results).user
+    onSettled(data, error, variables, context) {
+      user.value = data?.data.results.user as User
+      console.log(data?.data.results.user)
       router.push({
-        path: '/forget-password/confirm-code',
+        path: '/forget-password/confirmation-code',
         query: { username: form.getFieldValue('username') }
       })
     }
@@ -88,7 +102,7 @@ const form = useForm({
               />
             </template>
           </form.Field>
-          <Button type="submit" label="بعدی" />
+          <Button fluid type="submit" label="بعدی" />
         </div>
       </form>
     </div>

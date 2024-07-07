@@ -9,16 +9,17 @@ const router = createRouter({
   routes: [...AuthRoutes, ...ProfileRoutes]
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from, next) => {
   const { isAuthenticated } = useAuthStore()
-  if (
-    // make sure the user is authenticated
-    !isAuthenticated &&
-    // ❗️ Avoid an infinite redirect
-    to.name !== 'sign-in'
-  ) {
-    // redirect the user to the login page
-    return { name: 'sign-in' }
+  console.log(to.meta.middleware)
+  if (to.meta.middleware === 'auth') {
+    if (isAuthenticated) {
+      next()
+    } else {
+      next({ name: 'sign-in' })
+    }
+  } else {
+    next()
   }
 })
 

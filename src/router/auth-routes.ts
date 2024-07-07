@@ -3,7 +3,8 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const AuthRoutes: Array<RouteRecordRaw> = [
   {
-    path: '/sign-in',
+    path: '/',
+    redirect: '/sign-in',
     component: AuthLayout,
     children: [
       {
@@ -53,11 +54,16 @@ export const AuthRoutes: Array<RouteRecordRaw> = [
       {
         path: '/forget-password',
         name: 'forget-password',
-        component: () =>
-          import('@/views/auth/forget-password/find-account-view.vue'),
+        redirect: '/forget-password/find-account',
         children: [
           {
-            path: 'confirm-code',
+            path: 'find-account',
+            name: 'find-account',
+            component: () =>
+              import('@/views/auth/forget-password/find-account-view.vue')
+          },
+          {
+            path: 'confirmation-code',
             name: 'forget-password-confirm-code',
             component: () =>
               import('@/views/auth/forget-password/confirmation-code-view.vue')

@@ -71,7 +71,7 @@ const form = useForm({
           />
         </template>
       </form.Field>
-      <Button type="submit" label="بعدی" />
+      <Button fluid type="submit" label="بعدی" />
     </form>
   </div>
 </template>

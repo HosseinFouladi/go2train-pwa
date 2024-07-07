@@ -24,7 +24,7 @@ const user_avatar = {
             :badge_url="user_avatar.badge_url"
           />
           <!-- Icon Button Should Be Placed Here -->
-          <TokenBadge :token_count="20" />
+          <!-- <TokenBadge :token_count="20" /> -->
         </div>
       </nav>
     </Container>

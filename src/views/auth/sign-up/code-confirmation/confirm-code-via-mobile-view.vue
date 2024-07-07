@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
 
@@ -48,9 +48,11 @@ const sendCode = async (params: SendCodeParams) => {
   )
 }
 
+const router = useRouter()
 const useSendCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: SendCodeParams) => sendCode(params)
+    mutationFn: (params: SendCodeParams) => sendCode(params),
+    onSuccess: () => router.push({ name: 'user-subscriptions' })
   })
 }
 
@@ -108,7 +110,7 @@ const form = useForm({
                 () => handleSendCode({ username: route.query.mobile as string })
               "
             />
-            <Button type="submit" label="بعدی" />
+            <Button fluid type="submit" label="بعدی" />
           </div>
         </div>
       </form>

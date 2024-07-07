@@ -1,53 +1,67 @@
 <script setup lang="ts">
-import * as R from 'remeda'
+import { storeToRefs } from 'pinia'
 import { useForm } from '@tanstack/vue-form'
 import { useRoute, useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 
-import { ENDPOINTS } from '@/api'
 import { ApiClient, setAuthCredentials } from '@/utils'
+import { useUserInfoStore } from '@/store'
 import { Button, InputPassword } from '@/components'
+import { ENDPOINTS, type ApiResponseType } from '@/api'
 import { AuthContainer } from '@/views/auth/components'
+import { type CreateUserResponseType } from '@/queries'
 
 type FieldServerError<T> = { id: T; content: string }
 type CreateUserParams = { username: string; password: string }
 
 const route = useRoute()
 const router = useRouter()
+const userInfoStore = useUserInfoStore()
+const { user } = storeToRefs(userInfoStore)
+import _ from 'lodash'
+import { useAuthStore } from '@/stores'
 
 const createUser = async (params: CreateUserParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.CreateUser, { ...params }).catch(
-    (error) => {
+  return ApiClient.post<
+    ApiResponseType<
+      Array<CreateUserResponseType>,
+      { id: 'password'; content: string }
+    >
+  >(ENDPOINTS.Auth.Register.CreateUser, { ...params })
+    .then(
+      (res) =>
+        _.set(
+          _.cloneDeep(res),
+          'data.results',
+          _.head(res.data.results)
+        ) as any as ApiResponseType<
+          CreateUserResponseType,
+          { id: 'password'; content: string }
+        >
+    )
+    .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('password', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    }
-  )
+    })
 }
+
+const { setAuth } = useAuthStore()
 
 const useCreateUserMutation = () => {
   return useMutation({
     mutationFn: (params: CreateUserParams) => createUser(params),
-    onSuccess: (response) => {
-      // TODO: Update Typing for the API Responses
-      const token = R.pipe(
-        // @ts-ignore
-        response.data.data.results,
-        // @ts-ignore
-        R.find((obj) => 'token' in obj),
-        // @ts-ignore
-        R.prop('token')
-      ) as unknown as string
-      setAuthCredentials(token, () =>
+    onSettled(data, variables, context) {
+      const token = data?.data.results.token
+      setAuth(token as string, () =>
         router.push({ path: '/sign-up/choose-email-or-number' })
       )
     }
   })
 }
-
 const { mutate: handleCreateUser } = useCreateUserMutation()
 
 const form = useForm({
