@@ -6,8 +6,6 @@ import { useMutation } from '@tanstack/vue-query'
 import { ENDPOINTS } from '@/api'
 import { ApiClient } from '@/utils'
 import { InputText, Button } from '@/components'
-import Cookies from 'js-cookie'
-import { COOKIE_KEYS } from '@/constants'
 
 type SendCodeParams = { username: string }
 type FieldServerError<T> = { id: T; content: string }
@@ -15,9 +13,8 @@ type FieldServerError<T> = { id: T; content: string }
 const router = useRouter()
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.SendCode, { ...params })
-    .catch((error) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('email', (meta) => {
@@ -25,7 +22,8 @@ const sendCode = async (params: SendCodeParams) => {
         })
       })
       throw error.response.data
-    })
+    }
+  )
 }
 
 const useSendCodeMutation = () => {
@@ -73,7 +71,7 @@ const form = useForm({
           />
         </template>
       </form.Field>
-      <Button type="submit" label="بعدی" />
+      <Button fluid type="submit" label="بعدی" />
     </form>
   </div>
 </template>

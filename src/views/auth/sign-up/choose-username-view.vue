@@ -10,6 +10,7 @@ import { Button, InputText } from '@/components'
 import { TickSquaredIcon } from '@/components/icons'
 import { AuthContainer } from '@/views/auth/components'
 import { SuggestedUsernames } from '@/views/auth/sign-up/components'
+import { isPromise } from 'remeda'
 
 const router = useRouter()
 
@@ -22,20 +23,18 @@ type CheckUsernameParams = {
 const suggestedUsernames = ref<Array<string> | undefined>(undefined)
 
 const checkUsername = async (params: CheckUsernameParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.CheckUsername, {
-      ...params
-    })
-    .catch((error) => {
-      const suggestedUsernamesServer = error.response.data.data.results.suggestions
-      suggestedUsernames.value = suggestedUsernamesServer
-      const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
-        form.setFieldMeta('username', (meta) => {
-          return { ...meta, errorMap: { onServer: e.content } }
-        })
+  return ApiClient.post(ENDPOINTS.Auth.Register.CheckUsername, {
+    ...params
+  }).catch((error) => {
+    const suggestedUsernamesServer = error.response.data.data.results.suggestions
+    suggestedUsernames.value = suggestedUsernamesServer
+    const serverError = error.response.data.message
+    serverError.forEach((e: FieldServerError<number>) => {
+      form.setFieldMeta('username', (meta) => {
+        return { ...meta, errorMap: { onServer: e.content } }
       })
     })
+  })
 }
 
 const useCheckUsernameMutation = () => {

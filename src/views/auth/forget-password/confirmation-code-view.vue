@@ -23,18 +23,16 @@ type FieldServerError<T> = { id: T; content: string }
 
 type CheckCodeParams = { username: string; code: string }
 const checkCode = async (params: CheckCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.ForgetPassword.CheckCode, {
-      ...params
-    })
-    .catch((error) => {
-      const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
-        form.setFieldMeta('code', (meta) => {
-          return { ...meta, errorMap: { onServer: e.content } }
-        })
+  return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.CheckCode, {
+    ...params
+  }).catch((error) => {
+    const serverError = error.response.data.message
+    serverError.forEach((e: FieldServerError<number>) => {
+      form.setFieldMeta('code', (meta) => {
+        return { ...meta, errorMap: { onServer: e.content } }
       })
     })
+  })
 }
 
 const useCheckCodeMutation = () => {
@@ -60,7 +58,10 @@ onMounted(() => {
     summary: 'کد ورود فرستاده شد',
     detail: [
       'یک کد ورود به',
-      route.query.username.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, '$1***@$2'),
+      ((route.query.username as string) ?? ' ').replace(
+        /(\w{3})[\w.-]+@([\w.]+\w)/,
+        '$1***@$2'
+      ),
       'برایتان ارسال شده است تا بتوانید به حسابتان وارد شوید.'
     ].join(' '),
     severity: 'success',
@@ -105,7 +106,7 @@ onMounted(() => {
               />
             </template>
           </form.Field>
-          <Button type="submit" label="بعدی" />
+          <Button fluid type="submit" label="بعدی" />
         </div>
       </form>
     </div>

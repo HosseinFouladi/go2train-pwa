@@ -13,9 +13,8 @@ type FieldServerError<T> = { id: T; content: string }
 const router = useRouter()
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.SendCode, { ...params })
-    .catch((error) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('mobile', (meta) => {
@@ -23,7 +22,8 @@ const sendCode = async (params: SendCodeParams) => {
         })
       })
       throw error.response.data
-    })
+    }
+  )
 }
 
 const useSendCodeMutation = () => {
@@ -69,7 +69,7 @@ const form = useForm({
           />
         </template>
       </form.Field>
-      <Button label="بعدی" type="submit" />
+      <Button fluid label="بعدی" type="submit" />
     </div>
   </form>
 </template>

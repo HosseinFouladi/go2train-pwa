@@ -3,6 +3,19 @@ export const Colours = {
   transparent: 'transparent',
   'neutral-white': 'var(--neutral-white)',
   'neutral-black': 'var(--neutral-black)',
+  plan: {
+    bronze: 'var(--bronze)',
+    silver: 'var(--silver)',
+    gold: 'var(--gold)'
+  },
+  text: {
+    50: 'var(--text-50)',
+    100: 'var(--text-100)',
+    200: 'var(--text-200)',
+    300: 'var(--text-300)',
+    400: 'var(--text-400)',
+    500: 'var(--text-500)'
+  },
   primary: {
     50: 'var(--primary-50)',
     100: 'var(--primary-100)',

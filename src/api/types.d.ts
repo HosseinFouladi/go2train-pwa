@@ -1,18 +1,17 @@
-export interface ApiResponseType<TResult, TMessageId> {
+export type ApiResponseType<TData, TMessage extends Message> = {
   success: boolean
   code: number
   in_modal: boolean
-  data: {
-    has_paginate: number
-    results: Array<TResult>
-  }
-  message: Array<{
-    id: TMessageId
-    content: string
-  }>
+  data: Data<TData>
+  message: TMessage
+}
+
+export type Data<TData> = {
+  has_paginate: number
+  results: TData
 }
 
 export interface Message {
-  id: string | number
+  id: string
   content: string
 }

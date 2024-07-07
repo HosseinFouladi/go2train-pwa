@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { ModalsContainer } from 'vue-final-modal'
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-const route = useRoute()
 </script>
 
 <template>
-  <component :is="route.meta.layout">
-    <router-view />
-  </component>
+  <router-view />
   <VueQueryDevtools :initialIsOpen="true" />
+  <ModalsContainer />
 </template>

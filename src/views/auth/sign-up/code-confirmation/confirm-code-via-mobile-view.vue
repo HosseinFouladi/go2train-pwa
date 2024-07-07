@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
 
@@ -15,18 +15,16 @@ type FieldServerError<T> = { id: T; content: string }
 type VerifyCodeParams = { username: string; code: string }
 
 const verifyCode = async (params: VerifyCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.VerifyCode, {
-      ...params
-    })
-    .catch((error) => {
-      const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
-        form.setFieldMeta('code', (meta) => {
-          return { ...meta, errorMap: { onServer: e.content } }
-        })
+  return ApiClient.post(ENDPOINTS.Auth.Register.VerifyCode, {
+    ...params
+  }).catch((error) => {
+    const serverError = error.response.data.message
+    serverError.forEach((e: FieldServerError<number>) => {
+      form.setFieldMeta('code', (meta) => {
+        return { ...meta, errorMap: { onServer: e.content } }
       })
     })
+  })
 }
 
 const useVerifyCodeMutation = () => {
@@ -38,21 +36,23 @@ const useVerifyCodeMutation = () => {
 type SendCodeParams = { username: string }
 
 const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Register.SendCode, { ...params })
-    .catch((error) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
       const serverError = error.response.data.message
       serverError.forEach((e: FieldServerError<number>) => {
         form.setFieldMeta('code', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
       })
-    })
+    }
+  )
 }
 
+const router = useRouter()
 const useSendCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: SendCodeParams) => sendCode(params)
+    mutationFn: (params: SendCodeParams) => sendCode(params),
+    onSuccess: () => router.push({ name: 'user-subscriptions' })
   })
 }
 
@@ -110,7 +110,7 @@ const form = useForm({
                 () => handleSendCode({ username: route.query.mobile as string })
               "
             />
-            <Button type="submit" label="بعدی" />
+            <Button fluid type="submit" label="بعدی" />
           </div>
         </div>
       </form>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useForm } from '@tanstack/vue-form'
 import { useMutation } from '@tanstack/vue-query'
+import _ from 'lodash'
 import {
   Button,
   Divider,
@@ -10,13 +11,16 @@ import {
   InputPassword
 } from '@/components'
 import { useOs } from '@/hooks'
-import { ENDPOINTS } from '@/api'
-import { type UserLoginParams } from '@/queries'
+import { ENDPOINTS, type ApiResponseType } from '@/api'
 import { AuthContainer } from '@/views/auth/components'
 import { AppleIcon, GoogleIcon } from '@/components/icons'
 import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
+import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
+import { useAuthStore } from '@/stores'
+import { useRouter } from 'vue-router'
 
 const operatingSystem = useOs()
+
 const form = useForm({
   defaultValues: {
     password: '',
@@ -27,10 +31,21 @@ const form = useForm({
 })
 
 const userLogin = async (params: UserLoginParams) => {
-  return ApiClient.version('v2')
-    .post(ENDPOINTS.Auth.Login, {
-      ...params
-    })
+  return ApiClient.post<
+    ApiResponseType<
+      UserLoginResponseType,
+      { id: 'all' | 'username' | 'password'; content: string }
+    >
+  >(ENDPOINTS.Auth.Login, {
+    ...params
+  })
+    .then((res) =>
+      _.set(
+        _.cloneDeep(res),
+        'data.results',
+        _.head(res.data.results as any as Array<UserLoginResponseType>)
+      )
+    )
     .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach(
@@ -51,16 +66,20 @@ const userLogin = async (params: UserLoginParams) => {
           }))
         }
       )
+      throw new Error(error)
     })
 }
 
-const useUserLoginMutation = () => {
-  return useMutation({
-    mutationFn: (params: UserLoginParams) => userLogin(params)
-  })
-}
+const router = useRouter()
+const { setAuth } = useAuthStore()
 
-const { mutate: loginMutation } = useUserLoginMutation()
+const { mutate: loginMutation } = useMutation({
+  mutationFn: (params: UserLoginParams) => userLogin(params),
+  onSuccess(data, variables, context) {
+    const token = data?.data.results.token ?? ''
+    setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
+  }
+})
 </script>
 
 <template>
@@ -94,7 +113,7 @@ const { mutate: loginMutation } = useUserLoginMutation()
           </form.Field>
         </form>
       </div>
-      <div class="flex flex-row gap-4 justify-between items-center my-3">
+      <div class="flex flex-row items-center justify-between gap-4 my-3">
         <Checkbox label="‌ذخیره اطلاعات ورود" />
         <LinkText to="/forget-password" label="فراموشی رمز عبور" />
       </div>
@@ -105,7 +124,7 @@ const { mutate: loginMutation } = useUserLoginMutation()
         @click="() => form.handleSubmit()"
       />
       <Divider sx="py-[16px]" />
-      <div class="flex flex-row gap-4 w-full">
+      <div class="flex flex-row w-full gap-4">
         <Button
           label="ورود با اپل"
           mode="secondary"
@@ -115,7 +134,13 @@ const { mutate: loginMutation } = useUserLoginMutation()
           v-if="operatingSystem === 'macos' || operatingSystem === 'ios'"
         />
         <Button
-          @click="loginWithGoogle"
+          fluid
+          @click="
+            () =>
+              loginWithGoogle((token) =>
+                setAuth(token, () => router.push({ name: 'user-subscriptions' }))
+              )
+          "
           mode="secondary"
           variant="outlined"
           :iconLeft="GoogleIcon"

@@ -1,4 +1,5 @@
 import './styles/index.css'
+import 'vue-final-modal/style.css'
 import 'vue-tel-input/vue-tel-input.css'
 
 import { createApp } from 'vue'
@@ -8,6 +9,7 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import GoogleLogin from 'vue3-google-login'
+import { createVfm } from 'vue-final-modal'
 
 import PrimeVue from 'primevue/config'
 import Lara from '@primevue/themes/lara'
@@ -25,15 +27,13 @@ import {
 import App from './App.vue'
 
 import router from '@/router'
-import { Layouts } from '@/constants'
-import { AuthLayout } from '@/layouts'
 
 const app = createApp(App)
+const vueFinalModal = createVfm()
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-app.component(Layouts.AuthLayout, AuthLayout)
 app.component(VueCountdown.name || 'VueCountDown', VueCountdown)
 app.use(pinia)
 app.use(router)
@@ -48,5 +48,17 @@ app.use(PrimeVue, {
 })
 app.use(ToastService)
 app.use(GoogleLogin, GoogleLoginConfig)
+app.use(vueFinalModal)
 
 app.mount('#app')
+
+declare global {
+  interface String {
+    toPersianDigits(): string
+  }
+}
+
+String.prototype.toPersianDigits = function (): string {
+  const id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
+  return this.replace(/[0-9]/g, (w) => id[+w])
+}
