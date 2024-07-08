@@ -11,7 +11,11 @@ export { default as Tab } from './tab'
 export { default as TelInput } from './tel-input'
 export { default as CountDown } from './count-down'
 export { default as Toast } from './toast'
+<<<<<<< HEAD
 export { default as UserAvatar } from './user-avatar'
 export { default as TokenBadge } from './token-badge'
 export { default as InlineInfo } from './inline-info'
 export { default as LineDivider } from './line-divider'
+=======
+export { default as PWABadge } from './pwa-badge'
+>>>>>>> 3025d98 (feat: config PWA)
