@@ -124,7 +124,7 @@ const { mutate: loginMutation } = useMutation({
         @click="() => form.handleSubmit()"
       />
       <Divider sx="py-[16px]" />
-      <div class="flex flex-row w-full gap-4">
+      <div class="flex flex-col w-full gap-4">
         <Button
           label="ورود با اپل"
           mode="secondary"

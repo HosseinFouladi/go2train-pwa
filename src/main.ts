@@ -43,7 +43,11 @@ app.use(VueTelInput, telInputGlobalOptions)
 app.use(VueSweetalert2)
 app.use(PrimeVue, {
   theme: {
-    preset: Lara
+    preset: Lara,
+    options: {
+      // this is the easiest way of disabling automatic dark_mode of `primevue`
+      darkModeSelector: '.something_else'
+    }
   }
 })
 app.use(ToastService)

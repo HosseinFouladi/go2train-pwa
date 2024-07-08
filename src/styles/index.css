@@ -6,6 +6,20 @@
 @tailwind components;
 
 @layer base {
+  /* Firefox */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: light;
+    }
+  }
+
+  /* Chrome */
+  @media (forced-colors: active) {
+    :root {
+      color-scheme: light;
+    }
+  }
+
   html {
     min-height: 100vh;
     font-family: 'iransans-x';
