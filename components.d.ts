@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    '(feat': config PWA)
     Apple: typeof import('./src/components/icons/apple/index.vue')['default']
     ArrowRight: typeof import('./src/components/icons/arrow-right/index.vue')['default']
     Avatar: typeof import('./src/components/avatar/avatar.vue')['default']
@@ -29,13 +30,10 @@ declare module 'vue' {
     LineDivider: typeof import('./src/components/line-divider/line-divider.vue')['default']
     LinkText: typeof import('./src/components/link-text/link-text.vue')['default']
     Logo: typeof import('./src/components/logo/logo.vue')['default']
-<<<<<<< HEAD
     Logout: typeof import('./src/components/icons/logout/index.vue')['default']
-    Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
-=======
     PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
     PWABadge: typeof import('./src/components/pwa-badge/PWABadge.vue')['default']
->>>>>>> 3025d98 (feat: config PWA)
+    Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Setting: typeof import('./src/components/icons/setting/index.vue')['default']
