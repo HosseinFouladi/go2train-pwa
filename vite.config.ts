@@ -15,25 +15,21 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: false,
-
       pwaAssets: {
         disabled: false,
         config: true
       },
-
       manifest: {
         name: 'my-vue-app',
         short_name: 'my-app',
         description: 'this is my vue application',
         theme_color: '#ffffff'
       },
-
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
         cleanupOutdatedCaches: true,
         clientsClaim: true
       },
-
       devOptions: {
         enabled: false,
         navigateFallback: 'index.html',

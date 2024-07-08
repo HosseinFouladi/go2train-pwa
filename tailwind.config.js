@@ -2,7 +2,6 @@ import { Colours, Font } from './src/design-tokens'
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     fontWeight: Font.Weights,
@@ -44,5 +43,4 @@ export default {
       screens: {}
     }
   },
-  plugins: [require('nightwind')]
 }
