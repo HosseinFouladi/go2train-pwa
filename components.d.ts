@@ -29,8 +29,13 @@ declare module 'vue' {
     LineDivider: typeof import('./src/components/line-divider/line-divider.vue')['default']
     LinkText: typeof import('./src/components/link-text/link-text.vue')['default']
     Logo: typeof import('./src/components/logo/logo.vue')['default']
+<<<<<<< HEAD
     Logout: typeof import('./src/components/icons/logout/index.vue')['default']
     Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
+=======
+    PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
+    PWABadge: typeof import('./src/components/pwa-badge/PWABadge.vue')['default']
+>>>>>>> 3025d98 (feat: config PWA)
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Setting: typeof import('./src/components/icons/setting/index.vue')['default']
