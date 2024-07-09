@@ -1,2 +1,2 @@
-export type { CurrentPlanResponseType } from './types'
+export type { CurrentPlanResponseType} from './types'
 export { getCurrentPlan, useGetCurrentPlan } from './current-plan-query'
