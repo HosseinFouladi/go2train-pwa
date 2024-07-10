@@ -1,17 +1,24 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { CrownIcon } from '@/components/icons'
-import { useGetCallbackPlansList } from '@/queries'
 import { PlanCard, PlanStatusCard } from './components'
+import { useGetCallbackPlansList, useGetCurrentPlan } from '@/queries'
 
 const { data: plans } = useGetCallbackPlansList()
+const { data: currentPlan, isLoading } = useGetCurrentPlan()
 
 const plans_list = computed(() => plans.value?.data.results)
 </script>
 
 <template>
   <div class="space-y-6">
-    <PlanStatusCard />
+    <PlanStatusCard
+      v-if="
+        (currentPlan?.data.results.priority !==
+          currentPlan?.data.results.prev_plan) !==
+          null && !isLoading
+      "
+    />
     <div class="w-full p-6 rounded-2xl card h-fit bg-neutral-white">
       <section class="space-y-4">
         <div class="space-y-4">

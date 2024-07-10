@@ -34,6 +34,7 @@ declare module 'vue' {
     PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
     PWABadge: typeof import('./src/components/pwa-badge/PWABadge.vue')['default']
     Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
+    Refresh: typeof import('./src/components/icons/refresh/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Setting: typeof import('./src/components/icons/setting/index.vue')['default']
