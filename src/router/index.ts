@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores'
 import { AuthRoutes } from '@/router/auth-routes'
 import { ProfileRoutes } from '@/router/profile-routes'
+import { setAuthCredentials } from '@/utils'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,13 +11,15 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const { isAuthenticated, setAuth } = useAuthStore()
+  const { isAuthenticated } = useAuthStore()
 
   // 1. check if the query params exists
   const { token } = to.query
   if (token && from.path === '/') {
     // 2. validate the token
-    setAuth(token as string, () => router.replace({ name: 'user-subscriptions' }))
+    setAuthCredentials(token as string, () =>
+      router.replace({ name: 'user-subscriptions' })
+    )
   }
 
   if (to.meta.middleware === 'auth') {
