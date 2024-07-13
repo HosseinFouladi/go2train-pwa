@@ -10,8 +10,15 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const { isAuthenticated } = useAuthStore()
-  console.log(to.meta.middleware)
+  const { isAuthenticated, setAuth } = useAuthStore()
+
+  // 1. check if the query params exists
+  const { token } = to.query
+  if (token && from.path === '/') {
+    // 2. validate the token
+    setAuth(token as string, () => router.replace({ name: 'user-subscriptions' }))
+  }
+
   if (to.meta.middleware === 'auth') {
     if (isAuthenticated) {
       next()

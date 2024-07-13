@@ -15,7 +15,7 @@ import { ENDPOINTS, type ApiResponseType } from '@/api'
 import { AuthContainer } from '@/views/auth/components'
 import { AppleIcon, GoogleIcon } from '@/components/icons'
 import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
-import { type UserLoginParams, type UserLoginResponseType } from '@/queries'
+import type { UserLoginParams, UserLoginResponseType } from '@/queries'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
@@ -126,6 +126,7 @@ const { mutate: loginMutation } = useMutation({
       <Divider sx="py-[16px]" />
       <div class="flex flex-col w-full gap-4">
         <Button
+          fluid
           label="ورود با اپل"
           mode="secondary"
           variant="outlined"
