@@ -33,7 +33,4 @@ const plans_list = computed(() => plans.value?.data.results)
 </template>
 
 <style scoped>
-.card {
-  box-shadow: 0px 0px 12px 0px rgba(34, 35, 40, 0.15);
-}
 </style>
