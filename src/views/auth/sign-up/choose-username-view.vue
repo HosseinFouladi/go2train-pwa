@@ -74,7 +74,7 @@ const form = useForm({
     >
       <div class="flex flex-col space-y-6">
         <div>
-          <div class="space-y-6">
+          <div class="space-y-6 font">
             <div class="flex flex-col gap-3 text-center">
               <h3 class="text-st-one font-demi-bold">انتخاب نام کاربری</h3>
               <p class="text-st-two text-secondary-500">
