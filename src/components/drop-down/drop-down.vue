@@ -1,4 +1,5 @@
 <template>
+
   <div
     :class="
       cn({
@@ -25,7 +26,7 @@
         ></component>
         <component class="text-secondary-600" v-else :is="ArrowDownIcon"></component>
       </ListboxButton>
-      <ListboxOptions class="w-full ">
+      <ListboxOptions   class="w-full ">
         <div class="h-[2px] my-4 w-full bg-secondary-100" />
         <ListboxOption
           v-for="data in options"
@@ -41,7 +42,7 @@
         >
           <div class="flex gap-2">
             <component v-if="optionIconRight" :is="optionIconRight"></component>
-            {{ data.name }}
+            {{ data.name}}
           </div>
           <component v-if="optionIconLeft" :is="optionIconLeft"></component>
         </ListboxOption>
@@ -65,13 +66,17 @@ import ArrowDownIcon from '@/components/icons/arrow-down/index.vue'
 import ArrowUpIcon from '@/components/icons/arrow-up/index.vue'
 import { cn } from '@/utils'
 
-const { placeHolder, fluid, iconRight, options, optionIconLeft, optionIconRight } =
+defineOptions({
+  inheritAttrs: false
+})
+
+const { placeHolder, fluid, iconRight, options, optionIconLeft, optionIconRight,isLoading } =
   withDefaults(defineProps<DropdownProps>(), {
     placeHolder: 'لطفا دسته بندی مرتبط را پیدا کنید',
-    fluid: true
-  })
+    fluid: true,
+    isLoading:false
+    })
 const emit = defineEmits(['modelValue'])
-
 const selectedItem = ref()
 const isUp = ref(false)
 

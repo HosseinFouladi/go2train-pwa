@@ -6,7 +6,8 @@ export type DropdownProps = {
   iconRight?: Component
   optionIconRight?: Component
   optionIconLeft?: Component
-  options: Array<Options>
+  options: Array<Options>,
+  isLoading:boolean
 }
 
 type Options = { id: number; name: string; unavailable: boolean }

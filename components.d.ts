@@ -26,6 +26,7 @@ declare module 'vue' {
     DropDown: typeof import('./src/components/drop-down/drop-down.vue')['default']
     Eye: typeof import('./src/components/icons/eye/index.vue')['default']
     EyeSlash: typeof import('./src/components/icons/eye-slash/index.vue')['default']
+    FormFieldInfo: typeof import('./src/components/form-field-info/FormFieldInfo.vue')['default']
     Google: typeof import('./src/components/icons/google/index.vue')['default']
     InfoCircle: typeof import('./src/components/icons/info-circle/index.vue')['default']
     InlineInfo: typeof import('./src/components/inline-info/inline-info.vue')['default']

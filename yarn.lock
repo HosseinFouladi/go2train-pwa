@@ -1527,6 +1527,13 @@
   dependencies:
     "@tanstack/store" "^0.3.1"
 
+"@tanstack/form-core@0.26.4":
+  version "0.26.4"
+  resolved "https://registry.npmjs.org/@tanstack/form-core/-/form-core-0.26.4.tgz"
+  integrity sha512-rQpwyjb82tWoC4eQHUq3R8ojFQ4M/6WxitTexiFEOQ0k8pfN1kLy9ktlyFH6QeAerl855orShpB1pkYzyZqw0w==
+  dependencies:
+    "@tanstack/store" "^0.5.4"
+
 "@tanstack/match-sorter-utils@^8.15.1":
   version "8.15.1"
   resolved "https://registry.npmjs.org/@tanstack/match-sorter-utils/-/match-sorter-utils-8.15.1.tgz"
@@ -1548,6 +1555,11 @@
   version "0.3.1"
   resolved "https://registry.npmjs.org/@tanstack/store/-/store-0.3.1.tgz"
   integrity sha512-A49KN8SpLMWaNmZGPa9K982RQ81W+m7W6iStcQVeKeVS70JZRqkF0fDwKByREPq6qz9/kS0aQFOPQ0W6wIeU5g==
+
+"@tanstack/store@^0.5.4":
+  version "0.5.5"
+  resolved "https://registry.npmjs.org/@tanstack/store/-/store-0.5.5.tgz"
+  integrity sha512-EOSrgdDAJExbvRZEQ/Xhh9iZchXpMN+ga1Bnk8Nmygzs8TfiE6hbzThF+Pr2G19uHL6+DTDTHhJ8VQiOd7l4tA==
 
 "@tanstack/virtual-core@3.5.1":
   version "3.5.1"
@@ -1593,6 +1605,13 @@
   integrity sha512-6mc4HtDPieDVKD6GqzHiJkdzuqRNdQZuoIbkwE6af939WV+w62YmSF69jN+BOqClqh/ObiW+X1VOQx1Pftrx1A==
   dependencies:
     "@tanstack/virtual-core" "3.5.1"
+
+"@tanstack/zod-form-adapter@^0.26.4":
+  version "0.26.4"
+  resolved "https://registry.npmjs.org/@tanstack/zod-form-adapter/-/zod-form-adapter-0.26.4.tgz"
+  integrity sha512-PwI8741VujStxTQd7Z3MxdOuY/IR6QJMtUOwzpCavvl7C6HP8nJXOZjxXRKA5Rss7kl4aIhWqwhbJHdPLmZzpA==
+  dependencies:
+    "@tanstack/form-core" "0.26.4"
 
 "@tsconfig/node20@^20.1.4":
   version "20.1.4"
@@ -6881,3 +6900,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^3.23.8, zod@^3.x:
+  version "3.23.8"
+  resolved "https://registry.npmjs.org/zod/-/zod-3.23.8.tgz"
+  integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==

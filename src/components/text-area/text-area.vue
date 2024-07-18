@@ -11,6 +11,7 @@
         'w-fit': !fluid
       })
     "
+    v-bind="$attrs"
     ></textarea>
   </div>
 </template>
@@ -20,6 +21,10 @@ import { ref, defineEmits } from 'vue'
 import type { TextAreaProps } from './textArea'
 
 import { cn } from '@/utils'
+
+defineOptions({
+  inheritAttrs: false
+})
 
 const { placeHolder, fluid, rows } = withDefaults(
   defineProps<TextAreaProps>(),
