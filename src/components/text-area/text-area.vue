@@ -1,9 +1,10 @@
 <template>
   <div>
     <textarea
-      @update:modelValue="getTextAreaValue"
+      @input="getTextAreaValue"
       :placeholder="placeHolder"
       :rows="rows"
+      v-model="text"
       class="p-4 border-2 rounded-2xl border-secondary-500 text-st-two"
       :class="
       cn({
@@ -11,7 +12,6 @@
         'w-fit': !fluid
       })
     "
-    v-bind="$attrs"
     ></textarea>
   </div>
 </template>

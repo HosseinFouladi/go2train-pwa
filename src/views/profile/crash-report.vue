@@ -20,7 +20,8 @@
             >عنوان خرابی</label
           >
           <drop-down
-             v-if="!isPending&&!isFetching"
+            :key="myKey"
+            :isLoading="isLoading"
             :iconRight="CategoryIcon"
             :iconLeft="ArrowDownIcon"
             :options="categories"
@@ -62,15 +63,17 @@
 
 
     <div class="flex justify-end">
-      <Button label="ثبت گزارش" @click="storeReportBug" />
+      <Button label="ثبت گزارش" @click="storeReportBug" :isLoading="isStoreBugPending" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
-import { z } from 'zod'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import { first } from 'remeda'
+
 import CategoryIcon from '@/components/icons/category/index.vue'
 import ArrowDownIcon from '@/components/icons/arrow-down/index.vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
@@ -79,7 +82,6 @@ import { ENDPOINTS } from '@/api'
 import type { ApiResponseType, Message } from '@/api'
 import type { BugReportCategories, BugReportStoreParams } from '@/queries/bug-reports'
 import { useForm } from '@tanstack/vue-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
 import FormFieldInfo from "@/components/form-field-info/FormFieldInfo.vue";
 
 
@@ -90,6 +92,8 @@ type Category = {
 }
 const categoryId = ref<number>(0)
 const message = ref<string>('')
+const isLoading=ref(true);
+const myKey=ref(0)
 
 const getSelectedCategory = (category: Category) => {
   categoryId.value = category.id
@@ -115,23 +119,46 @@ const { data: categories,isPending,isFetching } = useQuery({
   }
 })
 
-const { mutate: storeBug } = useMutation({
+const { mutate: storeBug,isPending:isStoreBugPending } = useMutation({
   mutationFn: (params: BugReportStoreParams) => ApiClient.post(ENDPOINTS.BugReport.store_bug,{data:params}),
-  onSuccess(data) {
-    console.log(data)
-  }
+  onSuccess(props) {
+      // @ts-ignore
+      const msg = first(props.message).content
+      Swal.fire({
+        icon: 'success',
+        title: 'عملیات موفق',
+        text: msg,
+        confirmButtonText: 'باشه',
+        backdrop: true,
+        customClass: {
+          title: '!text-h5 !font-demi-bold !font-iransans',
+          htmlContainer: '!text-st-two !text-secondary-700',
+          popup: 'appearance-none rounded-3xl',
+          confirmButton: 'text-primary-500 !text-bt-s !font-demi-bold',
+          icon: 'appearance-none'
+        },
+        buttonsStyling: false
+      }).then(() => form.reset())
+    }
 })
 
 const form = useForm({
   defaultValues: {
     category_id: 0,
     message: ''
-  },
-  validatorAdapter: zodValidator
+  }
 })
 const storeReportBug=()=>{
   storeBug({category_id:categoryId.value,message:message.value})
 }
+
+watchEffect(async()=>{
+  isLoading.value=isPending.value||isFetching.value
+  //TODO: find better way to rerender dropdown component
+  myKey.value++;
+
+})
+
 </script>
 
 <style lang="scss" scoped></style>
