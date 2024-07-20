@@ -55,6 +55,7 @@ export abstract class ApiClient extends Base {
     return await this.send<T, Error>(url, { ...config, method: 'post', data })
   }
 
+  
   static async postFormData<T = void, Error = void, Data = unknown>(
     url: string,
     data?: Data,

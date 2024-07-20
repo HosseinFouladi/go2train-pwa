@@ -11,8 +11,7 @@
         'w-full': fluid,
         'w-fit': !fluid
       })
-    "
-    ></textarea>
+    "    ></textarea>
   </div>
 </template>
 <script setup lang="ts">
