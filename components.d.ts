@@ -21,6 +21,7 @@ declare module 'vue' {
     Crown: typeof import('./src/components/icons/crown/index.vue')['default']
     Danger: typeof import('./src/components/icons/danger/index.vue')['default']
     Divider: typeof import('./src/components/divider/divider.vue')['default']
+    Drawer: typeof import('primevue/drawer')['default']
     DropDown: typeof import('./src/components/drop-down/drop-down.vue')['default']
     Eye: typeof import('./src/components/icons/eye/index.vue')['default']
     EyeSlash: typeof import('./src/components/icons/eye-slash/index.vue')['default']

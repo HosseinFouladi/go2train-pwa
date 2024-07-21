@@ -4,7 +4,6 @@ import type { ButtonProps } from './button'
 import { buttonTheme } from './button.style'
 import { SpinnerIcon } from '@/components/icons'
 
-const { size, fluid, mode, isLoading, variant, iconRight, iconLeft, disabled } =
   withDefaults(defineProps<ButtonProps>(), {
     size: 'md',
     fluid: false,

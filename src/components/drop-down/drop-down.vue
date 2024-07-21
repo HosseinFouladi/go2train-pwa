@@ -27,7 +27,7 @@
       </ListboxButton>
       <ListboxOptions class="w-full">
         <div class="h-[2px] my-4 w-full bg-secondary-100" />
-        <div v-if="isLoading" class="flex justify-center items-center w-full">
+        <div v-if="isLoading" class="flex items-center justify-center w-full">
           <Loading />
         </div>
         <ListboxOption
@@ -73,15 +73,7 @@ defineOptions({
   inheritAttrs: false
 })
 
-const {
-  placeHolder,
-  fluid,
-  iconRight,
-  options,
-  optionIconLeft,
-  optionIconRight,
-  isLoading
-} = withDefaults(defineProps<DropdownProps>(), {
+withDefaults(defineProps<DropdownProps>(), {
   placeHolder: 'لطفا دسته بندی مرتبط را پیدا کنید',
   fluid: true,
   isLoading: false

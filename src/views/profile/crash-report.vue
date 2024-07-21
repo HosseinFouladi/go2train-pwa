@@ -30,8 +30,7 @@
               >عنوان خرابی</label
             >
             <drop-down
-              :key="myKey"
-              :isLoading="isLoading"
+              :isLoading="isPending||isFetching"
               :iconRight="CategoryIcon"
               :iconLeft="ArrowDownIcon"
               :options="categories"
@@ -88,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { first } from 'remeda'
@@ -113,8 +112,6 @@ type Category = {
 }
 const categoryId = ref<number>(0)
 const message = ref<string>('')
-const isLoading = ref(true)
-const myKey = ref(0)
 
 const getSelectedCategory = (category: Category) => {
   categoryId.value = category.id
@@ -179,17 +176,9 @@ const { mutate: storeBug, isPending: isStoreBugPending } = useMutation({
       },
       buttonsStyling: false
     }).then(() => {
-      form.reset()
     })
   }
 })
 
 
-watchEffect(async () => {
-  isLoading.value = isPending.value || isFetching.value
-  //TODO: find better way to rerender dropdown component
-  myKey.value++
-})
 </script>
-
-<style lang="scss" scoped></style>
