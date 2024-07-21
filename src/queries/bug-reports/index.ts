@@ -1,0 +1,1 @@
+export type {BugReportCategories,BugReportStoreParams} from "./type"

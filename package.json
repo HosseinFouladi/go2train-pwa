@@ -20,6 +20,7 @@
     "@tanstack/vue-form": "^0.20.3",
     "@tanstack/vue-query": "^5.41.0",
     "@tanstack/vue-query-devtools": "^5.41.0",
+    "@tanstack/zod-form-adapter": "^0.26.4",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -45,7 +46,8 @@
     "vue-router": "^4.3.0",
     "vue-sweetalert2": "^5.0.11",
     "vue-tel-input": "^9.1.3",
-    "vue3-google-login": "^2.0.26"
+    "vue3-google-login": "^2.0.26",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@primevue/auto-import-resolver": "^4.0.0-beta.5",
