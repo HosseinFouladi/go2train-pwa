@@ -1,6 +1,21 @@
 <template>
-  <Drawer v-model:visible="visible"   position="left">
-    <div class="w-[264px] flex-col py-6 flex justify-between min-h-full">
+    <div
+  class="drawer-mask"
+  :style="{
+    width: isOpen ? '100vw' : '0',
+    opacity: isOpen ? '0.1' : '0',
+  }"
+  @click="isOpen = false"
+>
+</div>
+  <div
+    class="drawer"
+    :style="{
+      width: isOpen ? '264px' : '0'
+    }"
+  >
+
+    <div class="flex flex-col justify-between w-[264px] min-h-full p-6">
       <div>
         <SidebarItem
           :key="item.label"
@@ -17,27 +32,49 @@
         theme="default"
         @click="() => purgeAuth(() => router.replace({ name: 'sign-in' }))"
       />
-    </div></Drawer>
+    </div>
+  </div>
+
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia'
 
 import { SidebarItem } from '.'
 import { SidebarConfig } from '@/configs'
 import { LogoutIcon } from '@/components/icons'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useToggleSidebar } from '@/stores'
 import { useRouter } from 'vue-router'
+
+const store = useToggleSidebar()
+const { isOpen } = storeToRefs(store)
+
 const { purgeAuth } = useAuthStore()
 const router = useRouter()
 
-const props=defineProps({
-    isVisible:{type:Boolean,default:false}
-})
-
-const visible=ref(props.isVisible)
 </script>
 
 <style scoped>
+.drawer {
+  position: absolute;
+  top: 72px;
+  right: 0;
+  z-index: 30;
+  width: 0;
+  background: white;
+  height: calc(100% - 72px);
+  overflow: hidden;
+  transition: all 0.5s;
+  border-top-left-radius: 8px;
+}
 
+.drawer-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0; /* initially */
+  height: 100vh;
+  background: #000;
+  z-index: 20;
+}
 </style>

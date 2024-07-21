@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import { CrownIcon } from '@/components/icons'
 import { PlanCard, PlanStatusCard } from './components'
-import { useGetCallbackPlansList, useGetCurrentPlan } from '@/queries'
+import { useGetCallbackPlansList } from '@/queries'
+import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
 
 const { data: plans } = useGetCallbackPlansList()
 const { data: currentPlan, isLoading } = useGetCurrentPlan()

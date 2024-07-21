@@ -1,3 +1,4 @@
-export { Sidebar } from './sidebar'
-export { Header } from './header'
+export { Sidebar,MobileSidebar } from './sidebar'
+export { Header ,MobileHeader} from './header'
 export { Container } from './container'
+

@@ -18,3 +18,5 @@ export { default as InfoCircleIcon } from './info-circle/index.vue'
 export { default as CalendarIcon } from './calendar/index.vue'
 export { default as ReceiptIcon } from './receipt/index.vue'
 export { default as RefreshIcon } from './refresh/index.vue'
+export { default as MessageIcon } from './message/index.vue'
+

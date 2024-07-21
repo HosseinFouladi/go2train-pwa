@@ -7,10 +7,10 @@ import { useMutation } from '@tanstack/vue-query'
 import type { CallbackPlanResponseType } from '@/queries'
 import {
   purchaseByCallback,
-  useGetCurrentPlan,
   type PurchasePlanByCallbackParams
 } from '@/queries'
 import { CheckMark, PurchaseConfirmationModal } from '.'
+import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
 
 const props = defineProps<CallbackPlanResponseType>()
 

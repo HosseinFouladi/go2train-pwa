@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import { Sidebar, Header, Container } from './components'
+import {
+  Sidebar,
+  Header,
+  Container,
+  MobileHeader,
+  MobileSidebar
+} from './components'
 </script>
 
 <template>
-  <div class="flex flex-col-reverse min-h-screen lg:flex-row bg-background-default">
+  <div class="flex flex-col-reverse lg:flex-row bg-background-default">
     <div class="flex flex-col w-full">
-      <Header />
+      <Header class="hidden xl:block" />
+      <MobileHeader class="xl:hidden" />
       <div
-        class="flex flex-col w-full min-h-screen max-w-[1440px] mx-auto px-4 lg:px-0"
+        class="flex flex-col w-full  max-w-[1440px] mx-auto px-4 lg:px-0"
       >
         <Container>
-          <div class="flex flex-row gap-6 py-8 justify-between w-full h-full">
-            <Sidebar />
+          <div class="flex flex-row justify-between w-full h-full gap-6 py-8 ">
+            <Sidebar class="hidden xl:block" />
+            <MobileSidebar  :is-visible="true" class="xl:hidden " />
+
             <router-view />
           </div>
         </Container>
@@ -19,5 +28,3 @@ import { Sidebar, Header, Container } from './components'
     </div>
   </div>
 </template>
-
-<style scoped></style>

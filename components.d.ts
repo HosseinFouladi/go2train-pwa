@@ -32,6 +32,7 @@ declare module 'vue' {
     Logo: typeof import('./src/components/logo/logo.vue')['default']
     Logout: typeof import('./src/components/icons/logout/index.vue')['default']
     Message: typeof import('./src/components/icons/message/index.vue')['default']
+    ProgressSpinner: typeof import('primevue/progressspinner')['default']
     PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
     Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
     Refresh: typeof import('./src/components/icons/refresh/index.vue')['default']
