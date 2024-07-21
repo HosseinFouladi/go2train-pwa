@@ -7,7 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    '(feat': config PWA)
     Apple: typeof import('./src/components/icons/apple/index.vue')['default']
     ArrowRight: typeof import('./src/components/icons/arrow-right/index.vue')['default']
     Avatar: typeof import('./src/components/avatar/avatar.vue')['default']
@@ -19,6 +18,7 @@ declare module 'vue' {
     Crown: typeof import('./src/components/icons/crown/index.vue')['default']
     Danger: typeof import('./src/components/icons/danger/index.vue')['default']
     Divider: typeof import('./src/components/divider/divider.vue')['default']
+    Drawer: typeof import('primevue/drawer')['default']
     Eye: typeof import('./src/components/icons/eye/index.vue')['default']
     EyeSlash: typeof import('./src/components/icons/eye-slash/index.vue')['default']
     Google: typeof import('./src/components/icons/google/index.vue')['default']
@@ -31,8 +31,8 @@ declare module 'vue' {
     LinkText: typeof import('./src/components/link-text/link-text.vue')['default']
     Logo: typeof import('./src/components/logo/logo.vue')['default']
     Logout: typeof import('./src/components/icons/logout/index.vue')['default']
+    Message: typeof import('./src/components/icons/message/index.vue')['default']
     PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
-    PWABadge: typeof import('./src/components/pwa-badge/PWABadge.vue')['default']
     Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
     Refresh: typeof import('./src/components/icons/refresh/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
