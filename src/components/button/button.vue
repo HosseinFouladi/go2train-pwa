@@ -4,14 +4,14 @@ import type { ButtonProps } from './button'
 import { buttonTheme } from './button.style'
 import { SpinnerIcon } from '@/components/icons'
 
-  withDefaults(defineProps<ButtonProps>(), {
-    size: 'md',
-    fluid: false,
-    mode: 'primary',
-    isLoading: false,
-    variant: 'filled',
-    disabled: false
-  })
+withDefaults(defineProps<ButtonProps>(), {
+  size: 'md',
+  fluid: false,
+  mode: 'primary',
+  isLoading: false,
+  variant: 'filled',
+  disabled: false
+})
 </script>
 
 <template>
@@ -48,7 +48,9 @@ import { SpinnerIcon } from '@/components/icons'
         })
       "
     >
-      <span v-if="isLoading"><SpinnerIcon class="animate-spin" /></span>
+      <span v-if="isLoading">
+        <SpinnerIcon class="animate-spin" />
+      </span>
       <span v-if="!isLoading">{{ label }}</span>
     </span>
     <Component v-if="iconLeft" :is="iconLeft" />

@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Apple: typeof import('./src/components/icons/apple/index.vue')['default']
     ArrowDown: typeof import('./src/components/icons/arrow-down/index.vue')['default']
+    ArrowLeft: typeof import('./src/components/icons/arrow-left/index.vue')['default']
     ArrowRight: typeof import('./src/components/icons/arrow-right/index.vue')['default']
     ArrowUp: typeof import('./src/components/icons/arrow-up/index.vue')['default']
     Avatar: typeof import('./src/components/avatar/avatar.vue')['default']
@@ -47,6 +48,7 @@ declare module 'vue' {
     Setting: typeof import('./src/components/icons/setting/index.vue')['default']
     Sms: typeof import('./src/components/icons/sms/index.vue')['default']
     Spinner: typeof import('./src/components/icons/spinner/index.vue')['default']
+    Switch: typeof import('./src/components/switch/switch.vue')['default']
     Tab: typeof import('./src/components/tab/tab.vue')['default']
     Teacher: typeof import('./src/components/icons/teacher/index.vue')['default']
     TelInput: typeof import('./src/components/tel-input/tel-input.vue')['default']
