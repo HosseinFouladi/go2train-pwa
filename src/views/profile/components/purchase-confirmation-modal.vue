@@ -4,8 +4,8 @@ import { Button } from '@/components'
 
 const props = defineProps<{
   icon: string
-  onConfirm: Function
-  onCancel: Function
+  onConfirm: () => void
+  onCancel: () => void
   priority: 1 | 2 | 3
   price: number
   price_unit: string
@@ -13,10 +13,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <VueFinalModal
-    class="flex items-center justify-center"
-    content-class="flex flex-col items-center max-w-xl gap-8 p-4 mx-4 space-y-2 rounded-lg w-96 bg-neutral-white dark:bg-secondary-900 dark:border-secondary-700"
-  >
+  <VueFinalModal class="flex items-center justify-center"
+    content-class="flex flex-col items-center max-w-xl gap-8 p-4 mx-4 space-y-2 rounded-lg w-96 bg-neutral-white dark:bg-secondary-900 dark:border-secondary-700">
     <div class="bg-plan-bronze rounded-2xl">
       <img class="w-12 h-12" :src="props.icon" />
     </div>
@@ -31,8 +29,7 @@ const props = defineProps<{
       </div>
       <span class="border w-full flex-1 h-[1px] border-secondary-300"></span>
       <div
-        class="flex flex-row items-center justify-between w-full gap-2 font-demi-bold text-h6 text-primary-500 text-st-two"
-      >
+        class="flex flex-row items-center justify-between w-full gap-2 font-demi-bold text-h6 text-primary-500 text-st-two">
         <span>قابل پرداخت</span>
         <span>{{
           String(props.price).toPersianDigits().concat(` ${props.price_unit}`)
