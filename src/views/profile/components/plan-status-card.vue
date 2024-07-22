@@ -9,9 +9,9 @@ import { useMutation } from '@tanstack/vue-query'
 import { InlineInfo, LineDivider, Button } from '@/components'
 import {
   purchaseByCallback,
-  useGetCurrentPlan,
   type PurchasePlanByCallbackParams
 } from '@/queries'
+import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
 
 const { data } = useGetCurrentPlan()
 const currentPlan = computed(() => data.value?.data.results)

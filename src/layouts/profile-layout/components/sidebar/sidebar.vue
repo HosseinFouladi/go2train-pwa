@@ -9,7 +9,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <aside class="card h-[70%] rounded-2xl">
+  <aside class="h-full card rounded-2xl">
     <div class="w-[264px] flex-col p-6 flex justify-between min-h-full">
       <div>
         <SidebarItem
