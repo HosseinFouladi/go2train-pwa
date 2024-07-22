@@ -12,11 +12,14 @@ const props = defineProps<{
   route?: string
   click?: Function
   theme: 'default' | 'premium'
+  external?: boolean
 }>()
 </script>
 
 <template>
-  <div
+  <component
+    :is="external === true ? 'a' : 'div'"
+    :href="props.route"
     :class="
       cn(
         'flex gap-3 rtl:flex-row-reverse rtl:justify-end w-full p-3 cursor-pointer',
@@ -29,16 +32,19 @@ const props = defineProps<{
       )
     "
     @click="
-      click && typeof click === 'function'
-        ? click()
-        : props.route
-          ? router.push(`/profile${props.route}`)
-          : undefined
+      () => {
+        if (external) return
+        click && typeof click === 'function'
+          ? click()
+          : props.route
+            ? router.push(`/profile${props.route}`)
+            : undefined
+      }
     "
   >
     <span class="text-st-one">{{ props.label }}</span>
     <span :class="cn({ 'text-[#6613EE]': props.theme === 'premium' })">
       <Component :is="props.icon" />
     </span>
-  </div>
+  </component>
 </template>

@@ -1,20 +1,18 @@
 <template>
-    <div
-  class="drawer-mask"
-  :style="{
-    width: isOpen ? '100vw' : '0',
-    opacity: isOpen ? '0.1' : '0',
-  }"
-  @click="isOpen = false"
->
-</div>
+  <div
+    class="drawer-mask"
+    :style="{
+      width: isOpen ? '100vw' : '0',
+      opacity: isOpen ? '0.1' : '0'
+    }"
+    @click="isOpen = false"
+  ></div>
   <div
     class="drawer"
     :style="{
       width: isOpen ? '264px' : '0'
     }"
   >
-
     <div class="flex flex-col justify-between w-[264px] min-h-full p-6">
       <div>
         <SidebarItem
@@ -23,6 +21,7 @@
           :label="item.label"
           :route="item.route"
           :theme="item.theme"
+          :external="item.external"
           v-for="item of SidebarConfig"
         />
       </div>
@@ -34,7 +33,6 @@
       />
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -51,7 +49,6 @@ const { isOpen } = storeToRefs(store)
 
 const { purgeAuth } = useAuthStore()
 const router = useRouter()
-
 </script>
 
 <style scoped>

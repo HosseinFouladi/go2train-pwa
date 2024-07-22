@@ -18,6 +18,7 @@ const router = useRouter()
           :label="item.label"
           :route="item.route"
           :theme="item.theme"
+          :external="item.external"
           v-for="item of SidebarConfig"
         />
       </div>
