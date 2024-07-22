@@ -13,6 +13,7 @@ type SidebarItem = {
   icon: Component
   route: string
   theme: 'default' | 'premium'
+  external?: boolean
 }
 
 export const SidebarConfig: Array<SidebarItem> = [
@@ -43,8 +44,9 @@ export const SidebarConfig: Array<SidebarItem> = [
   {
     label: 'ارسال ایمیل به پشتیبانی',
     icon: SmsIcon,
-    route: '/support',
-    theme: 'default'
+    route: 'mailto:support@go2train.co',
+    theme: 'default',
+    external: true
   },
   {
     label: 'گزارش خرابی',
