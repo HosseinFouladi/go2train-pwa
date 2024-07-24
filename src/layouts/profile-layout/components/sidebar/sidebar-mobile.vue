@@ -53,7 +53,7 @@ const router = useRouter()
 
 <style scoped>
 .drawer {
-  position: absolute;
+  position: fixed;
   top: 72px;
   right: 0;
   z-index: 30;
@@ -66,7 +66,7 @@ const router = useRouter()
 }
 
 .drawer-mask {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 0; /* initially */

@@ -1,20 +1,20 @@
 export type CallbackPlanResponseType = {
-  id: number
-  product_id: any
-  title: string
-  hint: string
-  description: string
-  duration: number
-  type: number
-  type_title: string
-  icon: string
-  banner: string
-  color: string
-  expired_at?: string
-  priority: 1 | 2 | 3
-  pricing: Pricing
-  access_list: AccessList[]
-}
+		id: number;
+		product_id: unknown;
+		title: string;
+		hint: string;
+		description: string;
+		duration: number;
+		type: number;
+		type_title: string;
+		icon: string;
+		banner: string;
+		color: string;
+		expired_at?: string;
+		priority: 1 | 2 | 3;
+		pricing: Pricing;
+		access_list: AccessList[];
+	};
 
 export type Pricing = {
   id: number

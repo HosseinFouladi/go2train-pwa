@@ -7,11 +7,8 @@ import { DateInfo, PlanStatusBadge } from '.'
 import { RefreshIcon } from '@/components/icons'
 import { useMutation } from '@tanstack/vue-query'
 import { InlineInfo, LineDivider, Button } from '@/components'
-import {
-  purchaseByCallback,
-  type PurchasePlanByCallbackParams
-} from '@/queries'
-import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
+import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
+import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
 const { data } = useGetCurrentPlan()
 const currentPlan = computed(() => data.value?.data.results)
@@ -33,7 +30,9 @@ const { mutate: purchasePlan } = useMutation({
 </script>
 
 <template>
-  <section class="w-full p-6 space-y-4 card rounded-2xl bg-neutral-white h-fit">
+  <section
+    class="w-full p-6 space-y-4 paper md:card rounded-2xl bg-neutral-white h-fit"
+  >
     <div
       v-if="currentPlan?.priority === 0 && currentPlan?.prev_plan !== null"
       class="w-full space-y-4"
@@ -43,11 +42,11 @@ const { mutate: purchasePlan } = useMutation({
       </h2>
       <LineDivider />
     </div>
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div
         :class="
           cn(
-            'flex gap-1',
+            'flex gap-1 justify-center',
             {
               'text-plan-bronze': currentPlan?.priority === 1,
               'text-plan-silver': currentPlan?.priority === 2,
@@ -78,7 +77,7 @@ const { mutate: purchasePlan } = useMutation({
           v-if="currentPlan?.priority === 0 && currentPlan.prev_plan"
           class="text-h6 font-demi-bold text"
         >
-          {{ currentPlan?.prev_plan.title}}
+          {{ currentPlan?.prev_plan.title }}
         </span>
       </div>
       <PlanStatusBadge
@@ -110,13 +109,16 @@ const { mutate: purchasePlan } = useMutation({
       <LineDivider />
     </div>
     <div class="flex items-center justify-between">
-      <div v-if="currentPlan?.priority !== 0" class="flex gap-4 text-text-400">
+      <div
+        v-if="currentPlan?.priority !== 0"
+        class="flex flex-col gap-4 md:flex-row text-text-400"
+      >
         <DateInfo :date="currentPlan?.created_at" label="زمان خرید‍" />
         <DateInfo :date="currentPlan?.expired_at" label="زمان اتمام اشتراک" />
       </div>
       <div
         v-if="currentPlan?.priority === 0 && currentPlan.prev_plan !== null"
-        class="flex gap-4 text-text-400"
+        class="flex flex-col gap-4 md:flex-row text-text-400"
       >
         <DateInfo :date="currentPlan?.prev_plan.created_at" label="زمان خرید‍" />
         <DateInfo
