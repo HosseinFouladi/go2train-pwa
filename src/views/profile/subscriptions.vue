@@ -34,11 +34,11 @@ const plans_list = computed(() => plans.value?.data.results)
             منابع آموزشی، محتوای انحصاری، و ابزارهای پیشرفته را خواهید داشت!
           </p>
         </div>
-        <div dir="rtl" class="flex flex-wrap justify-center">
+        <div dir="rtl" class="hidden sm:flex sm:flex-wrap sm:justify-center">
           <PlanCard
-            class="w-1/2 p-2"
             v-bind="plan"
             :key="plan.id"
+            :class="'w-1/2 p-2'"
             v-for="plan of plans_list?.reverse()"
           />
         </div>

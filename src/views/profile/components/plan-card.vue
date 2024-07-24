@@ -9,7 +9,7 @@ import { CheckMark, PurchaseConfirmationModal } from '.'
 import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
 import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
-const props = defineProps<CallbackPlanResponseType>()
+const props = defineProps<CallbackPlanResponseType & {class: string}>()
 
 type SubscriptionType = 'priority-1' | 'priority-2' | 'priority-3'
 
@@ -83,9 +83,9 @@ const { open, close } = useModal({
   <div
     dir="rtl"
     :class="
-      cn('w-full h-full md:h-auto duration-300 flex group hover:scale-[1.05]', {
+      cn('w-full h-full sm:h-auto duration-300 flex group hover:scale-[1.05]', {
         'pointer-events-none': subscribed
-      })
+      }, props.class)
     "
   >
     <div
