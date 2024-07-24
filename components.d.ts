@@ -15,6 +15,7 @@ declare module 'vue' {
     Avatar: typeof import('./src/components/avatar/avatar.vue')['default']
     Button: typeof import('./src/components/button/button.vue')['default']
     Calendar: typeof import('./src/components/icons/calendar/index.vue')['default']
+    Carousel: typeof import('primevue/carousel')['default']
     Category: typeof import('./src/components/icons/category/index.vue')['default']
     Checkbox: typeof import('./src/components/checkbox/checkbox.vue')['default']
     Clock: typeof import('./src/components/icons/clock/index.vue')['default']

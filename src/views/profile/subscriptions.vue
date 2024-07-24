@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+
 import { CrownIcon } from '@/components/icons'
-import { PlanCard, PlanStatusCard } from './components'
 import { useGetCallbackPlansList } from '@/queries'
-import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
+import { PlanCard, PlanStatusCard } from './components'
+import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
 const { data: plans } = useGetCallbackPlansList()
 const { data: currentPlan, isLoading } = useGetCurrentPlan()
@@ -20,7 +21,8 @@ const plans_list = computed(() => plans.value?.data.results)
           null && !isLoading
       "
     />
-    <div class="w-full p-6 rounded-2xl card h-fit bg-neutral-white">
+    <div class="w-full p-6 rounded-2xl paper md:card h-fit bg-neutral-white">
+      <div class="block my-10 line-divider md:hidden" />
       <section class="space-y-4">
         <div class="space-y-4">
           <div class="flex items-center gap-4">
@@ -32,13 +34,29 @@ const plans_list = computed(() => plans.value?.data.results)
             منابع آموزشی، محتوای انحصاری، و ابزارهای پیشرفته را خواهید داشت!
           </p>
         </div>
-        <div class="flex flex-row w-full h-full gap-4 rtl:flex-row-reverse">
-          <PlanCard v-bind="plan" :key="plan.id" v-for="plan of plans_list" />
+        <div dir="rtl" class="flex flex-wrap justify-center">
+          <PlanCard
+            class="w-1/2 p-2"
+            v-bind="plan"
+            :key="plan.id"
+            v-for="plan of plans_list?.reverse()"
+          />
+        </div>
+        <div class="max-w-[95vw] flex items-center justify-center sm:hidden">
+          <Carousel
+            :numScroll="1"
+            :numVisible="1"
+            dir="ltr"
+            :showIndicators="false"
+            :value="plans_list?.reverse()"
+            :containerClass="'max-w-[91vw]'"
+          >
+            <template #item="slotProps">
+              <PlanCard v-bind="slotProps.data" />
+            </template>
+          </Carousel>
         </div>
       </section>
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

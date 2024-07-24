@@ -5,19 +5,16 @@ import { match, P } from 'ts-pattern'
 import { useModal } from 'vue-final-modal'
 import { useMutation } from '@tanstack/vue-query'
 import type { CallbackPlanResponseType } from '@/queries'
-import {
-  purchaseByCallback,
-  type PurchasePlanByCallbackParams
-} from '@/queries'
 import { CheckMark, PurchaseConfirmationModal } from '.'
-import {useGetCurrentPlan} from '@/queries/profile/current-plan-query'
+import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
+import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
 const props = defineProps<CallbackPlanResponseType>()
 
 type SubscriptionType = 'priority-1' | 'priority-2' | 'priority-3'
 
 const { data: plan } = useGetCurrentPlan()
-const taken = computed(() =>
+const subscribed = computed(() =>
   Array.from(
     { length: plan.value?.data.results.priority ?? 1 },
     (_, index) => index + 1
@@ -56,6 +53,8 @@ const { mutate: purchasePlan } = useMutation({
   }
 })
 
+const priority = computed(() => (props.priority > 3 ? 3 : props.priority))
+
 const { open, close } = useModal({
   component: PurchaseConfirmationModal,
   attrs: {
@@ -82,16 +81,17 @@ const { open, close } = useModal({
 
 <template>
   <div
+    dir="rtl"
     :class="
-      cn('w-full duration-300 flex group hover:scale-[1.05]', {
-        'pointer-events-none': taken
+      cn('w-full h-full md:h-auto duration-300 flex group hover:scale-[1.05]', {
+        'pointer-events-none': subscribed
       })
     "
   >
     <div
       :class="
         cn(
-          card_theme[`priority-${props.priority}`].bg,
+          card_theme[`priority-${priority}`].bg,
           'relative w-full p-4 mt-12 flex flex-col justify-between space-y-3 rounded-3xl group-hover:shadow-md duration-300'
         )
       "
@@ -132,7 +132,7 @@ const { open, close } = useModal({
       <button
         @click="() => open()"
         :class="[
-          card_theme[`priority-${props.priority}`].btn_color,
+          card_theme[`priority-${priority}`].btn_color,
           'w-full rounded-xl py-3 text-neutral-white text-sm-st-one font-demi-bold',
           `duration-200 hover:brightness-[106%]`,
           { 'bg-transparent text-text-400': priority_status !== 'can_buy' }

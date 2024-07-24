@@ -6,7 +6,7 @@ const props = defineProps<{ icon?: Component; text: string }>()
 </script>
 
 <template>
-  <div class="flex items-start gap-2">
+  <div class="flex items-center gap-2 md:items-start">
     <span><Component :is="props.icon ?? InfoCircleIcon" /></span>
     <p>{{ props.text }}</p>
   </div>
