@@ -66,12 +66,13 @@ const { open, close } = useModal({
       <div class="w-full space-y-6">
         <div class="flex flex-col gap-4">
           <h4 class="w-full text-st-one font-demi-bold text-secondary-500">عمومی</h4>
-          <div class="flex flex-row items-center justify-between w-full">
+	        <!-- not shipping this feature in this version -->
+          <!-- <div class="flex flex-row items-center justify-between w-full">
             <span class="text-st-two text-text-500 font-demi-bold"
               >زبان اپلیکیشن</span
             >
             <span>فارسی</span>
-          </div>
+          </div> -->
           <div class="flex flex-row items-center justify-between w-full">
             <span class="text-st-two text-text-500 font-demi-bold">اعلان ها</span>
             <span>
