@@ -29,6 +29,7 @@ const { mutate: purchasePlan } = useMutation({
 })
 </script>
 
+<!-- TODO: this is file should be refactored, since the logic and the UI are very coupeled -->
 <template>
   <section
     v-if="currentPlan?.priority === 0 && currentPlan?.prev_plan !== null"

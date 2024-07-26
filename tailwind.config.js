@@ -37,10 +37,11 @@ export default {
             rgba(223, 149, 49, 0.25) 2.35%,
             rgba(223, 149, 49, 0.5) 99.3%
           )`,
-        'divider-gradient': `linear-gradient(90deg, #FFF 0%, #DAD9E6 17%, #DAD9E6 81%, #FFF 100%);`
+        'divider-gradient':
+          'linear-gradient(90deg, #FFF 0%, #DAD9E6 17%, #DAD9E6 81%, #FFF 100%);'
       },
       // breakpoints are tailwinds default
       screens: {}
     }
-  },
+  }
 }

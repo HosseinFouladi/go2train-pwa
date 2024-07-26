@@ -4,9 +4,9 @@ export const Colours = {
   'neutral-white': 'var(--neutral-white)',
   'neutral-black': 'var(--neutral-black)',
   plan: {
-    bronze: 'var(--bronze)',
-    silver: 'var(--silver)',
-    gold: 'var(--gold)'
+    bronze: 'rgb(var(--bronze) / <alpha-value>)',
+    silver: 'rgb(var(--silver) / <alpha-value>)',
+    gold: 'rgb(var(--gold) / <alpha-value>)'
   },
   text: {
     50: 'var(--text-50)',

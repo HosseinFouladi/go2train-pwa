@@ -9,7 +9,7 @@ import { CheckMark, PurchaseConfirmationModal } from '.'
 import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
 import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
-const props = defineProps<CallbackPlanResponseType & {class: string}>()
+const props = defineProps<CallbackPlanResponseType & { class?: string }>()
 
 type SubscriptionType = 'priority-1' | 'priority-2' | 'priority-3'
 
@@ -47,7 +47,7 @@ const card_theme: Record<SubscriptionType, { bg: string; btn_color: string }> = 
 const { mutate: purchasePlan } = useMutation({
   mutationKey: ['plans'],
   mutationFn: (params: PurchasePlanByCallbackParams) => purchaseByCallback(params),
-  onSuccess({ data }, _variables, _context) {
+  onSuccess({ data }, _v, _c) {
     if (!window) return
     window.open(data.results.url, '_blank')
   }
@@ -62,6 +62,7 @@ const { open, close } = useModal({
     priority: props.priority,
     price: props.pricing.price,
     price_unit: props.pricing.unit,
+    plan_title: props.title,
     onCancel() {
       close()
     },
@@ -83,9 +84,13 @@ const { open, close } = useModal({
   <div
     dir="rtl"
     :class="
-      cn('w-full h-full sm:h-auto duration-300 flex group hover:scale-[1.05]', {
-        'pointer-events-none': subscribed
-      }, props.class)
+      cn(
+        'w-full h-full sm:h-auto duration-300 flex group hover:scale-[1.05]',
+        {
+          'pointer-events-none': subscribed
+        },
+        props.class
+      )
     "
   >
     <div

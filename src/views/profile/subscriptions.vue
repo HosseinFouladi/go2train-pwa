@@ -39,7 +39,7 @@ const plans_list = computed(() => plans.value?.data.results)
             v-bind="plan"
             :key="plan.id"
             :class="'w-1/2 p-2'"
-            v-for="plan of plans_list?.reverse()"
+            v-for="plan of plans_list"
           />
         </div>
         <div class="max-w-[95vw] flex items-center justify-center sm:hidden">
