@@ -3,9 +3,9 @@
     --neutral-white: hsl(0, 0%, 100%);
     --neutral-black: hsl(230, 8%, 15%);
 
-    --gold: #df9531;
-    --silver: #777777;
-    --bronze: #d57155;
+    --gold: 223 149 49;
+    --silver: 119 119 119;
+    --bronze: 213 113 85;
 
     --text-50: #e9e9ea;
     --text-100: #babbbc;

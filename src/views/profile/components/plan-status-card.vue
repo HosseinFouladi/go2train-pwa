@@ -7,8 +7,8 @@ import { DateInfo, PlanStatusBadge } from '.'
 import { RefreshIcon } from '@/components/icons'
 import { useMutation } from '@tanstack/vue-query'
 import { InlineInfo, LineDivider, Button } from '@/components'
-import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
 import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
+import { purchaseByCallback, type PurchasePlanByCallbackParams } from '@/queries'
 
 const { data } = useGetCurrentPlan()
 const currentPlan = computed(() => data.value?.data.results)
@@ -22,21 +22,20 @@ const daysLeft = computed(
 const { mutate: purchasePlan } = useMutation({
   mutationKey: ['plans'],
   mutationFn: (params: PurchasePlanByCallbackParams) => purchaseByCallback(params),
-  onSuccess({ data }, _variables, _context) {
+  onSuccess({ data }, _v, _c) {
     if (!window) return
     window.open(data.results.url, '_blank')
   }
 })
 </script>
 
+<!-- TODO: this is file should be refactored, since the logic and the UI are very coupeled -->
 <template>
   <section
+    v-if="currentPlan?.priority !== 0 || currentPlan?.prev_plan"
     class="w-full p-6 space-y-4 paper md:card rounded-2xl bg-neutral-white h-fit"
   >
-    <div
-      v-if="currentPlan?.priority === 0 && currentPlan?.prev_plan !== null"
-      class="w-full space-y-4"
-    >
+    <div v-if="currentPlan?.priority === 0 && currentPlan.prev_plan" class="w-full space-y-4">
       <h2 class="text-center text-h6 font-demi-bold text-danger-500">
         اشتراک شما به پایان رسیده!
       </h2>
