@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useForm } from '@tanstack/vue-form'
 import { useRoute, useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 
-import { ApiClient, setAuthCredentials } from '@/utils'
-import { useUserInfoStore } from '@/store'
+import { ApiClient } from '@/utils'
 import { Button, InputPassword } from '@/components'
 import { ENDPOINTS, type ApiResponseType } from '@/api'
 import { AuthContainer } from '@/views/auth/components'
-import { type CreateUserResponseType } from '@/queries'
+import type { CreateUserResponseType } from '@/queries'
+import { zodValidator } from '@tanstack/zod-form-adapter'
+import { z } from 'zod'
 
-type FieldServerError<T> = { id: T; content: string }
 type CreateUserParams = { username: string; password: string }
 
 const route = useRoute()
 const router = useRouter()
-const userInfoStore = useUserInfoStore()
-const { user } = storeToRefs(userInfoStore)
 import _ from 'lodash'
 import { useAuthStore } from '@/stores'
 
@@ -34,18 +31,18 @@ const createUser = async (params: CreateUserParams) => {
           _.cloneDeep(res),
           'data.results',
           _.head(res.data.results)
-        ) as any as ApiResponseType<
+        ) as unknown as ApiResponseType<
           CreateUserResponseType,
           { id: 'password'; content: string }
         >
     )
     .catch((error) => {
       const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
+      for (const e of serverError) {
         form.setFieldMeta('password', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
-      })
+      }
     })
 }
 
@@ -54,7 +51,7 @@ const { setAuth } = useAuthStore()
 const useCreateUserMutation = () => {
   return useMutation({
     mutationFn: (params: CreateUserParams) => createUser(params),
-    onSettled(data, variables, context) {
+    onSettled(data, _v, _c) {
       const token = data?.data.results.token
       setAuth(token as string, () =>
         router.push({ path: '/sign-up/choose-email-or-number' })
@@ -72,7 +69,8 @@ const form = useForm({
     handleCreateUser({
       password: value.password,
       username: (route.query as { username: string }).username
-    })
+    }),
+  validatorAdapter: zodValidator()
 })
 </script>
 
@@ -95,7 +93,14 @@ const form = useForm({
               بنا به‌‌دلایل امنیتی، گذرواژه‌تان باید حداقل ۸ کاراکتر داشته باشد.
             </p>
           </div>
-          <form.Field name="password">
+          <form.Field
+            name="password"
+            :validators="{
+              onSubmit: z
+                .string()
+                .min(8, { message: 'نام کاربری باید حداقل ۸ کاراکتر باشد' })
+            }"
+          >
             <template v-slot="{ field, state }">
               <InputPassword
                 fluid
