@@ -32,10 +32,10 @@ const { mutate: purchasePlan } = useMutation({
 <!-- TODO: this is file should be refactored, since the logic and the UI are very coupeled -->
 <template>
   <section
-    v-if="currentPlan?.priority === 0 && currentPlan?.prev_plan !== null"
+    v-if="currentPlan?.priority !== 0 || currentPlan?.prev_plan"
     class="w-full p-6 space-y-4 paper md:card rounded-2xl bg-neutral-white h-fit"
   >
-    <div class="w-full space-y-4">
+    <div v-if="currentPlan?.priority === 0 && currentPlan.prev_plan" class="w-full space-y-4">
       <h2 class="text-center text-h6 font-demi-bold text-danger-500">
         اشتراک شما به پایان رسیده!
       </h2>
