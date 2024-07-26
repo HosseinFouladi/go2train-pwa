@@ -19,7 +19,7 @@ const form = useForm({
 <template>
   <VueFinalModal
     class="flex items-center justify-center"
-    content-class="flex flex-col w-1/4 max-w-xl gap-8 p-4 mx-4 space-y-2 rounded-2xl bg-neutral-white dark:bg-secondary-900 dark:border-secondary-700"
+    content-class="flex flex-col w-full gap-8 p-2 mx-4 space-y-2 md:p-10 md:max-w-xl md:w-1/4 rounded-3xl bg-neutral-white"
   >
     <form
       @submit="
@@ -79,7 +79,7 @@ const form = useForm({
           </InputWrapper>
         </template>
       </form.Field>
-      <div class="flex flex-row gap-2">
+      <div class="flex flex-col gap-2 md:flex-row">
         <Button
           fluid
           type="submit"
