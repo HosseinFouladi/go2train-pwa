@@ -15,6 +15,10 @@ import PrimeVue from 'primevue/config'
 import Lara from '@primevue/themes/lara'
 import ToastService from 'primevue/toastservice'
 
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+
+
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
@@ -30,6 +34,8 @@ import router from '@/router'
 
 const app = createApp(App)
 const vueFinalModal = createVfm()
+
+app.use(FloatingVue);
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

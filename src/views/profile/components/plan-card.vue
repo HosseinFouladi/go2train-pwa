@@ -87,7 +87,7 @@ const { open, close } = useModal({
       cn(
         'w-full h-full sm:h-auto duration-300 flex group hover:scale-[1.05]',
         {
-          'pointer-events-none': subscribed
+          'hover:scale-100': subscribed
         },
         props.class
       )
@@ -135,7 +135,8 @@ const { open, close } = useModal({
         </ul>
       </div>
       <button
-        @click="() => open()"
+        v-tooltip.bottom="'این اشتراک برایتان فعال است'"
+        @click="() => !subscribed && open()"
         :class="[
           card_theme[`priority-${priority}`].btn_color,
           'w-full rounded-xl py-3 text-neutral-white text-sm-st-one font-demi-bold',
