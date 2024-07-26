@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
+import { useRoute, useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 
 import { ENDPOINTS } from '@/api'
@@ -9,55 +9,49 @@ import { InputText, Button, CountDown } from '@/components'
 import { AuthContainerWithNav } from '@/views/auth/components'
 
 const route = useRoute()
+const router = useRouter()
 
-// TODO: Place Replace the Type and Prevent Redundancy
-type FieldServerError<T> = { id: T; content: string }
-type VerifyCodeParams = { username: string; code: string }
-
-const verifyCode = async (params: VerifyCodeParams) => {
+const verifyCode = async (params: { username: string; code: string }) => {
   return ApiClient.post(ENDPOINTS.Auth.Register.VerifyCode, {
     ...params
-  }).catch((error) => {
-    const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
-      form.setFieldMeta('code', (meta) => {
-        return { ...meta, errorMap: { onServer: e.content } }
-      })
-    })
   })
+    .then(() => router.push({ name: 'user-subscriptions' }))
+    .catch((error) => {
+      const serverError = error.response.data.message
+      for (const e of serverError) {
+        form.setFieldMeta('code', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
+      }
+    })
 }
 
 const useVerifyCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: VerifyCodeParams) => verifyCode(params)
+    mutationFn: (params: { username: string; code: string }) => verifyCode(params)
   })
 }
 
-type SendCodeParams = { username: string }
-
-const sendCode = async (params: SendCodeParams) => {
+const sendCode = async (params: { username: string }) => {
   return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
     (error) => {
       const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
+      for (const e of serverError) {
         form.setFieldMeta('code', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
-      })
+      }
     }
   )
 }
 
-const router = useRouter()
 const useSendCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: SendCodeParams) => sendCode(params),
-    onSuccess: () => router.push({ name: 'user-subscriptions' })
+    mutationFn: (params: { username: string }) => sendCode(params)
   })
 }
 
 const { mutate: handleSendCode } = useSendCodeMutation()
-
 const { mutate: handleVerifyCode } = useVerifyCodeMutation()
 
 const form = useForm({
