@@ -2,17 +2,20 @@
 import { ref } from 'vue'
 
 const counting = ref<boolean>(true)
-const startCountdown = () => (counting.value = true)
-const onCountdownEnd = () => (counting.value = false)
+const startCountdown = () => {
+  counting.value = true
+}
+const onCountdownEnd = () => {
+  counting.value = false
+}
 
 const props = defineProps<{
-  onClick: Function
+  onClick: () => void
 }>()
 </script>
 
 <template>
   <button
-    type="button"
     class="w-full px-3 font-iransans text-st-one font-demi-bold"
     :disabled="counting"
     @click="

@@ -19,19 +19,17 @@ const router = useRouter()
 const userInfoStore = useUserInfoStore()
 const { user } = storeToRefs(userInfoStore)
 
-type FieldServerError<T> = { id: T; content: string }
-
 type CheckCodeParams = { username: string; code: string }
 const checkCode = async (params: CheckCodeParams) => {
   return ApiClient.post(ENDPOINTS.Auth.ForgetPassword.CheckCode, {
     ...params
   }).catch((error) => {
     const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
+    for (const e of serverError) {
       form.setFieldMeta('code', (meta) => {
         return { ...meta, errorMap: { onServer: e.content } }
       })
-    })
+    }
   })
 }
 

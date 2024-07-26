@@ -26,7 +26,7 @@ const tabs = computed(() => [
             cn(
               'w-full flex items-center justify-center h-full rounded-full text-center',
               {
-                'bg-secondary-50 font-demi-bold transition-all duration-200 shadow-lg':
+                'bg-neutral-white font-demi-bold transition-all duration-200 shadow-lg':
                   tab.current,
                 'text-st-one': !tab.current
               }

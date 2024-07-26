@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from 'vue-router'
 import { useForm } from '@tanstack/vue-form'
+import { useRoute, useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 
 import { ENDPOINTS } from '@/api'
@@ -10,48 +10,44 @@ import { AuthContainerWithNav } from '@/views/auth/components'
 
 const route = useRoute()
 
-type FieldServerError<T> = { id: T; content: string }
-type VerifyCodeParams = { username: string; code: string }
-
-const verifyCode = async (params: VerifyCodeParams) => {
+const router = useRouter()
+const verifyCode = async (params: { username: string; code: string }) => {
   return ApiClient.post(ENDPOINTS.Auth.Register.VerifyCode, {
     ...params
-  }).catch((error) => {
-    const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
-      form.setFieldMeta('code', (meta) => {
-        return { ...meta, errorMap: { onServer: e.content } }
-      })
-    })
   })
-}
-
-const router = useRouter()
-const useVerifyCodeMutation = () => {
-  return useMutation({
-    mutationFn: (params: VerifyCodeParams) => verifyCode(params),
-    onSuccess: () => router.push({ name: 'user-subscriptions' })
-  })
-}
-
-type SendCodeParams = { username: string }
-
-const sendCode = async (params: SendCodeParams) => {
-  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
-    (error) => {
+    .then(() => router.replace({ name: 'user-subscriptions' }))
+    .catch((error) => {
       const serverError = error.response.data.message
-      serverError.forEach((e: FieldServerError<number>) => {
+      for (const e of serverError) {
         form.setFieldMeta('code', (meta) => {
           return { ...meta, errorMap: { onServer: e.content } }
         })
-      })
+      }
+    })
+}
+
+const useVerifyCodeMutation = () => {
+  return useMutation({
+    mutationFn: (params: { username: string; code: string }) => verifyCode(params)
+  })
+}
+
+const sendCode = async (params: { username: string }) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
+      const serverError = error.response.data.message
+      for (const e of serverError) {
+        form.setFieldMeta('code', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
+      }
     }
   )
 }
 
 const useSendCodeMutation = () => {
   return useMutation({
-    mutationFn: (params: SendCodeParams) => sendCode(params)
+    mutationFn: (params: { username: string }) => sendCode(params)
   })
 }
 
@@ -93,6 +89,7 @@ const form = useForm({
           <form.Field name="code">
             <template v-slot="{ field, state }">
               <InputText
+                type="number"
                 fluid
                 :state="state"
                 @blur="field.handleBlur"

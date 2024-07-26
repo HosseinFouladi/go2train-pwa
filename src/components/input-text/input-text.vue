@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
   <div
     :class="
       cn(
-        'max-w-80 flex flex-col gap-1 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
+        ' max-w-80 flex flex-col gap-1 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
         {
           'max-w-full': props.fluid
         }
@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
       <input
         :class="
           cn(
-            'text-secondary-600 text-st-one hover:text-secondary-700 focus:text-secondary-900',
+            'remove-arrow text-secondary-600 text-st-one hover:text-secondary-700 focus:text-secondary-900',
             'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
             'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
             {
@@ -65,4 +65,13 @@ const props = withDefaults(defineProps<InputTextProps>(), {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.remove-arrow::-webkit-inner-spin-button,
+.remove-arrow::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.remove-arrow {
+  -moz-appearance: textfield;
+}
+</style>
