@@ -21,3 +21,6 @@ export { default as RefreshIcon } from './refresh/index.vue'
 export { default as MessageIcon } from './message/index.vue'
 export { default as ArrowRight } from './arrow-right/index.vue'
 export { default as ArrowLeft } from './arrow-left/index.vue'
+export { default as  GalleryEdit } from './gallery/edit.vue'
+export { default as GallerySlash } from './gallery/slash.vue'
+

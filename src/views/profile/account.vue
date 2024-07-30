@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { watch } from 'vue'
 import { useForm } from '@tanstack/vue-form'
-import { InputText, Textarea, CountriesListbox, ScrollArea } from '@/components'
-import { useGetCountriesList, useGetUserProfileQuery } from '@/queries'
+import { InputText, Textarea, CountriesListbox } from '@/components'
+import { useGetCountriesList } from '@/queries'
+import { useGetUserProfileQuery } from '@/queries/profile/user-profile.query'
+
+import { ProfileInfo } from './components'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
@@ -36,7 +39,7 @@ watch(
 
 <template>
   <section class="w-full paper md:card">
-    <ScrollArea />
+    <ProfileInfo :avatar="profile?.data.results[0]?.user?.avatar" />
     <form
       @submit="
         (e) => {
