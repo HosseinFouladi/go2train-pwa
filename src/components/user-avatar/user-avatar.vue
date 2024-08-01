@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 
 import axios from 'axios'
 import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
@@ -13,11 +13,15 @@ const props = withDefaults(
 
 const imagePlaceholder = ref('')
 
-onMounted(async () => {
+watchEffect(() => {
   axios
-    .get(props.avatar_url)
-    .then(() => (imagePlaceholder.value = props.avatar_url))
-    .catch(() => (imagePlaceholder.value = AvatarPlaceholder))
+    .get(props.avatar_url,{
+      headers:{
+        "Content-Type":"multipart/form-data"
+      },
+    })
+    .then(() =>{ (imagePlaceholder.value = props.avatar_url)})
+    .catch((error) =>{ console.log("this is error",error);(imagePlaceholder.value = AvatarPlaceholder)})
 })
 </script>
 

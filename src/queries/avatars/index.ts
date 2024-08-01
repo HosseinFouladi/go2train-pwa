@@ -1,0 +1,1 @@
+export type {Avatar,StoreAvatarParams} from "./type"

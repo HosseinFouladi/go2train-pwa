@@ -9,4 +9,4 @@ export const getCountriesList = () =>
 	>(ENDPOINTS.Country.CountryList);
 
 export const useGetCountriesList = () =>
-	useQuery({ queryKey: ["user_profile"], queryFn: getCountriesList });
+	useQuery({ queryKey: ["country_list"], queryFn: getCountriesList });

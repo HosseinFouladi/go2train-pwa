@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useForm } from '@tanstack/vue-form'
 import { InputText, Textarea, CountriesListbox } from '@/components'
-import { useGetCountriesList } from '@/queries'
+import { useGetCountriesList, type CurrentPlanResponseType } from '@/queries'
 import { useGetUserProfileQuery } from '@/queries/profile/user-profile.query'
 
 import { ProfileInfo } from './components'
+import { useQuery } from '@tanstack/vue-query'
+import { ApiClient } from '@/utils'
+import { ENDPOINTS, type Message, type ApiResponseType } from '@/api'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
@@ -21,6 +24,26 @@ const form = useForm({
   }
 })
 
+const {
+  data: currentPlan,
+  isPending,
+  isFetching
+} = useQuery({
+  queryKey: ['current-plan'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, Message>>(
+      ENDPOINTS.Profile.CurrentPlan
+    )
+})
+
+const isLoadedDatas = computed(
+  () =>
+    !profileLoading.value &&
+    profile.value?.data &&
+    !isPending.value &&
+    !isFetching.value &&
+    currentPlan.value?.data
+)
 watch(
   () => profile.value?.data,
   () => {
@@ -39,7 +62,13 @@ watch(
 
 <template>
   <section class="w-full paper md:card">
-    <ProfileInfo :avatar="profile?.data.results[0]?.user?.avatar" />
+    <ProfileInfo
+      v-if="isLoadedDatas"
+      :avatar="profile?.data.results.user.avatar"
+      :name="profile?.data.results.user.name"
+      :username="profile?.data.results.user.username"
+      :badge="currentPlan?.data.results[0].icon"
+    />
     <form
       @submit="
         (e) => {

@@ -1,9 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useToggleDeleteAvatarModal = defineStore('toggleDeleteAvatar', () => {
+export const useAvatarModals = defineStore('toggleDeleteAvatar', () => {
   const isDeletePopup = ref(false)
   const isEditPopup = ref(false)
+  const isOpenAvatarsPopup = ref(false)
+  const isOpenGalleryPopup = ref(false)
+
 
   function toggleDeleteAvatarModal() {
     isDeletePopup.value = !isDeletePopup.value
@@ -13,5 +16,13 @@ export const useToggleDeleteAvatarModal = defineStore('toggleDeleteAvatar', () =
     isEditPopup.value = !isEditPopup.value
   }
 
-  return { isDeletePopup, toggleDeleteAvatarModal,isEditPopup,toggleEditAvatarModal }
+  function toggleAvatarListModal() {
+    isOpenAvatarsPopup.value = !isOpenAvatarsPopup.value
+  }
+
+  function toggleGalleryModal() {
+    isOpenGalleryPopup.value = !isOpenGalleryPopup.value
+  }
+
+  return { isDeletePopup, toggleDeleteAvatarModal,isEditPopup,toggleEditAvatarModal,isOpenAvatarsPopup,isOpenGalleryPopup,toggleAvatarListModal,toggleGalleryModal }
 })

@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model:visible="isDeletePopup" modal :style="{ width: '450px' }" dismissableMask>
+  <Dialog
+    v-model:visible="isDeletePopup"
+    modal
+    :style="{ width: '450px' }"
+    dismissableMask
+  >
     <template #container>
       <div class="flex flex-col items-center gap-6 p-6">
         <div class="flex-col gap-2 d-flex">
@@ -22,6 +27,7 @@
             class="text-danger-500"
             size="sm"
             mode="danger"
+            @click="handleDeleteAvatar"
           />
         </div>
       </div>
@@ -31,12 +37,49 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToggleDeleteAvatarModal } from '@/stores'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
+import { useQueryClient } from '@tanstack/vue-query'
+
+import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { Button } from '@/components'
+import { useMutation } from '@tanstack/vue-query'
+import { ApiClient } from '@/utils'
+import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 
-const { toggleDeleteAvatarModal } = useToggleDeleteAvatarModal()
-const { isDeletePopup } = storeToRefs(useToggleDeleteAvatarModal())
+const { toggleDeleteAvatarModal } = useAvatarModals()
+const { isDeletePopup } = storeToRefs(useAvatarModals())
+
+const toast = useToast()
+const queryClient = useQueryClient()
+
+const { mutate: removeAvatar, isPending: deletePending } = useMutation({
+  mutationFn: () =>
+    ApiClient.delete<ApiResponseType<{}, Message>>(ENDPOINTS.Profile.RemoveAvatar),
+  onSuccess(data) {
+    toggleDeleteAvatarModal()
+    toast.add({
+      summary: 'حذف موفقیت آمیز آواتار',
+      detail: data?.message[0]?.content,
+      severity: 'success',
+      life: 3000
+    })
+    queryClient.invalidateQueries({ queryKey: ['user_profile'] })
+  },
+  onError(error) {
+    toast.add({
+      summary: 'خطادرحذف آواتار',
+      detail: error.message,
+      severity: 'info',
+      life: 3000
+    })
+  }
+})
+
+const handleDeleteAvatar = () => {
+  removeAvatar()
+}
 </script>
 
 <style scoped></style>

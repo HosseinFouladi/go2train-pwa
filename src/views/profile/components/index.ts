@@ -8,5 +8,9 @@ export { default as ChangePasswordModal } from './change-password-modal.vue'
 export { default as ProfileInfo } from './profile-avatar.vue'
 export { default as DeleteAvatarModal } from './delete-avatar-modal.vue'
 export { default as EditAvatarModal } from './edit-avatar-modal.vue'
+export { default as AvatarListModal } from './avatar-list-modal.vue'
+export { default as GalleryModal } from './image-gallery-modal.vue'
+
+
 
 
