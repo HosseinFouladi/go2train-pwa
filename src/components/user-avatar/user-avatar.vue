@@ -27,10 +27,10 @@ watchEffect(() => {
 
 <template>
   <div :style="{ width: width,height:width }" class="relative isolate">
-    <img :src="props.badge_url" class="absolute z-50 w-full h-full" />
+    <img :src="props.badge_url" class="absolute z-20 w-full h-full" />
     <img
       :src="imagePlaceholder"
-      class="absolute top-0 bottom-0 left-0 right-0 m-auto rounded-full h-[86%] w-[86%] aspect-square"
+      class="absolute top-0 bottom-0 left-0 right-0 z-50 m-auto rounded-full h-[86%] w-[86%] aspect-square"
     />
   </div>
 </template>

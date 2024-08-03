@@ -99,7 +99,7 @@ const { mutate: pickAvatar, isPending: storePending } = useMutation({
       severity: 'success',
       life: 3000
     })
-    queryClient.invalidateQueries({ queryKey: ['user_profile','update_avatar'] })
+    queryClient.invalidateQueries({ queryKey: ['user_profile'] })
   },
   onError(error) {
     toast.add({

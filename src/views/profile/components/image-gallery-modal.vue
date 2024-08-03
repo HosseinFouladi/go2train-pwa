@@ -7,7 +7,7 @@
             ref="cropper"
             :aspect-ratio="1"
             :src="src"
-            class="h-[310px] w-[310px] rounded-2xl overflow-hidden"
+            class="h-[310px] w-[310px] md:w-[350px] md:h-[350px] rounded-2xl overflow-hidden"
           />
         </div>
         <Button label="تایید" :fluid="true" @click="cropImage" :isLoading="storePending"/>
