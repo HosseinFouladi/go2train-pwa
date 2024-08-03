@@ -2,12 +2,12 @@
 import { Container } from '..'
 import { Logo, UserAvatar, TokenBadge } from '@/components'
 
-const user_avatar = {
-  avatar_url:
-    'https://cdn.pixabay.com/photo/2017/06/06/16/48/woman-2377742_960_720.jpg',
-  badge_url:
-    'https://train-release.file.g2storage.com/plan/icon/r3QYKaakG9mNwRwUBPHABH2XyqWHh2Ck2yc72OrG.png'
-}
+
+
+defineProps({
+  badge:{type:String},
+  avatar:{type:String}
+})
 </script>
 
 <template>
@@ -20,8 +20,8 @@ const user_avatar = {
         <Logo class="w-[180px] h-[48px]" />
         <div class="flex flex-row items-center gap-4 rtl:flex-row-reverse">
           <UserAvatar
-            :avatar_url="user_avatar.avatar_url"
-            :badge_url="user_avatar.badge_url"
+            :avatar_url="avatar"
+            :badge_url="badge"
           />
           <!-- Icon Button Should Be Placed Here -->
           <!-- <TokenBadge :token_count="20" /> -->
