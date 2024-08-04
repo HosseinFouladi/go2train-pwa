@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
-import { useForm } from '@tanstack/vue-form'
-import { InputText, Textarea, CountriesListbox } from '@/components'
-import { useGetCountriesList, type CurrentPlanResponseType } from '@/queries'
-import { useGetUserProfileQuery } from '@/queries/profile/user-profile.query'
+import { computed } from 'vue'
+import type { CurrentPlanResponseType } from '@/queries'
 
 import { ProfileInfo } from './components'
 import { useQuery } from '@tanstack/vue-query'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type Message, type ApiResponseType } from '@/api'
+import { ref, watch } from 'vue'
+import { useForm } from '@tanstack/vue-form'
+import { InputText, Textarea, CountriesListbox } from '@/components'
+import { useGetCountriesList, useGetUserProfileQuery } from '@/queries'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
+
+const birthCountry = ref()
 
 const form = useForm({
   defaultValues: {
@@ -49,10 +52,6 @@ watch(
   () => {
     if (profile.value?.data.results.user) {
       for (const [key, value] of Object.entries(profile.value.data.results.user)) {
-        if (typeof value === 'object' && value !== null) {
-          form.setFieldValue(key as keyof typeof form.state.values, value.id)
-          continue
-        }
         form.setFieldValue(key as keyof typeof form.state.values, value)
       }
     }
@@ -82,7 +81,6 @@ watch(
         <template v-slot="{ field, state }">
           <InputWrapper>
             <InputLabel name="mobile" text="شماره تلفن" />
-            <CountriesListbox :state="state" />
             <InputText
               name="mobile"
               :fluid="true"
@@ -165,6 +163,63 @@ watch(
               @blur="field.handleBlur"
               :value="field.state.value"
               @input="(e) => field.handleChange(e.target.value)"
+            />
+          </InputWrapper>
+        </template>
+      </form.Field>
+
+      <form.Field name="birth_country">
+        <template v-slot="{ field, state }">
+          <InputWrapper>
+            <InputLabel name="birth_country" text="محل تولد" />
+            <CountriesListbox
+              v-if="countries"
+              @modelValue="(item) => field.handleChange(item)"
+              :isLoading="countriesLoading"
+              :options="countries.data.results"
+              :state="state"
+              optionLabel="fa_name"
+              optionIcon="flag"
+              :value="birthCountry"
+            />
+          </InputWrapper>
+        </template>
+      </form.Field>
+      <form.Field name="living_country">
+        <template v-slot="{ field, state }">
+          <InputWrapper>
+            <InputLabel name="living_country" text="محل زندگی" />
+            <CountriesListbox
+              v-if="countries"
+              @modelValue="
+                (item) => {
+                  field.handleChange(item)
+                  console.log(item)
+                }
+              "
+              :isLoading="countriesLoading"
+              :options="countries.data.results"
+              :state="state"
+              optionLabel="fa_name"
+              optionIcon="flag"
+              :value="field.state.value"
+            />
+          </InputWrapper>
+        </template>
+      </form.Field>
+      <form.Field name="immigration_country">
+        <template v-slot="{ field, state }">
+          <InputWrapper>
+            <InputLabel name="immigration_country" text="کشور مقصد" />
+            <CountriesListbox
+              v-if="countries"
+              :isLoading="countriesLoading"
+              :options="countries.data.results"
+              :state="state"
+              optionLabel="fa_name"
+              optionIcon="flag"
+              :value="field.state.value"
+              @modelValue="(item) => field.handleChange(item)"
             />
           </InputWrapper>
         </template>

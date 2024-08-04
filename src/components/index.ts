@@ -24,5 +24,4 @@ export { default as InputLabel } from "./input-label";
 export { default as InputWrapper } from "./input-wrapper";
 export { default as Textarea } from "./text-area";
 export { default as CountriesListbox } from "./countries-listbox";
-export { default as ScrollArea } from "./scroll-area";
 export { default as Loading } from "./loading";

@@ -56,11 +56,9 @@ const {
       ENDPOINTS.BugReport.bug_list
     ),
   select: (data) => {
-    console.log(data)
     const res = data.data.results.map((item) => {
       return { id: item.id, name: item.title, unavailable: false }
     })
-    console.log(res)
     return res
   }
 })
