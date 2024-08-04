@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import { match } from 'ts-pattern'
 import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
+import { useQueryClient } from '@tanstack/vue-query'
 
 import { ProfileInfo } from './components'
 import { ApiClient } from '@/utils'
@@ -20,6 +21,8 @@ import { useUpdateProfileMutation } from '@/queries/profile/user-profile.query'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
+
+const queryClient=useQueryClient();
 
 const birthCountry = ref()
 const immigrationCountry = ref()
@@ -96,6 +99,7 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
       severity: 'success',
       life: 3000
     })
+    queryClient.invalidateQueries({queryKey:['user_profile']})
   },
   onError: (error) => {
     toast.add({
@@ -110,10 +114,12 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
 const editProfile = () => {
   updateUserProfile({
     ...form.state.values,
-    living_country: livingCountry.value.id,
-    birth_country: birthCountry.value.id,
-    immigration_country: immigrationCountry.value.id,
-    bio: bio.value
+    living_country: livingCountry.value?.id,
+    birth_country: birthCountry.value?.id,
+    immigration_country: immigrationCountry.value?.id,
+    bio: bio.value,
+    avatar:undefined,
+    avatar_id:undefined
   })
 }
 const cancelEdit = () => {
@@ -233,7 +239,7 @@ const cancelEdit = () => {
               <InputLabel name="birth_country" text="محل تولد" />
               <CountriesListbox
                 v-if="countries"
-                @modelValue="(item) => field.handleChange(item)"
+                @modelValue="(item) => birthCountry=item"
                 :isLoading="countriesLoading"
                 :options="countries.data.results"
                 :state="state"
@@ -251,12 +257,7 @@ const cancelEdit = () => {
               <InputLabel name="living_country" text="محل زندگی" />
               <CountriesListbox
                 v-if="countries"
-                @modelValue="
-                  (item) => {
-                    field.handleChange(item)
-                    console.log(item)
-                  }
-                "
+                @modelValue="(item) => livingCountry=item"
                 :isLoading="countriesLoading"
                 :options="countries.data.results"
                 :state="state"
@@ -283,7 +284,7 @@ const cancelEdit = () => {
                 :disabled="!isEditPopupButtonDisplay"
                 optionIcon="flag"
                 :value="immigrationCountry"
-                @modelValue="(item) => field.handleChange(item)"
+                @modelValue="(item) => immigrationCountry=item"
               />
             </InputWrapper>
           </template>
@@ -303,7 +304,7 @@ const cancelEdit = () => {
                 @input="(e) => field.handleChange(e.target.value)"
                 :value="bio"
                 :name="field.name"
-                @model-value="(item) => field.handleChange(item)"
+                @model-value="(item) => bio=item"
               />
             </InputWrapper>
           </template>
