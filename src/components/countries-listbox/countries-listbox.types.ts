@@ -11,4 +11,5 @@ export type CountriesListboxProps = {
 		optionLabel: string;
 		optionIcon?: string;
 		value: unknown;
+		disabled:boolean
 	};

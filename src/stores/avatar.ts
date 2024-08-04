@@ -6,7 +6,7 @@ export const useAvatarModals = defineStore('toggleDeleteAvatar', () => {
   const isEditPopup = ref(false)
   const isOpenAvatarsPopup = ref(false)
   const isOpenGalleryPopup = ref(false)
-
+  const isEditPopupButtonDisplay = ref(false)
 
   function toggleDeleteAvatarModal() {
     isDeletePopup.value = !isDeletePopup.value
@@ -24,5 +24,25 @@ export const useAvatarModals = defineStore('toggleDeleteAvatar', () => {
     isOpenGalleryPopup.value = !isOpenGalleryPopup.value
   }
 
-  return { isDeletePopup, toggleDeleteAvatarModal,isEditPopup,toggleEditAvatarModal,isOpenAvatarsPopup,isOpenGalleryPopup,toggleAvatarListModal,toggleGalleryModal }
+  function enableEditButtonDisplay() {
+    isEditPopupButtonDisplay.value = true
+  }
+
+  function disableEditButtonDisplay() {
+    isEditPopupButtonDisplay.value = false
+  }
+
+  return {
+    isDeletePopup,
+    toggleDeleteAvatarModal,
+    isEditPopup,
+    toggleEditAvatarModal,
+    isOpenAvatarsPopup,
+    isOpenGalleryPopup,
+    toggleAvatarListModal,
+    toggleGalleryModal,
+    enableEditButtonDisplay,
+    isEditPopupButtonDisplay,
+    disableEditButtonDisplay
+  }
 })

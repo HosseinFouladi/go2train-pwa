@@ -114,6 +114,5 @@ export type UpdateUserProfileParams = {
 	birth_country: number;
 	immigration_country: number;
 	bio: string;
-	avatar?: File;
-	avatar_id: number;
+
 };

@@ -12,4 +12,5 @@ export const useGetCountriesList = () =>
 	useQuery({
 		queryKey: ["countries_list"],
 		queryFn: getCountriesList,
+		gcTime:0
 	});

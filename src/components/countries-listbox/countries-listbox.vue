@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import {
   Listbox,
   ListboxButton,
@@ -26,9 +26,9 @@ const props = withDefaults(defineProps<CountriesListboxProps>(), {
 })
 
 
-console.log('props.value',props.value)
 
 const selectedItem = ref(props.value||{})
+//const selectedItem=computed(()=>props.value||{})
 
 const emit = defineEmits(['modelValue'])
 
@@ -38,7 +38,7 @@ const getDropdownValue = () => {
 </script>
 
 <template>
-  <Listbox v-model="selectedItem" @update:modelValue="getDropdownValue">
+  <Listbox v-model="selectedItem" @update:modelValue="getDropdownValue" :disabled="disabled">
     <div class="relative">
       <ListboxButton
         :class="

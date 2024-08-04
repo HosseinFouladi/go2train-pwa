@@ -8,7 +8,7 @@
           width="100%"
         />
       </div>
-      <div v-if="!openEdit" class="flex flex-col justify-center gap-2">
+      <div v-if="!isEditPopupButtonDisplay" class="flex flex-col justify-center gap-2">
         <h4 class="text-h6 md:text-h4"> {{ name }}</h4>
         <h6 class="text-st-one text-text-300">{{ username }}</h6>
       </div>
@@ -33,12 +33,12 @@
     </div>
     <div class="">
       <Button
-        v-if="!openEdit"
+        v-if="!isEditPopupButtonDisplay"
         class="border-t text-secondary-500 border-secondary-500"
         variant="outlined"
         label="ویرایش"
         size="sm"
-        @click="openEdit = true"
+        @click="useAvatarModals().enableEditButtonDisplay()"
       />
     </div>
     <DeleteAvatarModal />
@@ -53,6 +53,7 @@ import { ref } from 'vue'
 import { GalleryEdit, GallerySlash } from '@/components/icons'
 import { useAvatarModals } from '@/stores'
 import { DeleteAvatarModal, EditAvatarModal } from './'
+import { storeToRefs } from 'pinia'
 
 defineProps({
   avatar: { type: String },
@@ -60,7 +61,7 @@ defineProps({
   name:{type:String},
   username:{type:String}
 })
-const openEdit = ref(false)
+const {isEditPopupButtonDisplay} = storeToRefs(useAvatarModals())
 
 
 const handleDeleteDialog = () => {

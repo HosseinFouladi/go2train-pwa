@@ -9,14 +9,14 @@ defineOptions({
   inheritAttrs: false
 })
 
-const { placeHolder, fluid, rows } = withDefaults(defineProps<TextAreaProps>(), {
+const props = withDefaults(defineProps<TextAreaProps>(), {
   placeHolder: 'راجع به مشکلی که برایتان پیش آمده‌ است توضیح دهید...',
   fluid: true,
   rows: 5
 })
 const emit = defineEmits(['modelValue'])
 
-const text = ref('')
+const text = ref(props.value||'')
 
 const getTextAreaValue = () => {
   emit('modelValue', text.value)
