@@ -3,15 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="only light">
+    <meta name="color-scheme" content="only light" />
     <link rel="icon" href="/src/assets/favicon.ico" />
     <title>GO2Train</title>
   </head>
   <body>
     <div id="app"></div>
-    <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+    <div
+      style="display: none"
+      id="appleid-signin"
+      data-color="black"
+      data-border="true"
+      data-type="sign in"
+    ></div>
+    <script
+      type="text/javascript"
+      src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+    ></script>
     <script type="text/javascript">
-      window.AppleID.auth.init({
+      AppleID.auth.init({
         clientId: 'co.go2train.web',
         scope: 'name email',
         redirectURI: 'https://train-auth-front.go2tr.work/sign-in/callback',

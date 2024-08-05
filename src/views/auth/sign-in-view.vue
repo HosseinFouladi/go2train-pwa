@@ -43,14 +43,13 @@ const userLogin = async (params: UserLoginParams) => {
       _.set(
         _.cloneDeep(res),
         'data.results',
-        _.head(res.data.results as any as Array<UserLoginResponseType>)
+        _.head(res.data.results as unknown as Array<UserLoginResponseType>)
       )
     )
     .catch((error) => {
       const serverError = error.response.data.message
-      serverError.forEach(
-        (e: { id: 'password' | 'username' | 'all'; content: string }) => {
-          if (e.id === 'all') {
+      for (const e of serverError) {
+        if (e.id === 'all') {
             return form.setFieldMeta('password', (meta) => ({
               ...meta,
               errorMap: {
@@ -64,9 +63,7 @@ const userLogin = async (params: UserLoginParams) => {
               onServer: e.content
             }
           }))
-        }
-      )
-      throw new Error(error)
+      }
     })
 }
 
@@ -75,7 +72,7 @@ const { setAuth } = useAuthStore()
 
 const { mutate: loginMutation } = useMutation({
   mutationFn: (params: UserLoginParams) => userLogin(params),
-  onSuccess(data, variables, context) {
+  onSuccess(data, _variables, _context) {
     const token = data?.data.results.token ?? ''
     setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
   }
