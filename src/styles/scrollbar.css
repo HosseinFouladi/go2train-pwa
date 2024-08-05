@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+
+  .fancy-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 2px;
+  }
+
+  .fancy-scrollbar::-webkit-scrollbar-track {
+    border-radius: 1rem;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .fancy-scrollbar::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+  }
+
+  .fancy-scrollbar::-webkit-scrollbar-track {
+    background: #e3e3e6;
+  }
+
+  .fancy-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--primary-400);
+    border-radius: 20px;
+  }
+
+  .fancy-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-400);
+  }
+}

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, type Component } from 'vue'
+import type { Component } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import { cn } from '@/utils'
@@ -16,7 +16,6 @@ const props = defineProps<{
   external?: boolean
 }>()
 
-console.log({ route: r.path, path: props.route })
 </script>
 
 <template>

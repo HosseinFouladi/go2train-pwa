@@ -29,11 +29,11 @@ const checkUsername = async (params: CheckUsernameParams) => {
     const suggestedUsernamesServer = error.response.data.data.results.suggestions
     suggestedUsernames.value = suggestedUsernamesServer
     const serverError = error.response.data.message
-    serverError.forEach((e: FieldServerError<number>) => {
+    for (const e of serverError) {
       form.setFieldMeta('username', (meta) => {
         return { ...meta, errorMap: { onServer: e.content } }
       })
-    })
+    }
   })
 }
 
