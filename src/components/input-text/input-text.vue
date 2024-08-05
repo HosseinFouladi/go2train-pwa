@@ -18,12 +18,10 @@ const props = withDefaults(defineProps<InputTextProps>(), {
 <template>
   <div
     :class="
-      cn(
-        ' max-w-80 flex flex-col gap-1 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
-        {
-          'max-w-full': props.fluid
-        }
-      )
+      cn(' max-w-80 flex flex-col gap-1 text-secondary-600', {
+        'max-w-full': props.fluid,
+        'hover:text-secondary-700 focus:text-secondary-900': !props.disabled
+      })
     "
   >
     <div class="relative">
@@ -35,17 +33,18 @@ const props = withDefaults(defineProps<InputTextProps>(), {
       <input
         :class="
           cn(
-            'remove-arrow text-secondary-600 text-st-one hover:text-secondary-700 focus:text-secondary-900',
-            'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
-            'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
+            'remove-arrow text-secondary-600 text-st-one border border-secondary-600',
+            'h-[52px] w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
                 props.state.meta.errors.length > 0,
               'ps-8': !!props.iconRight,
-              'pe-3': !!props.iconLeft
+              'pe-3': !!props.iconLeft,
+              'hover:border-secondary-700 focus:border-secondary-900': !props.disabled
             }
           )
         "
+        :disabled="props.disabled"
         v-bind="$attrs"
       />
       <div

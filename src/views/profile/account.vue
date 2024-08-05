@@ -2,10 +2,9 @@
 import { computed, ref, watch } from 'vue'
 
 import type { CurrentPlanResponseType } from '@/queries'
-import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import { useForm } from '@tanstack/vue-form'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { match } from 'ts-pattern'
 import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
@@ -310,7 +309,7 @@ const cancelEdit = () => {
           </template>
         </form.Field>
       </div>
-      <div class="flex items-center justify-end gap-3 mt-8">
+      <div v-if="isEditPopupButtonDisplay" class="flex items-center justify-end gap-3 mt-8">
         <Button label="انصراف" variant="outlined" @click="cancelEdit" />
         <Button label="ثبت تغییرات" @click="editProfile" />
       </div>

@@ -18,7 +18,10 @@ export const getUserProfile = () =>
   >
 
 export const useGetUserProfileQuery = () =>
-  useQuery({ queryKey: ['user_profile'], queryFn: getUserProfile, gcTime: 0 })
+	useQuery({
+		queryKey: ["user_profile", Date.now()],
+		queryFn: getUserProfile,
+	});
 
 export const updateUserProfile = (params: UpdateUserProfileParams) => {
   return ApiClient.postForm<
