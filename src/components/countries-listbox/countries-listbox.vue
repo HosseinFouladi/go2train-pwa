@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import {
   Listbox,
   ListboxButton,
@@ -25,10 +25,7 @@ const props = withDefaults(defineProps<CountriesListboxProps>(), {
   optionIcon: 'icon'
 })
 
-
-
-const selectedItem = ref(props.value||{})
-//const selectedItem=computed(()=>props.value||{})
+const selectedItem = ref(props.value || {})
 
 const emit = defineEmits(['modelValue'])
 
@@ -38,16 +35,18 @@ const getDropdownValue = () => {
 </script>
 
 <template>
-  <Listbox v-model="selectedItem" @update:modelValue="getDropdownValue" :disabled="disabled">
+  <Listbox
+    v-model="selectedItem"
+    @update:modelValue="getDropdownValue"
+    :disabled="disabled"
+  >
     <div class="relative">
       <ListboxButton
         :class="
           cn(
-            'relative w-full gap-1 text-secondary-600 hover:text-secondary-700 focus:text-secondary-900',
-            'text-secondary-600 text-st-one hover:text-secondary-700 focus:text-secondary-900',
-            'border border-secondary-600 hover:border-secondary-700 focus:border-secondary-900',
-            'h-[52px] text-secondary-900 w-full focus:outline-none rounded-[14px] p-3',
+            'relative w-full gap-1  p-3 text-st-one text-secondary-600 border border-secondary-600 h-[52px] focus:outline-none rounded-[14px]',
             {
+              'hover:text-secondary-700 focus:text-secondary-900': !props.disabled,
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
                 props.state.meta.errors.length > 0,
               'ps-8': !!props.iconRight,
