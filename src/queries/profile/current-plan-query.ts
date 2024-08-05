@@ -16,8 +16,8 @@ export const getCurrentPlan = async () => {
 }
 
 export const useGetCurrentPlan = () =>
-  useQuery({
-    queryKey: ['profile', 'current_plan'],
-    queryFn: () => getCurrentPlan(),
-    gcTime: Infinity
-  })
+	useQuery({
+		gcTime: 0,
+		queryFn: () => getCurrentPlan(),
+		queryKey: ["profile", "current_plan"],
+	});

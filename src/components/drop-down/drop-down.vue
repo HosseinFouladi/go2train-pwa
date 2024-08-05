@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import { ref, defineEmits } from 'vue'
+
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption
+} from '@headlessui/vue'
+
+import type { DropdownProps } from './drop-down'
+import ArrowDownIcon from '@/components/icons/arrow-down/index.vue'
+import ArrowUpIcon from '@/components/icons/arrow-up/index.vue'
+import Loading from '@/components/loading/index'
+import { cn } from '@/utils'
+
+defineOptions({
+  inheritAttrs: false
+})
+
+withDefaults(defineProps<DropdownProps>(), {
+  placeHolder: 'لطفا دسته بندی مرتبط را پیدا کنید',
+  fluid: true,
+  isLoading: false
+})
+const emit = defineEmits(['modelValue'])
+const selectedItem = ref()
+const isUp = ref(false)
+
+const getDropDownValue = () => {
+  emit('modelValue', selectedItem.value)
+}
+</script>
+
 <template>
   <div
     :class="
@@ -6,7 +40,7 @@
         'w-fit': !fluid
       })
     "
-    class="relative p-4 border-2 rounded-2xl border-secondary-500"
+    class="relative p-4 border rounded-2xl border-secondary-500"
   >
     <Listbox v-model="selectedItem" @update:modelValue="getDropDownValue">
       <ListboxButton
@@ -53,36 +87,4 @@
     </Listbox>
   </div>
 </template>
-<script setup lang="ts">
-import { ref, defineEmits } from 'vue'
 
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption
-} from '@headlessui/vue'
-
-import type { DropdownProps } from './dropDown'
-import ArrowDownIcon from '@/components/icons/arrow-down/index.vue'
-import ArrowUpIcon from '@/components/icons/arrow-up/index.vue'
-import Loading from '@/components/loading/index'
-import { cn } from '@/utils'
-
-defineOptions({
-  inheritAttrs: false
-})
-
-withDefaults(defineProps<DropdownProps>(), {
-  placeHolder: 'لطفا دسته بندی مرتبط را پیدا کنید',
-  fluid: true,
-  isLoading: false
-})
-const emit = defineEmits(['modelValue'])
-const selectedItem = ref()
-const isUp = ref(false)
-
-const getDropDownValue = () => {
-  emit('modelValue', selectedItem.value)
-}
-</script>

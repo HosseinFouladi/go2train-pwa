@@ -22,6 +22,9 @@ import "floating-vue/dist/style.css";
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css';
+
 import {
   GoogleLoginConfig,
   queryClientConfig,
@@ -59,6 +62,9 @@ app.use(PrimeVue, {
 app.use(ToastService)
 app.use(GoogleLogin, GoogleLoginConfig)
 app.use(vueFinalModal)
+
+//vue cropper component
+app.use(VueCropper)
 
 app.mount('#app')
 

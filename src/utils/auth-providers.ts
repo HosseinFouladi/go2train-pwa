@@ -1,9 +1,7 @@
 import { googleTokenLogin } from 'vue3-google-login'
 
 import { ENDPOINTS } from '@/api'
-import { ApiClient } from '@/utils'
-import { useAuthStore } from '@/stores'
-import { useRouter } from 'vue-router'
+import { ApiClient } from "@/utils";
 
 export type ApiResponseTypeV3<T> = {
   data: T
@@ -21,14 +19,14 @@ export type ExternalAuthResponseType = {
 }
 
 export type User = {
-  id: string
-  name: any
-  email: string
-  mobile: any
-  score: number
-  prefer_language: number
-  role: string
-}
+		id: string;
+		name: string;
+		email: string;
+		mobile: string;
+		score: number;
+		prefer_language: number;
+		role: string;
+	};
 
 export const loginWithGoogle = async (cb?: (token: string) => void) => {
   googleTokenLogin({
@@ -52,6 +50,5 @@ export const loginWithApple = async () => {
   if (!window) return undefined
 
   // @ts-ignore
-  const response = await window.AppleID.auth.signIn()
-  console.log(response)
+		const response = await window.AppleID.auth.signIn();
 }
