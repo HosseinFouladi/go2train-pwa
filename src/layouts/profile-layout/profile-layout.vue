@@ -40,7 +40,7 @@ const isLoadedDatas = computed(
 <template>
   <div class="flex flex-col-reverse lg:flex-row bg-background-default">
     <div class="flex flex-col w-full">
-      <Header v-if="isLoadedDatas" class="hidden xl:block" :badge="currentPlan?.data.results[0].icon" :avatar="profile?.data.results.user.avatar"/>
+      <Header v-if="isLoadedDatas" class="hidden xl:block" :badge="currentPlan?.data.results[0].icon" :avatar="profile?.data.results.user.avatar" />
       <MobileHeader  class="xl:hidden" />
       <div
         class="flex flex-col w-full  max-w-[1440px] mx-auto px-4 lg:px-0"
