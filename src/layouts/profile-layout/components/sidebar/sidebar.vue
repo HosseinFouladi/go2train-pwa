@@ -9,8 +9,8 @@ const router = useRouter()
 </script>
 
 <template>
-  <aside class="h-full card rounded-2xl">
-    <div class="w-[264px] flex-col p-6 flex justify-between min-h-full">
+  <aside class="card rounded-2xl max-h-[640px]">
+    <div class="w-[264px] flex-col p-6 flex justify-between h-full min-h-[640px]">
       <div>
         <SidebarItem
           :key="item.label"
@@ -26,6 +26,7 @@ const router = useRouter()
         :icon="LogoutIcon"
         label="خروج از حساب"
         theme="default"
+        class="mb-6"
         @click="() => purgeAuth(() => router.replace({ name: 'sign-in' }))"
       />
     </div>
