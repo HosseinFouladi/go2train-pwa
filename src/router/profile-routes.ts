@@ -13,12 +13,11 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "user-account",
 				component: () => import("@/views/profile/account.vue"),
 			},
-			// not shipping this feature in this version
-			// {
-			//   path: 'courses',
-			//   name: 'courses',
-			//   component: () => import('@/views/profile/courses.vue')
-			// },
+			{
+			  path: 'courses',
+			  name: 'courses',
+			  component: () => import('@/views/profile/courses.vue')
+			},
 			{
 				path: "subscriptions",
 				name: "user-subscriptions",
