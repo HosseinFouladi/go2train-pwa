@@ -6745,6 +6745,11 @@ vue@^2.0.0:
     "@vue/compiler-sfc" "2.7.16"
     csstype "^3.1.0"
 
+vue3-carousel@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/vue3-carousel/-/vue3-carousel-0.3.3.tgz"
+  integrity sha512-VsuOBE4LG9lxAiYGR9U7ps4RyJ4oFQGzk79/49ybvoxzNpahPAVWIDHKK3a1lOv0CSplFq6u4FvaFLZ8x3FgWg==
+
 vue3-google-login@^2.0.26:
   version "2.0.26"
   resolved "https://registry.npmjs.org/vue3-google-login/-/vue3-google-login-2.0.26.tgz"
