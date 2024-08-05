@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex items-center justify-between px-4 py-3">
+  <nav class="flex items-center justify-between px-4 py-3 shadow-md">
     <div
       class="flex flex-col items-center justify-center gap-1"
       @click="toggleSidebar"
@@ -24,14 +24,15 @@
     </div>
 
     <Logo class="w-[180px] h-[48px]" />
-    <div class="relative">
+    <!-- TODO: Do Not Have Notification Service Enabled Yet -->
+    <!-- <div class="relative">
       <MessageIcon />
       <div
         class="absolute flex items-center justify-center w-4 rounded-full bg-primary-500 text-neutral-white -right-2 -top-2"
       >
         <span class="leading-normal text-sm-cp">3</span>
       </div>
-    </div>
+    </div> -->
   </nav>
 </template>
 
