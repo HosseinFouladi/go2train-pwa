@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 min-w-[281px]">
         <div class="flex h-full gap-2">
-            <div class="relative w-[85px] h-full rounded-xl overflow-hidden flex flex-col justify-end p-2">
+            <div class="relative w-[85px] h-full bg-plan-gold rounded-xl overflow-hidden flex flex-col justify-end p-2">
                 <img :src="LoginImg" alt="" class="absolute top-0 left-0 w-full h-full">
                 <div class="z-20 flex items-center justify-between">
                     <img :src="AvatarPlaceholder" alt="" class="w-4 rounded-full aspect-square">
