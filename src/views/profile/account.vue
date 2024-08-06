@@ -103,7 +103,7 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
   onError: (error) => {
     toast.add({
       summary: 'خطادرویرایش پروفایل',
-      detail: error.message,
+      detail:error?.response.data.message[0].content,
       severity: 'info',
       life: 3000
     })
