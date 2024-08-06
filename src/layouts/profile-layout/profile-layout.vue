@@ -12,7 +12,7 @@ import {
 <template>
   <div class="flex flex-col-reverse lg:flex-row bg-background-default">
     <div class="flex flex-col w-full">
-      <Header  />
+      <Header class="hidden xl:block" />
       <MobileHeader  class="xl:hidden" />
       <div
         class="flex flex-col w-full  max-w-[1440px] mx-auto px-4 lg:px-0"
