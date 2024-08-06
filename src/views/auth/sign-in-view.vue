@@ -50,20 +50,21 @@ const userLogin = async (params: UserLoginParams) => {
       const serverError = error.response.data.message
       for (const e of serverError) {
         if (e.id === 'all') {
-            return form.setFieldMeta('password', (meta) => ({
-              ...meta,
-              errorMap: {
-                onServer: e.content
-              }
-            }))
-          }
-          form.setFieldMeta(e.id, (meta) => ({
+          return form.setFieldMeta('password', (meta) => ({
             ...meta,
             errorMap: {
               onServer: e.content
             }
           }))
+        }
+        form.setFieldMeta(e.id, (meta) => ({
+          ...meta,
+          errorMap: {
+            onServer: e.content
+          }
+        }))
       }
+      throw new Error(error)
     })
 }
 
