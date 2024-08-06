@@ -21,6 +21,7 @@ export const useGetUserProfileQuery = () =>
 	useQuery({
 		queryKey: ["user_profile", Date.now()],
 		queryFn: getUserProfile,
+    gcTime:0
 	});
 
 export const updateUserProfile = (params: UpdateUserProfileParams) => {
