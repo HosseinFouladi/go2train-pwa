@@ -15,13 +15,9 @@ const imagePlaceholder = ref('')
 
 watchEffect(() => {
   axios
-    .get(props.avatar_url,{
-      headers:{
-        "Content-Type":"multipart/form-data"
-      },
-    })
-    .then(() =>{ (imagePlaceholder.value = props.avatar_url)})
-    .catch((error) =>{ console.log("this is error",error);(imagePlaceholder.value = AvatarPlaceholder)})
+    .get(props.avatar_url)
+    .then(() =>imagePlaceholder.value = props.avatar_url)
+    .catch(() =>imagePlaceholder.value = AvatarPlaceholder)
 })
 </script>
 
