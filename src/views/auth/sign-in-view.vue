@@ -45,7 +45,10 @@ const userLogin = async (params: UserLoginParams) => {
         'data.results',
         _.head(res.data.results as any as Array<UserLoginResponseType>)
       )
-    )
+    ).then((data) => {
+      const token = data?.data.results.token ?? ''
+      setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
+    })
     .catch((error) => {
       const serverError = error.response.data.message
       serverError.forEach(
@@ -75,10 +78,6 @@ const { setAuth } = useAuthStore()
 
 const { mutate: loginMutation } = useMutation({
   mutationFn: (params: UserLoginParams) => userLogin(params),
-  onSuccess(data, variables, context) {
-    const token = data?.data.results.token ?? ''
-    setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
-  }
 })
 </script>
 
