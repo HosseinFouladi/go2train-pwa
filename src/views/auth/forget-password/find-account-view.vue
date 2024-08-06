@@ -49,11 +49,13 @@ const useSendCodeMutation = () => {
   return useMutation({
     mutationFn: (params: SendCodeParams) => sendCode(params),
     onSettled(data, _error, _variables, _context) {
-      user.value = data?.data.results.user as User
-      router.push({
-        path: '/forget-password/confirmation-code',
-        query: { username: form.getFieldValue('username') }
-      })
+      if (data?.success) {
+        user.value = data?.data.results.user as User
+        router.push({
+          path: '/forget-password/confirmation-code',
+          query: { username: form.getFieldValue('username') }
+        })
+      }
     }
   })
 }

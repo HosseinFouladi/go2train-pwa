@@ -50,6 +50,26 @@ const form = useForm({
     handleCheckCode({ username: route.query.username as string, code })
   }
 })
+const sendCode = async (params: { username: string }) => {
+  return ApiClient.post(ENDPOINTS.Auth.Register.SendCode, { ...params }).catch(
+    (error) => {
+      const serverError = error.response.data.message
+      for (const e of serverError) {
+        form.setFieldMeta('code', (meta) => {
+          return { ...meta, errorMap: { onServer: e.content } }
+        })
+      }
+    }
+  )
+}
+
+const useSendCodeMutation = () => {
+  return useMutation({
+    mutationFn: (params: { username: string }) => sendCode(params)
+  })
+}
+
+const { mutate: handleSendCode } = useSendCodeMutation()
 
 onMounted(() => {
   toast.add({
@@ -104,7 +124,14 @@ onMounted(() => {
               />
             </template>
           </form.Field>
-          <Button fluid type="submit" label="بعدی" />
+          <div class="space-y-2">
+            <CountDown
+              :onClick="
+                () => handleSendCode({ username: route.query.mobile as string })
+              "
+            />
+            <Button fluid type="submit" label="بعدی" />
+          </div>
         </div>
       </form>
     </div>
