@@ -1,13 +1,34 @@
 <script lang="ts" setup>
 import { Container } from '..'
-import { Logo, UserAvatar, TokenBadge } from '@/components'
+import { Logo, UserAvatar } from '@/components'
+import { useQuery } from '@tanstack/vue-query'
+import { ApiClient } from '@/utils'
+import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
+import { computed } from 'vue'
+import { useGetUserProfileQuery, type CurrentPlanResponseType } from '@/queries'
 
+const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 
-
-defineProps({
-  badge:{type:String},
-  avatar:{type:String}
+const {
+  data: currentPlan,
+  isPending,
+  isFetching
+} = useQuery({
+  queryKey: ['current-plan'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, Message>>(
+      ENDPOINTS.Profile.CurrentPlan
+    )
 })
+
+const isLoadedDatas = computed(
+  () =>
+    !profileLoading.value &&
+    profile.value?.data &&
+    !isPending.value &&
+    !isFetching.value &&
+    currentPlan.value?.data
+)
 </script>
 
 <template>
@@ -20,8 +41,9 @@ defineProps({
         <Logo class="w-[180px] h-[48px]" />
         <div class="flex flex-row items-center gap-4 rtl:flex-row-reverse">
           <UserAvatar
-            :avatar_url="avatar"
-            :badge_url="badge"
+            v-if="isLoadedDatas"
+            :avatar_url="profile?.data.results.user.avatar as string"
+            :badge_url="currentPlan?.data.results[0].icon as string"
           />
           <!-- Icon Button Should Be Placed Here -->
           <!-- <TokenBadge :token_count="20" /> -->

@@ -103,7 +103,7 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
   onError: (error) => {
     toast.add({
       summary: 'خطادرویرایش پروفایل',
-      detail: error.message,
+      detail:error?.response.data.message[0].content,
       severity: 'info',
       life: 3000
     })
@@ -207,9 +207,9 @@ const cancelEdit = () => {
                 :fluid="true"
                 :state="state"
                 @blur="field.handleBlur"
-                :disabled="!isEditPopupButtonDisplay"
+                :disabled="true"
                 :value="field.state.value"
-                @input="(e) => field.handleChange(e.target.value)"
+                class="cursor-not-allowed"
               />
             </InputWrapper>
           </template>
@@ -223,9 +223,9 @@ const cancelEdit = () => {
                 :fluid="true"
                 :state="state"
                 @blur="field.handleBlur"
-                :disabled="!isEditPopupButtonDisplay"
                 :value="field.state.value"
-                @input="(e) => field.handleChange(e.target.value)"
+                :disabled="true"
+                class="cursor-not-allowed"
               />
             </InputWrapper>
           </template>
