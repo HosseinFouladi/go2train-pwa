@@ -5,7 +5,7 @@
     dismissableMask
   >
     <template #container>
-      <div class="flex flex-col items-center justify-between gap-6 p-6 min-h-[380px] w-[350px] md:w-auto">
+      <div class="flex flex-col overflow-auto items-center justify-between gap-6 p-6 min-h-[380px] w-[350px] md:w-auto">
         <h6 class="text-center text-h6 font-demi-bold">اضافه کردن تصویر پروفایل</h6>
         <div v-if="isFetching || isPending">
           <Loading />

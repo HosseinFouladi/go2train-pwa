@@ -105,7 +105,7 @@ const { open, close } = useModal({
         <div class="w-full h-12">
           <img
             class="absolute top-0 w-24 h-24 -translate-x-1/2 -translate-y-1/2 left-1/2"
-            :src="props.icon"
+            :src="props.banner"
           />
         </div>
         <div class="space-y-2">
