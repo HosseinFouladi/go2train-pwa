@@ -9,7 +9,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.pwa.entrypoints=websecure"
-      - "traefik.http.routers.pwa.rule=Host(`pwa.go2train.co`)"
+      - "traefik.http.routers.pwa.rule=Host(`app.go2train.co`)"
       - "traefik.http.services.pwa.loadbalancer.server.port=3000"
       - "traefik.http.routers.pwa.tls=true"
       - "traefik.http.routers.pwa.tls.certresolver=cloudflare"
