@@ -26,6 +26,10 @@ export { default as GallerySlash } from './gallery/slash.vue'
 export { default as SelectGallery } from './gallery/select-gallery.vue'
 export { default as SelectAvatar } from './gallery/select-avatars.vue'
 export { default as BorderAroowLeft } from './arrow-left/arrow-left-borderly.vue'
+export { default as PlayIcon } from './play/index.vue'
+export { default as StarIcon } from './star/index.vue'
+
+
 
 
 

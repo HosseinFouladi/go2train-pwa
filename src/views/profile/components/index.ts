@@ -10,6 +10,8 @@ export { default as DeleteAvatarModal } from './delete-avatar-modal.vue'
 export { default as EditAvatarModal } from './edit-avatar-modal.vue'
 export { default as AvatarListModal } from './avatar-list-modal.vue'
 export { default as GalleryModal } from './image-gallery-modal.vue'
+export { default as CourseCard } from './course-card.vue'
+
 
 
 
