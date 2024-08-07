@@ -87,7 +87,9 @@
         </div>
       </div>
     </div>
-    <Button label="ادامه دوره" fluid variant="outlined" />
+    <router-link  to="/course/32">
+      <Button  label="ادامه دوره" fluid variant="outlined" />
+    </router-link>
   </div>
 </template>
 

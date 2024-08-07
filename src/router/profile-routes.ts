@@ -33,6 +33,20 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "crash-report",
 				component: () => import("@/views/profile/crash-report.vue"),
 			},
+	
 		],
+
+	},
+	{
+		path: "/",
+		name:'course',
+		component: ProfileLayout,
+		children:[
+			{
+				path: "course/:course_id",
+				name: "course details",
+				component: () => import("@/views/courses/courseDetails/index.vue"),
+			},
+		]
 	},
 ];
