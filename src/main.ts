@@ -25,6 +25,9 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 
+import VueVideoPlayer from '@videojs-player/vue'
+import 'video.js/dist/video-js.css'
+
 import {
   GoogleLoginConfig,
   queryClientConfig,
@@ -62,6 +65,10 @@ app.use(PrimeVue, {
 app.use(ToastService)
 app.use(GoogleLogin, GoogleLoginConfig)
 app.use(vueFinalModal)
+
+//custom video player 
+app.use(VueVideoPlayer)
+
 
 //vue cropper component
 app.use(VueCropper)
