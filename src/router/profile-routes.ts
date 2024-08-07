@@ -1,4 +1,5 @@
 import { ProfileLayout } from '@/layouts'
+import PagesLayout from '@/layouts/profile-layout/pages-layout.vue';
 import type { RouteRecordRaw } from 'vue-router'
 
 export const ProfileRoutes: Array<RouteRecordRaw> = [
@@ -40,7 +41,7 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 	{
 		path: "/",
 		name:'course',
-		component: ProfileLayout,
+		component: PagesLayout,
 		children:[
 			{
 				path: "course/:course_id",
