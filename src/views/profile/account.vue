@@ -112,7 +112,8 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
 
 const editProfile = () => {
   updateUserProfile({
-    ...form.state.values,
+    name:form.state.values.name,
+    username:form.state.values.username,
     living_country: livingCountry.value?.id,
     birth_country: birthCountry.value?.id,
     immigration_country: immigrationCountry.value?.id,

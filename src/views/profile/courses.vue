@@ -42,5 +42,6 @@ const breakpoints= {
     <CourseCard v-for="item in 10" :key="item"  dir="rtl"/>
   </div>
   </div>
+
   </div>
 </template>
