@@ -17,7 +17,7 @@ import {
       <div
         class="flex flex-col w-full  max-w-[1440px] mx-auto px-4 lg:px-0"
       >
-        <Container class="max-w-none">
+        <Container>
           <div class="flex flex-row justify-between w-full h-full gap-6 py-8 ">
             <Sidebar class="hidden xl:block" />
             <MobileSidebar  :is-visible="true" class="xl:hidden " />
