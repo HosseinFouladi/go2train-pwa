@@ -1,4 +1,5 @@
 import { ProfileLayout } from '@/layouts'
+import PagesLayout from '@/layouts/profile-layout/pages-layout.vue';
 import type { RouteRecordRaw } from 'vue-router'
 
 export const ProfileRoutes: Array<RouteRecordRaw> = [
@@ -13,12 +14,11 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "user-account",
 				component: () => import("@/views/profile/account.vue"),
 			},
-			// not shipping this feature in this version
-			// {
-			//   path: 'courses',
-			//   name: 'courses',
-			//   component: () => import('@/views/profile/courses.vue')
-			// },
+			{
+			  path: 'courses',
+			  name: 'courses',
+			  component: () => import('@/views/profile/courses.vue')
+			},
 			{
 				path: "subscriptions",
 				name: "user-subscriptions",
@@ -34,6 +34,20 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "crash-report",
 				component: () => import("@/views/profile/crash-report.vue"),
 			},
+	
 		],
+
+	},
+	{
+		path: "/",
+		name:'course',
+		component: PagesLayout,
+		children:[
+			{
+				path: "course/:course_id",
+				name: "course details",
+				component: () => import("@/views/courses/courseDetails/index.vue"),
+			},
+		]
 	},
 ];
