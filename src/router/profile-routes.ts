@@ -14,11 +14,11 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "user-account",
 				component: () => import("@/views/profile/account.vue"),
 			},
-			{
-			  path: 'courses',
-			  name: 'courses',
-			  component: () => import('@/views/profile/courses.vue')
-			},
+			// {
+			//   path: 'courses',
+			//   name: 'courses',
+			//   component: () => import('@/views/profile/courses.vue')
+			// },
 			{
 				path: "subscriptions",
 				name: "user-subscriptions",
@@ -34,20 +34,18 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "crash-report",
 				component: () => import("@/views/profile/crash-report.vue"),
 			},
-	
 		],
-
 	},
 	{
 		path: "/",
-		name:'course',
+		name: "course",
 		component: PagesLayout,
-		children:[
+		children: [
 			{
 				path: "course/:course_id",
 				name: "course details",
 				component: () => import("@/views/courses/courseDetails/index.vue"),
 			},
-		]
+		],
 	},
 ];
