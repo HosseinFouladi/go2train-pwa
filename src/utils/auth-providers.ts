@@ -30,7 +30,9 @@ export type User = {
 
 export const loginWithGoogle = async (cb?: (token: string) => void) => {
 	googleTokenLogin({
-		clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+		// clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+		clientId:
+			"1084968188108-c8lajrcbrnric9kthunj7hpao3n20bu9.apps.googleusercontent.com",
 	})
 		.then((response) => {
 			const { access_token } = response;
