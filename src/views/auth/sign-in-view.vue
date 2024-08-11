@@ -18,6 +18,7 @@ import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
 import type { UserLoginParams, UserLoginResponseType } from '@/queries'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 const operatingSystem = useOs()
 
@@ -79,6 +80,31 @@ const { setAuth } = useAuthStore()
 
 const { mutate: loginMutation } = useMutation({
   mutationFn: (params: UserLoginParams) => userLogin(params)
+})
+
+onMounted(() => {
+  document.addEventListener(
+    'AppleIDSignInOnFailure',
+    function _onAppleSignInOnFailure(event) {
+      alert('Something went wrong!')
+    }
+  )
+
+  document.addEventListener(
+    'AppleIDSignInOnSuccess',
+    function _onAppleSignInOnSuccess(event) {
+      const { state } = event.detail.authorization
+      const { email, name } = event.detail.user
+      // We are checking that the request we send matches the one we receive.
+      if (state === 'SignInUserAuthenticationRequest') {
+        const { code, id_token } = event.detail.authorization
+        // Do something with id_token and code...
+        // User details email, name...
+      } else {
+        alert('Something went Wrong!')
+      }
+    }
+  )
 })
 </script>
 
