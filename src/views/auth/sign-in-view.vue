@@ -101,7 +101,7 @@ onMounted(() => {
         // Do something with id_token and code...
         // User details email, name...
       } else {
-        alert('Something went Wrong!')
+        alert(`Something went Wrong! ${window.location.origin}`)
       }
     }
   )
