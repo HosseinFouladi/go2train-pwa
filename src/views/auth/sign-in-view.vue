@@ -83,12 +83,22 @@ const { mutate: loginMutation } = useMutation({
 })
 
 onMounted(() => {
+  window.AppleID.auth.init({
+    clientId: import.meta.env.VITE_APPLE_CLIENT_ID,
+    scope: 'email name ',
+    redirectURI: import.meta.env.VITE_APPLE_CLIENT_REDIRECT_URI,
+    state: 'SignInUserAuthenticationRequest',
+    usePopup: true
+  })
+
   document.addEventListener(
     'AppleIDSignInOnFailure',
     function _onAppleSignInOnFailure(event) {
       alert('Something went wrong!')
     }
   )
+
+  alert(window.location.origin)
 
   document.addEventListener(
     'AppleIDSignInOnSuccess',
@@ -100,8 +110,9 @@ onMounted(() => {
         const { code, id_token } = event.detail.authorization
         // Do something with id_token and code...
         // User details email, name...
+        alert(`id token: ${id_token}, code: ${code}`)
       } else {
-        alert(`Something went Wrong! ${window.location.origin}`)
+        alert('Something went Wrong!')
       }
     }
   )
