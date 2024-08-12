@@ -1,6 +1,20 @@
+<script setup lang="ts">
+import { UserAvatar, Button } from '@/components'
+import { PlayIcon, ClockIcon, StarIcon } from '@/components/icons'
+import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
+import CoinImg from '@/assets/images/coin-silver.png'
+import LoginImg from '@/assets/images/login.webp'
+import { cn } from '@/utils'
+</script>
+
 <template>
   <div
-    class="flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 min-w-[281px]"
+    :class="
+      cn(
+        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-full xl:w-[253px]',
+        $props.class as string
+      )
+    "
   >
     <div class="flex gap-2">
       <div
@@ -87,18 +101,10 @@
         </div>
       </div>
     </div>
-    <router-link  to="/course/32">
-      <Button  label="ادامه دوره" fluid variant="outlined" />
+    <router-link to="/course/32">
+      <Button label="ادامه دوره" fluid variant="outlined" />
     </router-link>
   </div>
 </template>
-
-<script setup lang="ts">
-import { UserAvatar, Button } from '@/components'
-import { PlayIcon, ClockIcon, StarIcon } from '@/components/icons'
-import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
-import CoinImg from '@/assets/images/coin-silver.png'
-import LoginImg from '@/assets/images/login.webp'
-</script>
 
 <style scoped></style>

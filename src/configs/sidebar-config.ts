@@ -23,12 +23,12 @@ export const SidebarConfig: Array<SidebarItem> = [
 		route: "/account",
 		theme: "default",
 	},
-	// {
-	//   label: 'دوره های آموزشی من',
-	//   icon: TeacherIcon,
-	//   route: '/courses',
-	//   theme: 'default'
-	// },
+	{
+		label: "دوره های آموزشی من",
+		icon: TeacherIcon,
+		route: "/user-courses",
+		theme: "default",
+	},
 	{
 		label: "اشتراک ویژه",
 		icon: CrownIcon,
