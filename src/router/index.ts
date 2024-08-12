@@ -6,9 +6,10 @@ import { ProfileRoutes } from '@/router/profile-routes'
 import { setAuthCredentials } from '@/utils'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...AuthRoutes, ...ProfileRoutes]
-})
+	strict: true,
+	history: createWebHistory(import.meta.env.BASE_URL),
+	routes: [...AuthRoutes, ...ProfileRoutes],
+});
 
 router.beforeEach(async (to, from, next) => {
   const { isAuthenticated } = useAuthStore()
