@@ -35,7 +35,7 @@
       </div>
     </div>
     <Drawer  v-model:visible="showMore" position="bottom"   >
-    <template #container="{ closeCallback }" >
+    <template>
 
     <div class="flex flex-col items-center gap-2 p-4 rounded-t-lg ">
       <h2 class="text-h6 font-demi-bold">دوره زبان انگلیسی - {{ 'A2' }}</h2>
