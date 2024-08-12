@@ -9,7 +9,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <aside class="card rounded-2xl max-h-[640px]">
+  <aside class="sidebar-card rounded-2xl max-h-[640px]">
     <div class="w-[264px] flex-col p-6 flex justify-between h-full min-h-[640px]">
       <div>
         <SidebarItem
@@ -34,7 +34,7 @@ const router = useRouter()
 </template>
 
 <style scoped>
-.card {
+.sidebar-card {
   box-shadow: 0 0 12px 0 rgba(34, 35, 40, 0.15);
 }
 </style>
