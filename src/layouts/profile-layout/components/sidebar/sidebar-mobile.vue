@@ -56,7 +56,7 @@ const router = useRouter()
   position: fixed;
   top: 72px;
   right: 0;
-  z-index: 30;
+  z-index: 50;
   width: 0;
   background: white;
   height: calc(100% - 72px);
@@ -72,6 +72,6 @@ const router = useRouter()
   width: 0; /* initially */
   height: 100vh;
   background: #000;
-  z-index: 20;
+  z-index: 40;
 }
 </style>

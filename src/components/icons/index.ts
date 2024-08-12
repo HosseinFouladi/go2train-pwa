@@ -28,6 +28,23 @@ export { default as SelectAvatar } from './gallery/select-avatars.vue'
 export { default as BorderAroowLeft } from './arrow-left/arrow-left-borderly.vue'
 export { default as PlayIcon } from './play/index.vue'
 export { default as StarIcon } from './star/index.vue'
+export { default as LanguageSquareIcon } from "./language/language-square.vue";
+export { default as VideoTimeIcon } from "./video-time/video-time.vue";
+export { default as CupIcon } from "./cup/cup.vue";
+export { default as ThunderIcon } from "./thunder/thunder.vue";
+export { default as PeoplesIcon } from "./people/people.vue";
+export { default as EmptyStarIcon } from "./star/empty.vue";
+export { default as FilterIcon } from "./filter/index.vue";
+export { default as LikeIcon } from "./like/index.vue";
+export { default as MoreIcon } from "./more/index.vue";
+export { default as MinimizeIcon } from "./minimize/index.vue";
+
+
+
+
+
+
+
 
 
 

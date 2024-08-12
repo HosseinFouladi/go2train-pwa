@@ -28,6 +28,7 @@ import 'cropperjs/dist/cropper.css';
 import VueVideoPlayer from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
 
+
 import {
   GoogleLoginConfig,
   queryClientConfig,
@@ -74,6 +75,8 @@ app.use(VueVideoPlayer)
 app.use(VueCropper)
 
 app.mount('#app')
+
+
 
 declare global {
   interface String {

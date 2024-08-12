@@ -35,7 +35,7 @@
       </div>
     </div>
     <Drawer  v-model:visible="showMore" position="bottom"   >
-    <template #container="{ closeCallback }" >
+    <template #container >
 
     <div class="flex flex-col items-center gap-2 p-4 rounded-t-lg ">
       <h2 class="text-h6 font-demi-bold">دوره زبان انگلیسی - {{ 'A2' }}</h2>
@@ -69,7 +69,7 @@ import { ref } from 'vue'
 const showMore = ref(false)
 </script>
 
-<style scoped>
+<style >
 .overlay {
   background: linear-gradient(
     180deg,
@@ -88,5 +88,8 @@ const showMore = ref(false)
   text-overflow: ellipsis;
   max-width: 98%;
   white-space: nowrap;
+}
+.p-drawer-bottom .p-drawer{
+  height: auto !important;
 }
 </style>

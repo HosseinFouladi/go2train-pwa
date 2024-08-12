@@ -1,2 +1,5 @@
 export {default as Header} from './header.vue'
 export {default as IntroductionVideo} from './introduction-video.vue'
+export {default as Statistics} from './statistics.vue'
+export {default as Rating} from './rating.vue'
+export {default as Comments} from './comments.vue'

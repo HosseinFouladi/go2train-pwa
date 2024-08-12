@@ -6,7 +6,8 @@ export const buttonTheme: ButtonTheme = {
     primary: 'bg-primary-500 hover:bg-primary-600 active:bg-primary-700',
     success: 'bg-success-500 hover:bg-success-600 active:bg-success-700',
     disabled: 'bg-secondary-200 text-neutral-white',
-    secondary: ''
+    secondary: '',
+    accent:'bg-accent-700'
   },
   outlined: {
     danger:
@@ -16,7 +17,9 @@ export const buttonTheme: ButtonTheme = {
     success:
       'bg-neutral-white text-success-500 hover:bg-success-50 active:bg-success-100 border border-success-500',
     disabled: 'bg-neutral-white text-secondary-200 border border-secondary-200',
-    secondary: 'bg-neutral-white border border-secondary-500 text-secondary-500'
+    secondary: 'bg-neutral-white border border-secondary-500 text-secondary-500',
+    accent:'bg-accent-700'
+
   },
   text: {
     danger:
@@ -26,6 +29,8 @@ export const buttonTheme: ButtonTheme = {
     success:
       'bg-transparent text-success-500 hover:bg-success-50 hover:shadow-md active:bg-success-100 active:shadow-lg shadow-none',
     disabled: 'bg-transparent text-secondary-200 shadow-none',
-    secondary: ''
+    secondary: '',
+    accent:'bg-accent-700'
+
   }
 }

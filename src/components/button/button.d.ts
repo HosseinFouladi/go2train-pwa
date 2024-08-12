@@ -6,7 +6,7 @@ export type ButtonProps = {
   fluid?: boolean
   isLoading?: boolean
   size?: 'lg' | 'md' | 'sm' | 'xs'
-  mode?: 'danger' | 'success' | 'primary' | 'disabled' | 'secondary'
+  mode?: 'danger' | 'success' | 'primary' | 'disabled' | 'secondary'|'accent'
   variant?: 'filled' | 'outlined' | 'text'
   iconRight?: Component
   iconLeft?: Component
