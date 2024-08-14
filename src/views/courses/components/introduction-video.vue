@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-2">
     <CustomPlayer :src="testVideo" />
-    <p class="flex gap-1 text-st-two">
+    <p class="flex gap-1 text-st-two md:text-sm-st-one font-demi-bold">
       <span class="text-primary-500">مدرس</span>
       <span class="text-text-400">حسام موسوی</span>
     </p>

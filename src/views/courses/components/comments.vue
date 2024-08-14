@@ -27,10 +27,9 @@
             </div>
           </div>
           <div class="flex items-center gap-1">
-            <span class="text-sm-st-two font-regular text-text-200 "> ۲ دقیقه</span>
-            <div  @click="toggleMore" >
-              <MoreIcon  />
-
+            <span class="text-sm-st-two font-regular text-text-200"> ۲ دقیقه</span>
+            <div @click="toggleMore">
+              <MoreIcon />
             </div>
             <Menu ref="moreMenu" id="setting_menu" :model="items" :popup="true" />
           </div>
@@ -44,29 +43,41 @@
             >
           </div>
         </div>
-        <div class="flex flex-col items-end overflow-hidden transition-all ">
+        <div class="flex flex-col items-end overflow-hidden transition-all">
           <p
-            :class="cn({
-              'para	':!commentMore
-            })"
+            :class="
+              cn({
+                'para	': !commentMore
+              })
+            "
             class="transition"
           >
-        {{ commentMore?lorem:lorem.slice(0,160)+'...' }}
-        </p>
-          <span @click="commentMore = !commentMore"  class="text-primary-500 text-st-two" >بیشتر</span>
+            {{ commentMore ? lorem : lorem.slice(0, 160) + '...' }}
+          </p>
+          <span
+            @click="commentMore = !commentMore"
+            class="text-primary-500 text-st-two"
+            >{{ commentMore ? 'بستن' : 'بیشتر' }}</span
+          >
         </div>
         <div class="p-3 border rounded-lg bg-neutral-white border-secondary-200">
-          <div class="flex flex-col items-end overflow-hidden transition-all ">
-          <p
-            :class="cn({
-              'para	':!commentMore
-            })"
-            class="transition"
-          >
-        {{ commentMore?lorem:lorem.slice(0,160)+'...' }}
-        </p>
-          <span @click="commentMore = !commentMore"  class="text-primary-500 text-st-two" >بیشتر</span>
-        </div>
+          <div class="flex flex-col items-end overflow-hidden transition-all">
+            <p
+              :class="
+                cn({
+                  'para	': !commentMore
+                })
+              "
+              class="transition"
+            >
+              {{ commentMore ? lorem : lorem.slice(0, 160) + '...' }}
+            </p>
+            <span
+              @click="commentMore = !commentMore"
+              class="text-primary-500 text-st-two"
+              >{{ commentMore ? 'بستن' : 'بیشتر' }}</span
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -75,14 +86,16 @@
 
 <script setup lang="ts">
 import { Button, UserAvatar } from '@/components'
-import { FilterIcon, StarIcon, LikeIcon ,MoreIcon} from '@/components/icons'
-import { cn } from '@/utils';
+import { FilterIcon, StarIcon, LikeIcon, MoreIcon } from '@/components/icons'
+import { cn } from '@/utils'
 import { ref } from 'vue'
 const filterMenu = ref()
 const moreMenu = ref()
-const commentMore=ref(false)
+const commentMore = ref(false)
 
-const lorem=ref(' لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف  بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال  و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت  بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در  زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری  موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز  شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود  طراحی اساسا مورد استفاده قرار گیرد.ادگی  نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون  بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی  تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می  باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان  جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان')
+const lorem = ref(
+  ' لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف  بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال  و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت  بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در  زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری  موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز  شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود  طراحی اساسا مورد استفاده قرار گیرد.ادگی  نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون  بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی  تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می  باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان  جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان'
+)
 
 const items = ref([
   {
@@ -110,8 +123,7 @@ const toggleMore = (event) => {
 </script>
 
 <style scoped>
-.para{
+.para {
   text-overflow: ellipsis;
-  
 }
 </style>

@@ -50,6 +50,7 @@
     "vue-final-modal": "^4.5.4",
     "vue-modern-notification": "^1.1.0",
     "vue-router": "^4.3.0",
+    "vue-star-rating": "^2.1.0",
     "vue-sweetalert2": "^5.0.11",
     "vue-tel-input": "^9.1.3",
     "vue3-carousel": "^0.3.3",
