@@ -1,98 +1,168 @@
 <template>
   <div class="video-wrapper">
-    <video :src="src" class="custom-video"></video>
+    <video
+      @click="togglePlayPause"
+      @loadedmetadata="totlaDuration"
+      :src="src"
+      class="custom-video"
+      @timeupdate="updateProgressbar"
+      @ended="showPlayIcon"
+      :poster="thumbnailGif"
+      controlslist=" nodownload"
+    ></video>
     <div class="video-controls">
       <div class="controls-items">
-        <div class="controls-item">
+        <div class="controls-item flex items-center">
           <MinimizeIcon
+            @click="toggleFullScreen"
             id="fullscreen"
             class="fullscreen w-4"
             aria-label="Fullscreen"
           />
+          <div class="relative">
+            <div class="relative flex justify-center items-center">
+              <Button
+                id="setting"
+                class="opacity-0 w-0"
+                label=""
+                @click="settingToggle"
+                variant="text"
+              />
+              <label for="setting" class="">
+                <SettingIcon class="text-neutral-white -mr-4 w-4 h-4" />
+              </label>
+            </div>
 
-          <div id="sound">
+            <Popover ref="settingMenu" id="overlay_tmenu">
+              <div class="p-4 flex flex-col gap-4 rounded-2xl font-demi-bold">
+                <h3 class="text-sm-st-one text-center">Video setting</h3>
+                <div class="w-full h-[1px] bg-secondary-100"></div>
+                <div class="flex justify-between gap-8 items-center">
+                  <div class="flex items-center relative">
+                    <div class="relative flex justify-center items-center">
+                      <Button
+                        id="speed"
+                        class="opacity-0 w-0"
+                        label=""
+                        @click="speedToggle"
+                        variant="text"
+                      />
+                      <label for="speed" class="">
+                        <ArrowRight class="-mr-4 w-4 h-4" />
+                      </label>
+                    </div>
+                    <Popover ref="speedMenu" id="speed_menu">
+                      <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
+                        <div class="flex justify-between items-center">
+                          <h3 class="text-sm-st-one font-demi-bold">
+                            Playback speed
+                          </h3>
+                          <ArrowLeft class="text-[16px]" @click="settingToggle" />
+                        </div>
+                        <div class="w-full h-[1px] bg-secondary-100"></div>
+                        <ul class="w-full flex flex-col gap-2">
+                          <li
+                            v-for="item in speeds"
+                            :key="item.speed"
+                            class="flex justify-between items-center p-4 hover:bg-secondary-100 rounded-lg"
+                            @click="() => setSpeed(item.speed)"
+                            :class="
+                              cn({ 'bg-secondary-100 ': item.speed === videoSpeed })
+                            "
+                          >
+                            <div
+                              class="rounded bg-secondary-100 p-1 flex items-center justify-center font-500 text-sm-cp"
+                              v-if="!item.isPro"
+                            >
+                              pro
+                            </div>
+                            <span class="text-sm-cp">{{ item.speed }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </Popover>
+                    <span class="text-sm-st-two font-demi-bold">Normal</span>
+                  </div>
+                  <div class="flex gap-1">
+                    <span class="text-st-two">playback speed</span>
+                    <PlayIcon class="stroke-neutral-black" />
+                  </div>
+                </div>
+
+                <div class="flex justify-between gap-8 items-center">
+                  <div class="flex items-center relative">
+                    <div class="relative flex justify-center items-center">
+                      <Button
+                        id="quality"
+                        class="opacity-0 w-0"
+                        label=""
+                        @click="qualityToggle"
+                        variant="text"
+                      />
+                      <label for="quality" class="">
+                        <ArrowRight class="-mr-4 w-4 h-4" />
+                      </label>
+                    </div>
+                    <Popover ref="qualityMenu" id="speed_menu">
+                      <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
+                        <div class="flex justify-between items-center">
+                          <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
+                          <ArrowLeft class="text-[16px]" @click="settingToggle" />
+                        </div>
+                        <div class="w-full h-[1px] bg-secondary-100"></div>
+                        <ul class="w-full flex flex-col gap-2">
+                          <li
+                            v-for="quality in qualities"
+                            :key="quality.quality"
+                            class="flex justify-between items-center p-4 hover:bg-secondary-100 rounded-lg"
+                            @click="() => setQuality(quality)"
+                            :class="
+                              cn({
+                                'bg-secondary-100 ': quality.quality === videoQuality
+                              })
+                            "
+                          >
+                            <div
+                              class="rounded bg-secondary-100 p-1 flex items-center justify-center font-500 text-sm-cp"
+                              v-if="!quality.isPro"
+                            >
+                              pro
+                            </div>
+                            <span class="text-sm-cp">{{ quality.quality }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </Popover>
+                    <span class="text-sm-st-two font-demi-bold"
+                      >Auto<span class="text-sm-cp">(720p60)</span></span
+                    >
+                  </div>
+                  <div class="flex gap-1">
+                    <span class="text-st-two"> Quality</span>
+                    <QualityIcon class="stroke-neutral-black" />
+                  </div>
+                </div>
+              </div>
+            </Popover>
+          </div>
+
+          <div id="sound" @mouseenter="sliderDisplay" @mouseleave="sliderHide">
             <SoundIcon class="soundIcon" />
             <MuteIcon class="muteIcon" />
-            <div class="volume-slider" style="display: none">
+            <div class="volume-slider" @click="changeVolume" style="display: none">
               <div class="volume-bar">
                 <div class="volume-level" style="width: 38.75%"></div>
               </div>
             </div>
           </div>
-          <div id="play-speed" class="play-speed">
-            <span>1X</span>
-            <ul style="display: none">
-              <li class="selected" data-value="1">1X</li>
-              <li data-value="1.5">1.5X</li>
-              <li data-value="2">2X</li>
-            </ul>
-          </div>
         </div>
 
-        <div class="relative">
-          <SettingIcon
-            class="text-neutral-white"
-            @click="qualityPopup = !qualityPopup"
-          />
-          <Dialog v-model:visible="qualityPopup" modal dismissableMask>
-            <template #container>
-              <div class="p-4 flex flex-col gap-4 rounded-2xl font-demi-bold">
-                <h3 class="text-sm-st-one text-center">Video setting</h3>
-                <div class="w-full h-[1px] bg-secondary-100"></div>
-                <div class="flex justify-between gap-8 items-center">
-                  <div class="flex items-center">
-                    <ArrowRight @click="toggle" class="text-[16px]" />
-                    <Menu ref="speedMenu" id="speed_menu" :popup="true">
-                      <template #start>
-                        <div class="p-4 ronded-2xl flex flex-col gap-2">
-                          <div class="flex justify-between items-center">
-                            <h3 class="text-sm-st-one font-demi-bold">
-                              Playback speed
-                            </h3>
-                            <ArrowLeft class="text-[16px]" @click="toggle" />
-                          </div>
-                          <div class="w-full h-[1px] bg-secondary-100"></div>
-                          <ul class="w-full flex flex-col gap-2">
-                            <li class="flex justify-between items-center p-4">
-                              <div
-                                class="rounded bg-secondary-100 p-1 flex items-center justify-center font-500 text-sm-cp"
-                              >
-                                pro
-                              </div>
-                              <span class="text-sm-cp">0.25</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </template>
-                    </Menu>
-                    <span class="text-sm-cp font-demi-bold">Normal</span>
-                  </div>
-                  <div class="flex gap-1">
-                    <span class="text-sm-st-two">playback speed</span>
-                    <PlayIcon class="stroke-neutral-black" />
-                  </div>
-                </div>
-
-                <div class="flex justify-between">
-                  <div class="flex gap-1">
-                    <ArrowRight />
-                    <span class="text-sm-cp font-demi-bold">Auto(720p60)</span>
-                  </div>
-                  <div class="flex gap-1">
-                    <span class="text-sm-st-two"> Quality</span>
-                    <QualityIcon />
-                  </div>
-                </div>
-              </div>
-            </template>
-          </Dialog>
-        </div>
         <div class="controls-item">
           <div class="time">
             <span class="total-duration">1:31</span><span>/</span
             ><span class="current-time">0:11</span>
           </div>
-          <div class="play-pause">
+          <div class="play-pause" @click="togglePlayPause">
             <span class="play" style="display: block"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -126,12 +196,12 @@
         </div>
       </div>
       <div class="progress-bar">
-        <div class="totalbar">
+        <div class="totalbar" @click="seekVideo">
           <div class="current-bar" style="width: 12.2406%"></div>
         </div>
       </div>
     </div>
-    <div id="play-video" style="display: flex">
+    <div id="play-video" style="display: flex" @click="togglePlayPause">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="48"
@@ -168,175 +238,250 @@ import {
   QualityIcon
 } from '@/components/icons'
 import { cn } from '@/utils'
+import thumbnailGif from '@/assets/videos/Loading-animation-GO2TRain.gif'
 
-const qualityPopup = ref(false)
+const wrapper = ref()
+const video = ref<HTMLVideoElement>()
+const playPauseButton = ref<HTMLElement>()
+const fullscreenButton = ref<HTMLElement>()
+const volumeControl = ref<HTMLElement>()
+const volumeSlider = ref<HTMLElement>()
+const volumeLevel = ref<HTMLElement>()
+const currentTimeDisplay = ref<HTMLElement>()
+const totalDurationDisplay = ref<HTMLElement>()
+const playSpeed = ref<HTMLElement>()
+const progressBar = ref<HTMLElement>()
+const currentBar = ref<HTMLElement>()
+const playSpeedMenu = ref<HTMLElement>()
+const playSpeedItems = ref<HTMLElement>()
+const centerPlayButton = ref<HTMLElement>()
+const videoControls = ref<HTMLElement>()
+
+const speeds = ref([
+  {
+    speed: 0.25,
+    isPro: false
+  },
+  {
+    speed: 0.5,
+    isPro: false
+  },
+  {
+    speed: 1,
+    isPro: false
+  },
+  {
+    speed: 1.25,
+    isPro: false
+  }
+])
+
+const qualities = ref([
+  {
+    quality: '360p',
+    isPro: true,
+    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p240/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
+  },
+  {
+    quality: '244p',
+    isPro: true,
+    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p360/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
+  },
+  {
+    quality: '1080p',
+    isPro: false,
+    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p480/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
+  },
+  {
+    quality: '720p',
+    isPro: false,
+    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p720/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
+  }
+])
+
+const videoSpeed = ref(1)
+const videoQuality = ref('360p')
+
+const qualityMenu = ref()
 const speedMenu = ref()
-const toggle = (event) => {
+const settingMenu = ref()
+
+const settingToggle = (event) => {
+  settingMenu.value.toggle(event)
+}
+
+const speedToggle = (event) => {
   speedMenu.value.toggle(event)
 }
+
+const qualityToggle = (event) => {
+  qualityMenu.value.toggle(event)
+}
 onMounted(() => {
-  console.log('heyyyyy')
-  const wrapper = document.querySelector('.video-wrapper')
+  wrapper.value = document.querySelector('.video-wrapper')
 
-  const video = wrapper.querySelector('.custom-video')
-  const playPauseButton = wrapper.querySelector('.play-pause')
-  const fullscreenButton = wrapper.querySelector('.fullscreen')
-  const volumeControl = wrapper.querySelector('#sound')
-  const volumeSlider = volumeControl?.querySelector('.volume-slider')
-  const volumeLevel = volumeSlider?.querySelector('.volume-level')
-  const currentTimeDisplay = wrapper.querySelector('.current-time')
-  const totalDurationDisplay = wrapper.querySelector('.total-duration')
-  const playSpeed = wrapper.querySelector('.play-speed span')
-  const progressBar = wrapper.querySelector('.progress-bar .totalbar')
-  const currentBar = wrapper.querySelector('.progress-bar .current-bar')
-  const playSpeedMenu = wrapper.querySelector('.play-speed ul')
-  const playSpeedItems = wrapper.querySelectorAll('.play-speed li')
-  const centerPlayButton = wrapper.querySelector('#play-video')
-  const videoControls = wrapper.querySelector('.video-controls')
-
-  // Helper function to format time in minutes:seconds
-  function formatTime(time) {
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+  if (wrapper.value) {
+    video.value = wrapper.value.querySelector('.custom-video')
+    playPauseButton.value = wrapper.value.querySelector('.play-pause')
+    fullscreenButton.value = wrapper.value.querySelector('.fullscreen')
+    volumeControl.value = wrapper.value.querySelector('#sound')
+    volumeSlider.value = volumeControl.value?.querySelector('.volume-slider')
+    volumeLevel.value = volumeSlider.value?.querySelector('.volume-level')
+    currentTimeDisplay.value = wrapper.value.querySelector('.current-time')
+    totalDurationDisplay.value = wrapper.value.querySelector('.total-duration')
+    playSpeed.value = wrapper.value.querySelector('.play-speed span')
+    progressBar.value = wrapper.value.querySelector('.progress-bar .totalbar')
+    currentBar.value = wrapper.value.querySelector('.progress-bar .current-bar')
+    playSpeedMenu.value = wrapper.value.querySelector('.play-speed ul')
+    playSpeedItems.value = wrapper.value.querySelectorAll('.play-speed li')
+    centerPlayButton.value = wrapper.value.querySelector('#play-video')
+    videoControls.value = wrapper.value.querySelector('.video-controls')
   }
-
-  // Helper function to toggle video playback
-  function togglePlayPause() {
-    if (video.paused || video.ended) {
-      video.play()
-      playPauseButton.querySelector('.play').style.display = 'none'
-      playPauseButton.querySelector('.pause').style.display = 'block'
-      centerPlayButton.style.display = 'none'
-      videoControls.classList.add('video-playing')
-    } else {
-      video.pause()
-      playPauseButton.querySelector('.play').style.display = 'block'
-      playPauseButton.querySelector('.pause').style.display = 'none'
-      videoControls.classList.remove('video-playing')
-      centerPlayButton.style.display = 'flex'
-    }
-  }
-
-  // Update total duration when metadata is loaded
-  video.addEventListener('loadedmetadata', () => {
-    totalDurationDisplay.textContent = formatTime(video.duration)
-  })
-
-  // Play or pause the video using the play/pause button
-  playPauseButton.addEventListener('click', togglePlayPause)
-
-  // Play or pause the video using the center play button
-  centerPlayButton.addEventListener('click', togglePlayPause)
-
-  // Play or pause the video when it is clicked
-  video.addEventListener('click', togglePlayPause)
-
-  // Toggle video playback with Enter or Space keys and seek with Arrow keys
-  document.addEventListener('keydown', (event) => {
-    const isInput =
-      event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA'
-    if (!isInput) {
-      switch (event.code) {
-        case 'Space':
-        case 'Enter':
-          event.preventDefault()
-          togglePlayPause()
-          break
-        case 'ArrowRight':
-          video.currentTime = Math.min(video.currentTime + 5, video.duration) // Seek forward 5 seconds
-          break
-        case 'ArrowLeft':
-          video.currentTime = Math.max(video.currentTime - 5, 0) // Seek backward 5 seconds
-          break
-      }
-    }
-  })
-
-  // Show/hide the volume slider
-  volumeControl.addEventListener('mouseenter', () => {
-    volumeSlider.style.display = 'block'
-  })
-
-  volumeControl.addEventListener('mouseleave', () => {
-    volumeSlider.style.display = 'none'
-  })
-
-  // Update volume using custom slider
-  volumeSlider.addEventListener('click', (event) => {
-    const clickX = event.offsetX
-    const width = volumeSlider.offsetWidth
-    const volume = clickX / width
-    video.volume = volume
-    if (volume === 0) {
-      volumeControl.classList.add('muted')
-    } else {
-      volumeControl.classList.remove('muted')
-    }
-    volumeLevel.style.width = `${volume * 100}%`
-  })
-
-  // Fullscreen toggle
-  fullscreenButton.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      wrapper.requestFullscreen().catch((err) => {
-        console.error(`Failed to enter fullscreen mode: ${err.message}`)
-      })
-      fullscreenButton.classList.add('active')
-    } else {
-      document.exitFullscreen()
-      fullscreenButton.classList.remove('active')
-    }
-  })
-
-  // Update progress bar and current time display as the video plays
-  video.addEventListener('timeupdate', () => {
-    const percentage = (video.currentTime / video.duration) * 100
-    currentBar.style.width = `${percentage}%`
-    currentTimeDisplay.textContent = formatTime(video.currentTime)
-  })
-
-  // Seek video when progress bar is clicked
-  progressBar.addEventListener('click', (event) => {
-    const clickX = event.offsetX
-    const width = progressBar.offsetWidth
-    const duration = video.duration
-    video.currentTime = (clickX / width) * duration
-  })
-
-  // Toggle play speed menu
-  playSpeed.addEventListener('click', () => {
-    playSpeedMenu.style.display =
-      playSpeedMenu.style.display === 'flex' ? 'none' : 'flex'
-  })
-
-  // Change playback speed
-  playSpeedItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      const speed = parseFloat(item.dataset.value)
-      video.playbackRate = speed
-      playSpeed.textContent = `${speed}X`
-      playSpeedItems.forEach((i) => i.classList.remove('selected'))
-      item.classList.add('selected')
-      playSpeedMenu.style.display = 'none'
-    })
-  })
-
-  // Hide the play speed menu when clicking outside
-  document.addEventListener('click', (event) => {
-    if (!wrapper.contains(event.target) && playSpeedMenu.style.display === 'flex') {
-      playSpeedMenu.style.display = 'none'
-    }
-  })
-
-  // Show play icon and center play button when the video ends
-  video.addEventListener('ended', () => {
-    playPauseButton.querySelector('.play').style.display = 'block'
-    playPauseButton.querySelector('.pause').style.display = 'none'
-    centerPlayButton.style.display = 'block'
-    videoControls.classList.remove('video-playing')
-  })
 })
+
+// Helper function to format time in minutes:seconds
+function formatTime(time) {
+  const minutes = Math.floor(time / 60)
+  const seconds = Math.floor(time % 60)
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+}
+
+// Helper function to toggle video playback
+function togglePlayPause() {
+  console.log(playPauseButton.value)
+  if (video.value.paused || video.value.ended) {
+    video.value.play()
+    playPauseButton.value.querySelector('.play').style.display = 'none'
+    playPauseButton.value.querySelector('.pause').style.display = 'block'
+    centerPlayButton.value.style.display = 'none'
+    videoControls.value.classList.add('video-playing')
+  } else {
+    video.value.pause()
+    playPauseButton.value.querySelector('.play').style.display = 'block'
+    playPauseButton.value.querySelector('.pause').style.display = 'none'
+    videoControls.value.classList.remove('video-playing')
+    centerPlayButton.value.style.display = 'flex'
+  }
+}
+
+// Update total duration when metadata is loaded
+
+const totlaDuration = () => {
+  totalDurationDisplay.value.textContent = formatTime(video.value.duration)
+}
+
+// Toggle video playback with Enter or Space keys and seek with Arrow keys
+document.addEventListener('keydown', (event) => {
+  const isInput =
+    event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA'
+  if (!isInput) {
+    switch (event.code) {
+      case 'Space':
+      case 'Enter':
+        event.preventDefault()
+        togglePlayPause()
+        break
+      case 'ArrowRight':
+        video.value.currentTime = Math.min(
+          video.value.currentTime + 5,
+          video.value.duration
+        ) // Seek forward 5 seconds
+        break
+      case 'ArrowLeft':
+        video.value.currentTime = Math.max(video.value.currentTime - 5, 0) // Seek backward 5 seconds
+        break
+    }
+  }
+})
+
+const sliderDisplay = () => {
+  if (volumeSlider.value) volumeSlider.value.style.display = 'block'
+}
+
+const sliderHide = () => {
+  if (volumeSlider.value) volumeSlider.value.style.display = 'none'
+}
+
+// Update volume using custom slider
+const changeVolume = (event) => {
+  const clickX = event.offsetX
+  const width = volumeSlider.value.offsetWidth
+  const volume = clickX / width
+  video.value.volume = volume
+  if (volume === 0) {
+    volumeControl.value.classList.add('muted')
+  } else {
+    volumeControl.value.classList.remove('muted')
+  }
+  volumeLevel.value.style.width = `${volume * 100}%`
+}
+//toggle fullscreen
+const toggleFullScreen = () => {
+  if (!document.fullscreenElement) {
+    wrapper.value.requestFullscreen().catch((err) => {
+      console.error(`Failed to enter fullscreen mode: ${err.message}`)
+    })
+    document.body.classList.add('landscape')
+    if (fullscreenButton.value) fullscreenButton.value.classList.add('active ')
+    video.value.style.height = '100%'
+  } else {
+    document.exitFullscreen()
+    if (fullscreenButton.value) fullscreenButton.value.classList.remove('active ')
+    document.body.classList.add('landscape')
+  }
+}
+
+// Update progress bar and current time display as the video plays
+
+const updateProgressbar = () => {
+  const percentage = (video.value.currentTime / video.value.duration) * 100
+  if (currentBar.value) currentBar.value.style.width = `${percentage}%`
+  if (currentTimeDisplay.value)
+    currentTimeDisplay.value.textContent = formatTime(video.value.currentTime)
+}
+// Seek video when progress bar is clicked
+
+const seekVideo = (event) => {
+  const clickX = event.offsetX
+  const width = progressBar.value.offsetWidth
+  const duration = video.value.duration
+  video.value.currentTime = (clickX / width) * duration
+}
+
+const setSpeed = (speed: number) => {
+  speedMenu.value.toggle(event)
+  settingMenu.value.toggle(event)
+  video.value.playbackRate = speed
+  videoSpeed.value = speed
+}
+
+const setQuality = (quality: { quality: string; isPro: boolean; src: string }) => {
+  const currentVideoTime = video.value?.currentTime
+  qualityMenu.value.toggle(event)
+  settingMenu.value.toggle(event)
+  videoQuality.value = quality.quality
+  video.value.src = quality.src
+  video.value.currentTime = currentVideoTime
+  video.value?.play()
+}
+
+// Hide the play speed menu when clicking outside
+document.addEventListener('click', (event) => {
+  if (
+    !wrapper.value.contains(event.target) &&
+    playSpeedMenu.value.style.display === 'flex'
+  ) {
+    playSpeedMenu.value.style.display = 'none'
+  }
+})
+
+// Show play icon and center play button when the video ends
+const showPlayIcon = () => {
+  playPauseButton.value.querySelector('.play').style.display = 'block'
+  playPauseButton.value.querySelector('.pause').style.display = 'none'
+  centerPlayButton.value.style.display = 'block'
+  videoControls.value.classList.remove('video-playing')
+}
 </script>
 
 <style scoped lang="scss">
@@ -594,5 +739,15 @@ onMounted(() => {
       }
     }
   }
+}
+
+.landscape {
+  transform: rotate(90deg) translateY(-100%);
+  width: 100vh;
+  height: 100vw;
+  overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
