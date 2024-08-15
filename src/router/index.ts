@@ -10,27 +10,27 @@ const router = createRouter({
   routes: [...AuthRoutes, ...ProfileRoutes]
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   const { isAuthenticated } = useAuthStore()
-//
-//   // 1. check if the query params exists
-//   const { token } = to.query
-//   if (token && from.path === '/') {
-//     // 2. validate the token
-//     setAuthCredentials(token as string, () =>
-//       router.replace({ name: 'user-subscriptions' })
-//     )
-//   }
-//
-//   if (to.meta.middleware === 'auth') {
-//     if (isAuthenticated) {
-//       next()
-//     } else {
-//       next({ name: 'sign-in' })
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach(async (to, from, next) => {
+  const { isAuthenticated } = useAuthStore()
+
+  // 1. check if the query params exists
+  const { token } = to.query
+  if (token && from.path === '/') {
+    // 2. validate the token
+    setAuthCredentials(token as string, () =>
+      router.replace({ name: 'user-subscriptions' })
+    )
+  }
+
+  if (to.meta.middleware === 'auth') {
+    if (isAuthenticated) {
+      next()
+    } else {
+      next({ name: 'sign-in' })
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

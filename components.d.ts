@@ -62,6 +62,7 @@ declare module 'vue' {
     ProgressSpinner: typeof import('primevue/progressspinner')['default']
     PwaBadge: typeof import('./src/components/pwa-badge/pwa-badge.vue')['default']
     Quality: typeof import('./src/components/icons/quality/index.vue')['default']
+    Ranking: typeof import('./src/components/icons/ranking/index.vue')['default']
     Rating: typeof import('primevue/rating')['default']
     Receipt: typeof import('./src/components/icons/receipt/index.vue')['default']
     Refresh: typeof import('./src/components/icons/refresh/index.vue')['default']

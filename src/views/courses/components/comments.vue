@@ -43,7 +43,7 @@
             >
           </div>
         </div>
-        <div class="flex flex-col items-end overflow-hidden transition-all">
+        <div class="flex flex-col items-end overflow-hidden transition-all ">
           <p
             :class="
               cn({

@@ -29,7 +29,7 @@
       <div
         class="flex items-center justify-between px-4 py-3 rounded-lg bg-secondary-50"
       >
-        <div class="flex gap-2 md:gap-4">
+        <div class="flex gap-2 md:gap-4 xl:gap-8">
           <EmptyStarIcon
             v-for="item in filledStars"
             :key="item"
