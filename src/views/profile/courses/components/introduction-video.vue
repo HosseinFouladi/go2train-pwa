@@ -37,7 +37,8 @@ import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
 import { VideoTimeIcon, LanguageSquareIcon, ArrowLeft } from '@/components/icons'
 import CoinImg from '@/assets/images/coin-silver.png'
 import { Button } from '@/components'
-import CustomPlayer from '@/views/courses/components/custom-player.vue'
+import {CustomPlayer} from "./"
+
 </script>
 
 <style scoped lang="scss">

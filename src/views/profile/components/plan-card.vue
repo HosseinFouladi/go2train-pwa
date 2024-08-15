@@ -134,8 +134,28 @@ const { open, close } = useModal({
           </li>
         </ul>
       </div>
+      <!-- TODO: will refactor to make the tooltip directive render conditionally -->
       <button
+        v-if="priority_status !== 'can_buy'"
         v-tooltip.bottom="'این اشتراک برایتان فعال است'"
+        @click="() => !subscribed && open()"
+        :class="[
+          card_theme[`priority-${priority}`].btn_color,
+          'w-full rounded-xl py-3 text-neutral-white text-sm-st-one font-demi-bold',
+          `duration-200 hover:brightness-[106%]`,
+          { 'bg-transparent text-text-400': priority_status !== 'can_buy' }
+        ]"
+      >
+        {{
+          match(priority_status)
+            .with('taken', () => 'شامل اشتراک شماست')
+            .with('current', () => 'این اشتراک را دارید!')
+            .with('can_buy', () => 'خرید اشتراک')
+            .otherwise(() => '')
+        }}
+      </button>
+      <button
+        v-else
         @click="() => !subscribed && open()"
         :class="[
           card_theme[`priority-${priority}`].btn_color,

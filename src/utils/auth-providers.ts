@@ -49,21 +49,6 @@ export const loginWithGoogle = async (cb?: (token: string) => void) => {
 };
 
 export const loginWithApple = async () => {
-	if (!window) return undefined;
-
 	// @ts-ignore
 	await window.AppleID.auth.signIn();
-	// Listen for authorization success.
-	window.document.addEventListener("AppleIDSignInOnSuccess", (event) => {
-		// Handle successful response.
-		// @ts-ignore
-		console.log(event.detail.data);
-	});
-
-	// Listen for authorization failures.
-	window.document.addEventListener("AppleIDSignInOnFailure", (event) => {
-		// Handle error.
-		// @ts-ignore
-		console.log(event.detail.error);
-	});
 };

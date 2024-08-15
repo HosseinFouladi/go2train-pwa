@@ -18,6 +18,11 @@ import { ApiClient, loginWithApple, loginWithGoogle } from '@/utils'
 import type { UserLoginParams, UserLoginResponseType } from '@/queries'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import type {
+  ApiResponseTypeV3,
+  ExternalAuthResponseType
+} from '@/utils/auth-providers'
 
 const operatingSystem = useOs()
 
@@ -79,6 +84,47 @@ const { setAuth } = useAuthStore()
 
 const { mutate: loginMutation } = useMutation({
   mutationFn: (params: UserLoginParams) => userLogin(params)
+})
+
+onMounted(() => {
+  // @ts-ignore
+  window.AppleID.auth.init({
+    clientId: import.meta.env.VITE_APPLE_CLIENT_ID,
+    scope: 'email name ',
+    redirectURI: import.meta.env.VITE_APPLE_CLIENT_REDIRECT_URI,
+    state: 'SignInUserAuthenticationRequest',
+    usePopup: true
+  })
+
+  document.addEventListener(
+    'AppleIDSignInOnFailure',
+    function _onAppleSignInOnFailure(event) {}
+  )
+
+  document.addEventListener(
+    'AppleIDSignInOnSuccess',
+    function _onAppleSignInOnSuccess(event) {
+      // @ts-ignore
+      const { state } = event.detail.authorization
+      if (state === 'SignInUserAuthenticationRequest') {
+        // @ts-ignore
+        const { id_token } = event.detail.authorization
+        // Do something with id_token and code...
+        // User details email, name...
+        ApiClient.post<ApiResponseTypeV3<ExternalAuthResponseType>>(
+          ENDPOINTS.Auth.External,
+          {
+            token: id_token,
+            provider: 2
+          }
+        ).then((response) => {
+          setAuth(response.data.token, () =>
+            router.push({ name: 'user-subscriptions' })
+          )
+        })
+      }
+    }
+  )
 })
 </script>
 

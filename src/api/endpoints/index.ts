@@ -5,6 +5,8 @@ import { BugReport } from './reports'
 import { AppSettingsEndpoints } from './app-settings'
 import { CountryEndpoints } from "./countries";
 import { AvatarsEndpoints } from './avatars'
+import { CourseEndpoint } from './course'
+
 
 export const ENDPOINTS = {
 	Auth: AuthEndpoints,
@@ -13,5 +15,6 @@ export const ENDPOINTS = {
 	BugReport,
 	Settings: AppSettingsEndpoints,
 	Country: CountryEndpoints,
-	Avatars:AvatarsEndpoints
+	Avatars:AvatarsEndpoints,
+	Courses:CourseEndpoint
 };
