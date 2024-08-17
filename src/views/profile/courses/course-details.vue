@@ -19,8 +19,20 @@
         <div
           class="relative z-50 p-4 -mt-4 bg-neutral-white rounded-t-2xl md:-mt-16 md:max-w-[672px] md:mx-auto md:p-6 md:shadow"
         >
-          <IntroductionVideo />
-          <Statistics />
+          <IntroductionVideo
+            v-if="!currentPlanFetching && !currentPlanPending"
+            :access_list="currentPlan?.data.results[0].access_list"
+            :stream="courseInfo?.data?.stream"
+            :teacher_name="courseInfo?.data.teacher.name"
+            :language_name="courseInfo?.data.language.faName"
+            :sessionCount="courseInfo?.data.sessionsCount"
+            :duration="courseInfo?.data.duration"
+            :users="courseInfo?.data.users"
+          />
+          <Statistics
+            :users="courseInfo?.data.users.slice(-3)"
+            :score="courseInfo?.data.score"
+          />
           <Rating />
           <Comments />
         </div>
@@ -28,7 +40,9 @@
       <div class="justify-center hidden gap-6 py-10 xl:flex">
         <div class="p-6 w-[700px] flex flex-col gap-6 card overflow-hidden">
           <CustomPlayer
-            src="https://train-test.g2storage.com/teacher/section/videos/encoded/p240/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4"
+            v-if="!currentPlanFetching && !currentPlanPending"
+            :access_list="currentPlan?.data.results[0].access_list"
+            :stream="courseInfo?.data?.stream"
             class="w-full h-[364px]"
           />
           <IntroductionDesktop />
@@ -62,9 +76,10 @@ import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import type { Course } from '@/queries/course'
 import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
+import type { CurrentPlanResponseType } from '@/queries'
 
-const props=defineProps({
-  course_id:{type:Number}
+const props = defineProps({
+  course_id: { type: Number }
 })
 const {
   data: courseInfo,
@@ -75,6 +90,18 @@ const {
   queryFn: () =>
     ApiClient.get<ApiResponseTypeV3<Course>>(
       ENDPOINTS.Courses.course_info(props?.course_id)
+    )
+})
+
+const {
+  data: currentPlan,
+  isPending: currentPlanPending,
+  isFetching: currentPlanFetching
+} = useQuery({
+  queryKey: ['current-plan'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, Message>>(
+      ENDPOINTS.Profile.CurrentPlan
     )
 })
 </script>

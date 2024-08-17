@@ -1,1 +1,1 @@
-export type {Course} from "./type"
+export type {Course,Stream} from "./type"

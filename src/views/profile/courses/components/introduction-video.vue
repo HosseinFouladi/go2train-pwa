@@ -1,29 +1,28 @@
 <template>
   <div class="flex flex-col gap-2">
-    <CustomPlayer :src="testVideo" />
+    <CustomPlayer :access_list="props.access_list" :stream="props.stream" />
     <p class="flex gap-1 text-st-two md:text-sm-st-one font-demi-bold">
       <span class="text-primary-500">مدرس</span>
-      <span class="text-text-400">حسام موسوی</span>
+      <span class="text-text-400"> {{ teacher_name }}</span>
     </p>
     <div class="flex items-center justify-between gap-3 p-4">
       <div class="flex flex-col items-center gap-1">
         <language-square-icon />
-        <span class="text-st-two font-regular">انگلیسی (بومی)</span>
+        <span class="text-st-two font-regular"> {{ language_name }}</span>
       </div>
       <div class="w-[1px] h-9 divider"></div>
       <div class="flex flex-col items-center gap-1">
         <video-time-icon />
-        <span class="text-st-two font-regular">۲۴ ویدیو ( 8 ساعت)</span>
+        <span class="text-st-two font-regular"
+          >{{ sessionCount }} ویدیو ( {{ duration }} ساعت)</span
+        >
       </div>
       <div class="w-[1px] h-9 divider"></div>
       <div class="flex flex-col items-center gap-1">
         <div class="flex">
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
+          <UserAvatar v-for="user in users" :key="user.id" :avatar_url="user.avatar" width="20px" class="-mr-2 first:mr-0" />
         </div>
-        <span class="text-st-two font-regular"> +۴۳۵</span>
+        <span class="text-st-two font-regular">{{ users.length }}+</span>
       </div>
     </div>
     <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
@@ -37,8 +36,25 @@ import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
 import { VideoTimeIcon, LanguageSquareIcon, ArrowLeft } from '@/components/icons'
 import CoinImg from '@/assets/images/coin-silver.png'
 import { Button } from '@/components'
-import {CustomPlayer} from "./"
+import { CustomPlayer } from './'
+import type { AccessList, Stream } from '@/queries'
 
+type Props = {
+  stream: Stream
+  access_list: Array<AccessList>
+  teacher_name: string
+  language_name: string
+  sessionCount: string
+  duration: string
+  users: [
+    {
+      avatar: string
+      id: string
+      name: string
+    }
+  ]
+}
+const props = defineProps<Props>()
 </script>
 
 <style scoped lang="scss">

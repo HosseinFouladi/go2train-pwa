@@ -3,76 +3,78 @@
     <video
       @click="togglePlayPause"
       @loadedmetadata="totlaDuration"
-      :src="src"
+      :src="props.stream?.streamProviders?.cache?.urls?.p360"
       class="custom-video"
       @timeupdate="updateProgressbar"
       @ended="showPlayIcon"
-      :poster="thumbnailGif"
+      :poster="props?.stream?.streamMeta.thumbnail"
       controlslist=" nodownload"
     ></video>
     <div class="video-controls">
       <div class="controls-items">
-        <div class="controls-item flex items-center">
+        <div class="flex items-center controls-item">
           <MinimizeIcon
             @click="toggleFullScreen"
             id="fullscreen"
-            class="fullscreen w-4"
+            class="w-4 fullscreen"
             aria-label="Fullscreen"
           />
           <div class="relative">
-            <div class="relative flex justify-center items-center">
+            <div class="relative flex items-center justify-center">
               <Button
                 id="setting"
-                class="opacity-0 w-0"
+                class="w-0 opacity-0"
                 label=""
                 @click="settingToggle"
                 variant="text"
               />
-              <label for="setting" class="">
-                <SettingIcon class="text-neutral-white -mr-4 w-4 h-4" />
+              <label for="setting" class="-mr-10">
+                <SettingIcon class="w-4 h-4 text-neutral-white" />
               </label>
             </div>
 
             <Popover ref="settingMenu" id="overlay_tmenu">
-              <div class="p-4 flex flex-col gap-4 rounded-2xl font-demi-bold">
-                <h3 class="text-sm-st-one text-center">Video setting</h3>
+              <div class="flex flex-col gap-4 p-4 rounded-2xl font-demi-bold">
+                <h3 class="text-center text-sm-st-one">Video setting</h3>
                 <div class="w-full h-[1px] bg-secondary-100"></div>
-                <div class="flex justify-between gap-8 items-center">
-                  <div class="flex items-center relative">
-                    <div class="relative flex justify-center items-center">
+                <div class="flex items-center justify-between gap-8">
+                  <div class="relative flex items-center">
+                    <div class="relative flex items-center justify-center">
                       <Button
                         id="speed"
-                        class="opacity-0 w-0"
+                        class="w-0 opacity-0"
                         label=""
                         @click="speedToggle"
                         variant="text"
                       />
                       <label for="speed" class="">
-                        <ArrowRight class="-mr-4 w-4 h-4" />
+                        <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
                     <Popover ref="speedMenu" id="speed_menu">
-                      <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
-                        <div class="flex justify-between items-center">
+                      <div
+                        class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px] max-h-[200px] overflow-auto"
+                      >
+                        <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">
                             Playback speed
                           </h3>
                           <ArrowLeft class="text-[16px]" @click="settingToggle" />
                         </div>
                         <div class="w-full h-[1px] bg-secondary-100"></div>
-                        <ul class="w-full flex flex-col gap-2">
+                        <ul class="flex flex-col w-full gap-2">
                           <li
                             v-for="item in speeds"
                             :key="item.speed"
-                            class="flex justify-between items-center p-4 hover:bg-secondary-100 rounded-lg"
+                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
                             @click="() => setSpeed(item.speed)"
                             :class="
                               cn({ 'bg-secondary-100 ': item.speed === videoSpeed })
                             "
                           >
                             <div
-                              class="rounded bg-secondary-100 p-1 flex items-center justify-center font-500 text-sm-cp"
-                              v-if="!item.isPro"
+                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
+                              v-if="item.isPro"
                             >
                               pro
                             </div>
@@ -89,52 +91,66 @@
                   </div>
                 </div>
 
-                <div class="flex justify-between gap-8 items-center">
-                  <div class="flex items-center relative">
-                    <div class="relative flex justify-center items-center">
+                <div class="flex items-center justify-between gap-8">
+                  <div class="relative flex items-center">
+                    <div class="relative flex items-center justify-center">
                       <Button
                         id="quality"
-                        class="opacity-0 w-0"
+                        class="w-0 opacity-0"
                         label=""
                         @click="qualityToggle"
                         variant="text"
                       />
                       <label for="quality" class="">
-                        <ArrowRight class="-mr-4 w-4 h-4" />
+                        <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
                     <Popover ref="qualityMenu" id="speed_menu">
                       <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
-                        <div class="flex justify-between items-center">
+                        <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
                           <ArrowLeft class="text-[16px]" @click="settingToggle" />
                         </div>
                         <div class="w-full h-[1px] bg-secondary-100"></div>
-                        <ul class="w-full flex flex-col gap-2">
+                        <ul class="flex flex-col w-full gap-2">
                           <li
-                            v-for="quality in qualities"
-                            :key="quality.quality"
-                            class="flex justify-between items-center p-4 hover:bg-secondary-100 rounded-lg"
-                            @click="() => setQuality(quality)"
+                            v-for="[key, quality] in Object.entries(
+                              props.stream.streamProviders.cache.urls
+                            )"
+                            :key="quality"
+                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
+                            @click="
+                              () => {
+                                if (checkAcces(key)) setQuality({ key, quality })
+                              }
+                            "
                             :class="
                               cn({
-                                'bg-secondary-100 ': quality.quality === videoQuality
+                                'bg-secondary-100 ': key == videoQuality
                               })
                             "
                           >
+                            <span
+                              class="text-sm-cp"
+                              :class="
+                                cn({
+                                  'text-secondary-400': !checkAcces(key)
+                                })
+                              "
+                              >{{ key }}</span
+                            >
                             <div
-                              class="rounded bg-secondary-100 p-1 flex items-center justify-center font-500 text-sm-cp"
-                              v-if="!quality.isPro"
+                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
+                              v-if="!checkAcces(key)"
                             >
                               pro
                             </div>
-                            <span class="text-sm-cp">{{ quality.quality }}</span>
                           </li>
                         </ul>
                       </div>
                     </Popover>
                     <span class="text-sm-st-two font-demi-bold"
-                      >Auto<span class="text-sm-cp">(720p60)</span></span
+                      >Auto<span class="text-sm-cp">(360p)</span></span
                     >
                   </div>
                   <div class="flex gap-1">
@@ -206,26 +222,7 @@
       class="flex flex-col items-center w-fit"
       @click="togglePlayPause"
     >
-      <svg
-        width="52"
-        height="52"
-        viewBox="0 0 52 52"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M2.64453 25.9987C2.64453 13.1504 13.1095 2.70703 25.9362 2.70703C38.7629 2.70703 49.2279 13.1504 49.2279 25.9987C49.2279 38.847 38.7845 49.2904 25.9362 49.2904C13.1095 49.2904 2.64453 38.847 2.64453 25.9987ZM5.89453 25.9987C5.89453 37.0487 14.8862 46.0404 25.9362 46.0404C36.9862 46.0404 45.9779 37.0487 45.9779 25.9987C45.9779 14.9487 36.9862 5.95703 25.9362 5.95703C14.8862 5.95703 5.89453 14.9487 5.89453 25.9987Z"
-          fill="#E9EBF8"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M20.2158 36.1176C18.3525 35.0343 17.3125 32.9109 17.3125 30.1376V22.8793C17.3125 20.1059 18.3308 17.9826 20.1942 16.8993C22.0575 15.8159 24.4192 15.9893 26.8242 17.3759L33.1075 20.9943C35.5125 22.3809 36.8342 24.3309 36.8342 26.4976C36.8342 28.6426 35.5125 30.6143 33.1075 32.0009L26.8242 35.6193C25.4808 36.4209 24.1158 36.8109 22.8808 36.8109C21.9275 36.8109 21.0175 36.5726 20.2158 36.1176ZM21.8408 19.6943C21.0175 20.1709 20.5625 21.3193 20.5625 22.8793V30.1376C20.5625 31.6759 21.0175 32.8459 21.8408 33.3009C22.6425 33.7776 23.8775 33.5826 25.2208 32.8243L31.5042 29.2059C32.8475 28.4259 33.6058 27.4509 33.6058 26.5193C33.6058 25.5876 32.8258 24.6126 31.5042 23.8326L25.2208 20.2143C24.3542 19.6943 23.5525 19.4343 22.8808 19.4343C22.4908 19.4343 22.1225 19.5209 21.8408 19.6943Z"
-          fill="#E9EBF8"
-        />
-      </svg>
+      <PlayIcon class="w-10 h-10 text-neutral-white" />
 
       <h2 class="text-neutral-white text-sm-st-one">ویدئو معرفی دوره</h2>
     </div>
@@ -235,9 +232,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-const props = defineProps({
-  src: { type: String, required: true }
-})
 import { Button, Loading } from '@/components'
 import {
   MinimizeIcon,
@@ -250,7 +244,13 @@ import {
   QualityIcon
 } from '@/components/icons'
 import { cn } from '@/utils'
-import thumbnailGif from '@/assets/videos/Loading-animation-GO2TRain.gif'
+import { Stream, AccessList } from '@/queries'
+
+type Props = {
+  stream: Stream
+  access_list: Array<AccessList>
+}
+const props = defineProps<Props>()
 
 const wrapper = ref()
 const video = ref<HTMLVideoElement>()
@@ -269,6 +269,13 @@ const playSpeedItems = ref<HTMLElement>()
 const centerPlayButton = ref<HTMLElement>()
 const videoControls = ref<HTMLElement>()
 
+const videoSpeed = ref(1)
+const videoQuality = ref('')
+const qualityMenu = ref()
+const speedMenu = ref()
+const settingMenu = ref()
+const currentVideoSrc = ref(0)
+
 const speeds = ref([
   {
     speed: 0.25,
@@ -279,56 +286,65 @@ const speeds = ref([
     isPro: false
   },
   {
+    speed: 0.75,
+    isPro: false
+  },
+  {
     speed: 1,
     isPro: false
   },
   {
     speed: 1.25,
     isPro: false
+  },
+  {
+    speed: 1.5,
+    isPro: false
+  },
+  {
+    speed: 2,
+    isPro: false
+  },
+  {
+    speed: 2.5,
+    isPro: false
   }
 ])
 
-const qualities = ref([
-  {
-    quality: '360p',
-    isPro: true,
-    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p240/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
-  },
-  {
-    quality: '244p',
-    isPro: true,
-    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p360/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
-  },
-  {
-    quality: '1080p',
-    isPro: false,
-    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p480/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
-  },
-  {
-    quality: '720p',
-    isPro: false,
-    src: 'https://train-test.g2storage.com/teacher/section/videos/encoded/p720/1699174185-4cd06dc8-be26-4f9d-9d84-1019970c1a77.mp4'
+const handleVideoSrcError = () => {
+  const allVideoSrc = [
+    ...Object.values(props.stream?.streamProviders.cache.urls),
+    props.stream?.streamProviders.cloudflare.meta.hls
+  ]
+  currentVideoSrc.value += 1
+  if (currentVideoSrc.value < allVideoSrc.length) {
+    if (video.value) video.value.src = allVideoSrc[currentVideoSrc.value]
   }
-])
+}
 
-const videoSpeed = ref(1)
-const videoQuality = ref('360p')
-
-const qualityMenu = ref()
-const speedMenu = ref()
-const settingMenu = ref()
-
-const settingToggle = (event) => {
+const settingToggle = (event: Event) => {
   settingMenu.value.toggle(event)
 }
 
-const speedToggle = (event) => {
+const speedToggle = (event: Event) => {
   speedMenu.value.toggle(event)
 }
 
-const qualityToggle = (event) => {
+const checkAcces = (quality: string): boolean => {
+  let isPro = true
+  props.access_list.forEach((item) => {
+    if (item.slug.includes(quality)) {
+      isPro = false
+      return
+    }
+  })
+  return isPro
+}
+
+const qualityToggle = (event: Event) => {
   qualityMenu.value.toggle(event)
 }
+
 onMounted(() => {
   wrapper.value = document.querySelector('.video-wrapper')
 
@@ -348,11 +364,14 @@ onMounted(() => {
     playSpeedItems.value = wrapper.value.querySelectorAll('.play-speed li')
     centerPlayButton.value = wrapper.value.querySelector('#play-video')
     videoControls.value = wrapper.value.querySelector('.video-controls')
+
+    if (video.value)
+      video.value.addEventListener('error', () => handleVideoSrcError())
   }
 })
 
 // Helper function to format time in minutes:seconds
-function formatTime(time) {
+function formatTime(time: number) {
   const minutes = Math.floor(time / 60)
   const seconds = Math.floor(time % 60)
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
@@ -361,7 +380,7 @@ function formatTime(time) {
 // Helper function to toggle video playback
 function togglePlayPause() {
   console.log(playPauseButton.value)
-  if (video.value.paused || video.value.ended) {
+  if (video.value && (video.value.paused || video.value.ended)) {
     video.value.play()
     playPauseButton.value.querySelector('.play').style.display = 'none'
     playPauseButton.value.querySelector('.pause').style.display = 'block'
@@ -379,13 +398,14 @@ function togglePlayPause() {
 // Update total duration when metadata is loaded
 
 const totlaDuration = () => {
+  if(totalDurationDisplay.value&&video.value)
   totalDurationDisplay.value.textContent = formatTime(video.value.duration)
 }
 
 // Toggle video playback with Enter or Space keys and seek with Arrow keys
 document.addEventListener('keydown', (event) => {
   const isInput =
-    event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA'
+    event.target?.tagName === 'INPUT' || event.target?.tagName === 'TEXTAREA'
   if (!isInput) {
     switch (event.code) {
       case 'Space':
@@ -394,12 +414,14 @@ document.addEventListener('keydown', (event) => {
         togglePlayPause()
         break
       case 'ArrowRight':
+      if(video.value)
         video.value.currentTime = Math.min(
           video.value.currentTime + 5,
           video.value.duration
         ) // Seek forward 5 seconds
         break
       case 'ArrowLeft':
+      if(video.value)
         video.value.currentTime = Math.max(video.value.currentTime - 5, 0) // Seek backward 5 seconds
         break
     }
@@ -427,6 +449,7 @@ const changeVolume = (event) => {
   }
   volumeLevel.value.style.width = `${volume * 100}%`
 }
+
 //toggle fullscreen
 const toggleFullScreen = () => {
   if (!document.fullscreenElement) {
@@ -435,7 +458,6 @@ const toggleFullScreen = () => {
     })
     document.body.classList.add('landscape')
     if (fullscreenButton.value) fullscreenButton.value.classList.add('active ')
-    video.value.style.height = '100%'
   } else {
     document.exitFullscreen()
     if (fullscreenButton.value) fullscreenButton.value.classList.remove('active ')
@@ -467,12 +489,13 @@ const setSpeed = (speed: number) => {
   videoSpeed.value = speed
 }
 
-const setQuality = (quality: { quality: string; isPro: boolean; src: string }) => {
+//change video quality that comes from api
+const setQuality = (quality: { key: string; quality: string }) => {
   const currentVideoTime = video.value?.currentTime
   qualityMenu.value.toggle(event)
   settingMenu.value.toggle(event)
-  videoQuality.value = quality.quality
-  video.value.src = quality.src
+  videoQuality.value = quality.key
+  video.value.src = quality.quality
   video.value.currentTime = currentVideoTime
   video.value?.play()
 }
@@ -491,7 +514,7 @@ document.addEventListener('click', (event) => {
 const showPlayIcon = () => {
   playPauseButton.value.querySelector('.play').style.display = 'block'
   playPauseButton.value.querySelector('.pause').style.display = 'none'
-  centerPlayButton.value.style.display = 'block'
+  centerPlayButton.value.style.display = 'flex'
   videoControls.value.classList.remove('video-playing')
 }
 </script>
@@ -740,12 +763,6 @@ const showPlayIcon = () => {
       bottom: 8px;
     }
     > #play-video {
-      width: 60px;
-      height: 60px;
-      > svg {
-        max-width: 40px;
-        max-height: 40px;
-      }
     }
   }
 }
