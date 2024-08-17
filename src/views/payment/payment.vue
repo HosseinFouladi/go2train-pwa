@@ -67,7 +67,7 @@ const paymentDetails = computed(() => data.value?.data.results)
   <div class="flex flex-col-reverse h-screen lg:flex-row bg-background-default">
     <div class="flex flex-col w-full">
       <div class="flex flex-col w-full max-w-[1440px] mx-auto px-4">
-        <div v-if="!username || plan_id || plan_price_id">
+        <div v-if="!username || !plan_id || !plan_price_id">
           <PaymentError />
         </div>
         <div v-else class="w-full max-w-[1128px] h-screen mx-auto">
