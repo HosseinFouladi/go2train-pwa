@@ -18,7 +18,7 @@ withDefaults(defineProps<ButtonProps>(), {
   <button
     :class="
       cn(
-        'font-demi-bold',
+        'font-demi-bold min-h-12',
         'flex items-center justify-center font-demi-bold',
         'text-neutral-white rounded-[14px] shadow-lg duration-200',
         buttonTheme[variant][disabled ? 'disabled' : mode],

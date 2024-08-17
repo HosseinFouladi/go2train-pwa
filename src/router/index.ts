@@ -4,11 +4,12 @@ import { useAuthStore } from '@/stores'
 import { AuthRoutes } from '@/router/auth-routes'
 import { ProfileRoutes } from '@/router/profile-routes'
 import { setAuthCredentials } from '@/utils'
+import { PaymentRoutes } from "./payement";
 
 const router = createRouter({
 	strict: true,
 	history: createWebHistory(import.meta.env.BASE_URL),
-	routes: [...AuthRoutes, ...ProfileRoutes],
+	routes: [...AuthRoutes, ...ProfileRoutes, ...PaymentRoutes],
 });
 
 router.beforeEach(async (to, from, next) => {
