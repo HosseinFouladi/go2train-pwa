@@ -9,7 +9,7 @@ import { WarningIcon } from '@/components/icons'
 import { InlineInfo, Button } from '@/components'
 import type { PaymentPlanResponse } from '@/queries'
 import { ENDPOINTS, type ApiResponseType } from '@/api'
-import { PlanCard, ReciptCard } from '@/views/payment/components'
+import { PlanCard, ReciptCard, PaymentError } from '@/views/payment/components'
 
 const route = useRoute()
 const { plan_id, username, plan_price_id } = route.query
@@ -66,37 +66,39 @@ const paymentDetails = computed(() => data.value?.data.results)
 <template>
   <div class="flex flex-col-reverse h-screen lg:flex-row bg-background-default">
     <div class="flex flex-col w-full">
-      <div class="flex flex-col w-full max-w-[1440px] mx-auto px-6">
-        <div class="w-full max-w-[1128px] h-screen mx-auto">
+      <div class="flex flex-col w-full max-w-[1440px] mx-auto px-4">
+        <div v-if="!username || plan_id || plan_price_id">
+          <PaymentError />
+        </div>
+        <div v-else class="w-full max-w-[1128px] h-screen mx-auto">
           <h1 class="py-6 text-center text-h5 font-demi-bold">خرید اشتراک</h1>
           <div class="space-y-4">
             <PlanCard v-bind="paymentDetails" :isLoading="isLoading" />
             <ReciptCard v-bind="paymentDetails" :isLoading="isLoading" />
             <InlineInfo
-              :icon="h(WarningIcon, {height: 20, width: 20})"
+              :icon="h(WarningIcon, { height: 20, width: 20 })"
               text="لطفا اطلاعات خود را بررسی کنید و از صحت آن مطمئن شوید."
             />
-          </div>
-
-          <div
-            class="absolute left-0 flex items-center justify-center w-full px-6 bottom-5"
-          >
-            <Button
-              fluid
-              :isLoading="isPending"
-              label="ادامه فرآیند خرید"
-              :diabled="isPending || isLoading"
-              @click="
-                () =>
-                  paymentDetails &&
-                  mutate({
-                    plan_id: paymentDetails?.plan.id,
-                    gateway_id: 1,
-                    plan_price_id: paymentDetails?.pricing.id,
-                    username: paymentDetails?.username
-                  })
-              "
-            />
+            <div
+              class="absolute left-0 flex items-center justify-center w-full px-4 bottom-5"
+            >
+              <Button
+                fluid
+                :isLoading="isPending"
+                label="ادامه فرآیند خرید"
+                :diabled="isPending || isLoading"
+                @click="
+                  () =>
+                    paymentDetails &&
+                    mutate({
+                      plan_id: paymentDetails?.plan.id,
+                      gateway_id: 1,
+                      plan_price_id: paymentDetails?.pricing.id,
+                      username: paymentDetails?.username
+                    })
+                "
+              />
+            </div>
           </div>
         </div>
       </div>
