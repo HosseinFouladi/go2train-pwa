@@ -32,7 +32,7 @@
             <p class="text-st-two font-regular text-secondary-700">
               از گالری خود تصویری انتخاب کنید
             </p>
-            <BorderAroowLeft />
+            <ArrowLeftCircled />
             <SelectGallery class="absolute md:left-0 -top-2 -left-6" />
           </label>
 
@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { BorderAroowLeft, SelectGallery, SelectAvatar } from '@/components/icons'
+import { ArrowLeftCircled, SelectGallery, SelectAvatar } from '@/components/icons'
 import { AvatarListModal,GalleryModal } from './'
 import { ref } from 'vue'
 
