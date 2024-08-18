@@ -12,16 +12,9 @@ import { ENDPOINTS, type ApiResponseType } from '@/api'
 import { PlanCard, ReciptCard, PaymentError } from '@/views/payment/components'
 
 const route = useRoute()
-const { plan_id, username, plan_price_id } = route.query
+const { plan_id, username } = route.query
 
-type SubscribeByUsernameParams = {
-  username: string
-  plan_id: number
-  gateway_id: number
-  plan_price_id: number
-}
-
-const subscribeByUsername = (params: SubscribeByUsernameParams) => {
+const subscribeByUsername = (params: { username: string; plan_id: number }) => {
   return ApiClient.post<
     ApiResponseType<Array<{ url: string }>, { id: ''; content: '' }>
   >(ENDPOINTS.Payment.SubscribeByUsername, params)
@@ -34,28 +27,34 @@ const subscribeByUsername = (params: SubscribeByUsernameParams) => {
 }
 
 const { mutate, isPending } = useMutation({
-  mutationFn: (params: SubscribeByUsernameParams) => subscribeByUsername(params)
+  mutationFn: (params: { username: string; plan_id: number }) =>
+    subscribeByUsername(params)
 })
 
-const getPaymentDetails = (params: {
+const getPaymentDetails = async (params: {
   username: string
   plan_id: string
-  plan_price_id: string
 }) => {
   return ApiClient.post<
     ApiResponseType<Array<PaymentPlanResponse>, { id: ''; content: '' }>
-  >(ENDPOINTS.Payment.PaymentDetails, params).then((res) =>
-    _.set(_.cloneDeep(res), 'data.results', _.head(res.data.results))
-  ) as Promise<ApiResponseType<PaymentPlanResponse, { id: 'all'; content: string }>>
+  >(ENDPOINTS.Payment.PaymentDetails, params).then(
+    (res) =>
+      _.set(
+        _.cloneDeep(res),
+        'data.results',
+        _.head(res.data.results)
+      ) as unknown as Promise<
+        ApiResponseType<PaymentPlanResponse, { id: 'all'; content: string }>
+      >
+  )
 }
 
-const { data, isLoading } = useQuery({
+const { data, isLoading, isError } = useQuery({
   queryKey: ['check_username', String(route.query.username)],
   queryFn: () =>
     getPaymentDetails({
       username: String(username),
       plan_id: String(plan_id),
-      plan_price_id: String(plan_price_id)
     }),
   networkMode: 'offlineFirst'
 })
@@ -64,13 +63,14 @@ const paymentDetails = computed(() => data.value?.data.results)
 </script>
 
 <template>
-  <div class="flex flex-col-reverse h-screen lg:flex-row bg-background-default">
+  <PaymentError v-if="!username || !plan_id || isError" />
+  <div
+    v-if="!isError"
+    class="relative flex flex-col-reverse h-screen lg:flex-row bg-background-default"
+  >
     <div class="flex flex-col w-full">
       <div class="flex flex-col w-full max-w-[1440px] mx-auto px-4">
-        <div v-if="!username || !plan_id || !plan_price_id">
-          <PaymentError />
-        </div>
-        <div v-else class="w-full max-w-[1128px] h-screen mx-auto">
+        <div class="w-full h-screen max-w-6xl mx-auto">
           <h1 class="py-6 text-center text-h5 font-demi-bold">خرید اشتراک</h1>
           <div class="space-y-4">
             <PlanCard v-bind="paymentDetails" :isLoading="isLoading" />
@@ -92,8 +92,6 @@ const paymentDetails = computed(() => data.value?.data.results)
                     paymentDetails &&
                     mutate({
                       plan_id: paymentDetails?.plan.id,
-                      gateway_id: 1,
-                      plan_price_id: paymentDetails?.pricing.id,
                       username: paymentDetails?.username
                     })
                 "
