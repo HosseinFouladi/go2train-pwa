@@ -31,10 +31,7 @@ const { mutate, isPending } = useMutation({
     subscribeByUsername(params)
 })
 
-const getPaymentDetails = async (params: {
-  username: string
-  plan_id: string
-}) => {
+const getPaymentDetails = async (params: { username: string; plan_id: string }) => {
   return ApiClient.post<
     ApiResponseType<Array<PaymentPlanResponse>, { id: ''; content: '' }>
   >(ENDPOINTS.Payment.PaymentDetails, params).then(
@@ -54,8 +51,9 @@ const { data, isLoading, isError } = useQuery({
   queryFn: () =>
     getPaymentDetails({
       username: String(username),
-      plan_id: String(plan_id),
+      plan_id: String(plan_id)
     }),
+  gcTime: 0,
   networkMode: 'offlineFirst'
 })
 
@@ -63,39 +61,41 @@ const paymentDetails = computed(() => data.value?.data.results)
 </script>
 
 <template>
-  <PaymentError v-if="!username || !plan_id || isError" />
-  <div
-    v-if="!isError"
-    class="relative flex flex-col-reverse h-screen lg:flex-row bg-background-default"
-  >
-    <div class="flex flex-col w-full">
-      <div class="flex flex-col w-full max-w-[1440px] mx-auto px-4">
-        <div class="w-full h-screen max-w-6xl mx-auto">
-          <h1 class="py-6 text-center text-h5 font-demi-bold">خرید اشتراک</h1>
-          <div class="space-y-4">
-            <PlanCard v-bind="paymentDetails" :isLoading="isLoading" />
-            <ReciptCard v-bind="paymentDetails" :isLoading="isLoading" />
-            <InlineInfo
-              :icon="h(WarningIcon, { height: 20, width: 20 })"
-              text="لطفا اطلاعات خود را بررسی کنید و از صحت آن مطمئن شوید."
-            />
-            <div
-              class="absolute left-0 flex items-center justify-center w-full px-4 bottom-5"
-            >
-              <Button
-                fluid
-                :isLoading="isPending"
-                label="ادامه فرآیند خرید"
-                :diabled="isPending || isLoading"
-                @click="
-                  () =>
-                    paymentDetails &&
-                    mutate({
-                      plan_id: paymentDetails?.plan.id,
-                      username: paymentDetails?.username
-                    })
-                "
+  <div v-if="!isLoading">
+    <PaymentError v-if="!username || !plan_id || isError" />
+    <div
+      v-if="!isError"
+      class="relative flex flex-col-reverse h-screen lg:flex-row bg-background-default"
+    >
+      <div class="flex flex-col w-full">
+        <div class="flex flex-col w-full max-w-[1440px] mx-auto px-4">
+          <div class="w-full h-screen max-w-6xl mx-auto">
+            <h1 class="py-6 text-center text-h5 font-demi-bold">خرید اشتراک</h1>
+            <div class="space-y-4">
+              <PlanCard v-bind="paymentDetails" :isLoading="isLoading" />
+              <ReciptCard v-bind="paymentDetails" :isLoading="isLoading" />
+              <InlineInfo
+                :icon="h(WarningIcon, { height: 20, width: 20 })"
+                text="لطفا اطلاعات خود را بررسی کنید و از صحت آن مطمئن شوید."
               />
+              <div
+                class="absolute left-0 flex items-center justify-center w-full px-4 bottom-5"
+              >
+                <Button
+                  fluid
+                  :isLoading="isPending"
+                  label="ادامه فرآیند خرید"
+                  :diabled="isPending || isLoading"
+                  @click="
+                    () =>
+                      paymentDetails &&
+                      mutate({
+                        plan_id: paymentDetails?.plan.id,
+                        username: paymentDetails?.username
+                      })
+                  "
+                />
+              </div>
             </div>
           </div>
         </div>
