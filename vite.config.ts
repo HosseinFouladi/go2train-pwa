@@ -10,42 +10,43 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      injectRegister: false,
-      pwaAssets: {
-        disabled: false,
-        config: true
-      },
-      manifest: {
-        name: 'my-vue-app',
-        short_name: 'my-app',
-        description: 'this is my vue application',
-        theme_color: '#ffffff'
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true
-      },
-      devOptions: {
-        enabled: false,
-        navigateFallback: 'index.html',
-        suppressWarnings: true,
-        type: 'module'
-      }
-    }),
-    vueJsx(),
-    VueDevTools(),
-    Components({
-      resolvers: [PrimeVueResolver()]
-    })
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+	plugins: [
+		vue(),
+		VitePWA({
+			registerType: "autoUpdate",
+			injectRegister: false,
+			pwaAssets: {
+				disabled: false,
+				config: true,
+			},
+			manifest: {
+				name: "GO2TRain",
+				short_name: "GO2TRain",
+				description:
+					"Unlock the world: Learn any language, anytime, anywhere - for free!",
+				theme_color: "#ffffff",
+			},
+			workbox: {
+				globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
+				cleanupOutdatedCaches: true,
+				clientsClaim: true,
+			},
+			devOptions: {
+				enabled: false,
+				navigateFallback: "index.html",
+				suppressWarnings: true,
+				type: "module",
+			},
+		}),
+		vueJsx(),
+		VueDevTools(),
+		Components({
+			resolvers: [PrimeVueResolver()],
+		}),
+	],
+	resolve: {
+		alias: {
+			"@": fileURLToPath(new URL("./src", import.meta.url)),
+		},
+	},
+});
