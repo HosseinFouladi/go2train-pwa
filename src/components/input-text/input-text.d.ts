@@ -7,4 +7,5 @@ export type InputTextProps = {
 		iconRight?: Component;
 		fluid?: boolean;
 		disabled?: boolean;
+		value:string
 	};

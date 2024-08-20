@@ -42,7 +42,8 @@
     >
       <template #container>
         <div class="flex flex-col items-center gap-2 p-4 rounded-t-lg">
-          <h2 class="text-h6 font-demi-bold">دوره زبان انگلیسی - {{ 'A2' }}</h2>
+          <h2 class="text-h6 font-demi-bold">          دوره  {{ title }} - {{ levelTitle }}
+          </h2>
           <div class="h-[1px] w-full bg-secondary-100"></div>
           <p
             class="text-right text-sm-st-two font-regular text-secondary-900 md:text-st-one md:text-text-500"

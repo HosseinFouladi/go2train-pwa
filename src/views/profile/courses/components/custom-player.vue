@@ -379,8 +379,8 @@ function formatTime(time: number) {
 
 // Helper function to toggle video playback
 function togglePlayPause() {
-  console.log(playPauseButton.value)
   if (video.value && (video.value.paused || video.value.ended)) {
+    console.log(video.value)
     video.value.play()
     playPauseButton.value.querySelector('.play').style.display = 'none'
     playPauseButton.value.querySelector('.pause').style.display = 'block'
@@ -504,7 +504,7 @@ const setQuality = (quality: { key: string; quality: string }) => {
 document.addEventListener('click', (event) => {
   if (
     !wrapper.value.contains(event.target) &&
-    playSpeedMenu.value.style.display === 'flex'
+    playSpeedMenu.value?.style.display === 'flex'
   ) {
     playSpeedMenu.value.style.display = 'none'
   }

@@ -6,6 +6,16 @@ import { ApiClient } from "@/utils";
 export type ApiResponseTypeV3<T> = {
 	data: T;
 	message: Array<Message>;
+	meta?:{
+		simple_paginate: boolean
+		per_page: number
+		count: number
+		current_page: number
+		next_page: any
+		prev_page: number
+		total: number
+		last_page: number
+	}
 };
 
 export interface Message {

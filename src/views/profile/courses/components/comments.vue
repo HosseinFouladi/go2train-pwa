@@ -1,66 +1,107 @@
 <template>
   <div>
     <Button
-      label="جدیدترین"
+      :label="filterName"
       :iconRight="FilterIcon"
       variant="text"
-      class="my-3"
-      @click="toggle"
+      class="my-3 xl:hidden"
+      @click="isFilterMenu = !isFilterMenu"
     />
-    <Menu ref="filterMenu" id="overlay_menu" :model="items" :popup="true" />
-    <div class="flex flex-col gap-2 p-4 rounded-2xl bg-secondary-50">
-      <div class="flex flex-col gap-2">
-        <div class="flex justify-between">
-          <div class="flex items-center gap-2">
-            <UserAvatar :avatar_url="''" :badge_url="''" width="40px" />
-            <div class="flex flex-col gap-1">
-              <span class="text-sm-st-two font-regular text-text-200"
-                >حسام رضاخواه</span
-              >
-              <div class="flex gap-1">
-                <StarIcon
-                  class="w-4 h-4 text-primary-500"
-                  v-for="item in 5"
-                  :key="item"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center gap-1">
-            <span class="text-sm-st-two font-regular text-text-200"> ۲ دقیقه</span>
-            <div @click="toggleMore">
-              <MoreIcon />
-            </div>
-            <Menu ref="moreMenu" id="setting_menu" :model="items" :popup="true" />
-          </div>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm-st-two font-regular">خیلی خوب</span>
-          <div class="flex gap-1">
-            <LikeIcon />
-            <span class="text-sm-st-two font-regular text-success-500"
-              >خیلی خوب</span
-            >
-          </div>
-        </div>
-        <div class="flex flex-col items-end overflow-hidden transition-all ">
-          <p
+
+    <Button
+      :label="filterName"
+      :iconRight="FilterIcon"
+      variant="text"
+      class="hidden my-3 xl:flex"
+      @click="filterToggle"
+    />
+    <Popover ref="filterMenu" id="filterMenu">
+      <div class="flex flex-col items-center gap-2 p-4 rounded-t-lg">
+        <h2 class="text-h6 font-demi-bold">مرتب کردن بر اساس</h2>
+        <div class="h-[1px] w-full bg-secondary-100"></div>
+        <ul class="flex flex-col w-full gap-2">
+          <li
+            v-for="item in filterOptions"
+            :key="item.value"
+            class="w-full p-4 rounded-lg cursor-pointer text-st-two font-regular hover:bg-secondary-100 text-start"
             :class="
               cn({
-                'para	': !commentMore
+                'bg-secondary-100': item.title === filterName
               })
             "
-            class="transition"
+            @click="
+              () => {
+                isFilterMenu = false
+                if (item.title === filterName) return
+                orderByFilterParam = item.value
+                orderTypefilterParam = item.order
+                filterName = item.title
+                commentArray = []
+                page = 1
+                lastScrollTop = 0
+                commentRefetch()
+              }
+            "
           >
-            {{ commentMore ? lorem : lorem.slice(0, 160) + '...' }}
-          </p>
-          <span
-            @click="commentMore = !commentMore"
-            class="text-primary-500 text-st-two"
-            >{{ commentMore ? 'بستن' : 'بیشتر' }}</span
-          >
-        </div>
-        <div class="p-3 border rounded-lg bg-neutral-white border-secondary-200">
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
+    </Popover>
+    <ScrollAreaRoot
+      class="flex flex-col gap-2 p-4 rounded-2xl bg-secondary-50"
+      dir="rtl"
+      style="--scrollbar-size: 1px"
+    >
+      <ScrollAreaViewport
+        class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper"
+        @scroll="infiniteScroll"
+      >
+        <div
+          v-for="comment in commentArray"
+          :key="comment.id"
+          class="flex flex-col gap-2"
+        >
+          <div class="flex justify-between">
+            <div class="flex items-center gap-2">
+              <UserAvatar
+                :avatar_url="comment.user.avatar"
+                :badge_url="comment.user.plan.icon"
+                width="40px"
+              />
+              <div class="flex flex-col gap-1">
+                <span class="text-sm-st-two font-regular text-text-200">
+                  {{ comment.user.name }}</span
+                >
+                <StarRating
+                  :rtl="true"
+                  v-model:rating="comment.score"
+                  :increment="0.01"
+                  :show-rating="false"
+                  :star-size="25"
+                  active-color="#FF9900"
+                ></StarRating>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-sm-st-two font-regular text-text-200" dir="ltr">
+                {{ useTimeAgo(comment.createdAt) }}</span
+              >
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm-st-two font-regular"> {{ comment.title }}</span>
+            <div class="flex gap-1">
+              <LikeIcon v-if="comment.isLike" class="cursor-pointer" />
+              <EmptyLikeIcon v-else />
+              <span
+                @click="handleLike(comment.id)"
+                class="text-sm-st-two font-regular text-success-500"
+              >
+                {{ comment.likes }}</span
+              >
+            </div>
+          </div>
           <div class="flex flex-col items-end overflow-hidden transition-all">
             <p
               :class="
@@ -68,62 +109,261 @@
                   'para	': !commentMore
                 })
               "
-              class="transition"
+              class="w-full transition text-start"
             >
-              {{ commentMore ? lorem : lorem.slice(0, 160) + '...' }}
+              {{
+                comment.comment.length < 160 || commentMore
+                  ? comment.comment
+                  : comment.comment.slice(0, 160) + '...'
+              }}
             </p>
             <span
-              @click="commentMore = !commentMore"
-              class="text-primary-500 text-st-two"
-              >{{ commentMore ? 'بستن' : 'بیشتر' }}</span
+              v-if="comment.comment.length >= 160"
+              @click="
+                () => {
+                  commentMore = !commentMore
+                  currentCommentId = comment.id
+                }
+              "
+              class="cursor-pointer text-primary-500 text-st-two"
+              >{{
+                commentMore && comment.id === currentCommentId ? 'بستن' : 'بیشتر'
+              }}</span
             >
           </div>
+          <div
+            v-if="comment?.reply?.text"
+            class="p-3 border rounded-lg bg-neutral-white border-secondary-200"
+          >
+            <div class="flex flex-col items-end overflow-hidden transition-all">
+              <p
+                :class="
+                  cn({
+                    'para	': !replayMore
+                  })
+                "
+                class="w-full transition text-start"
+                v-if="comment?.reply?.text"
+              >
+                {{
+                  comment?.reply.text.length < 160 || replayMore
+                    ? comment?.reply.text
+                    : comment?.reply.text.slice(0, 160) + '...'
+                }}
+              </p>
+              <span
+                v-if="comment?.reply?.text?.length >= 160"
+                @click="replayMore = !replayMore"
+                class="cursor-pointer text-primary-500 text-st-two"
+                >{{ replayMore ? 'بستن' : 'بیشتر' }}</span
+              >
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </ScrollAreaViewport>
+      <ScrollAreaScrollbar
+        class="flex select-none m-1 rounded-full touch-none p-0.5 bg-secondary-50 transition-colors duration-[160ms] ease-out hover:bg-secondary-100 data-[orientation=vertical]:w-1.5 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2.5"
+        orientation="vertical"
+      >
+        <ScrollAreaThumb
+          class="flex-1 bg-secondary-400 rounded-[10px] relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]"
+        />
+      </ScrollAreaScrollbar>
+    </ScrollAreaRoot>
+    <Drawer
+      v-model:visible="isFilterMenu"
+      position="bottom"
+      class="md:max-w-[540px] md:rounded-t-2xl"
+    >
+      <template #container>
+        <div class="flex flex-col items-center gap-2 p-4 rounded-t-lg">
+          <h2 class="text-h6 font-demi-bold">مرتب کردن بر اساس</h2>
+          <div class="h-[1px] w-full bg-secondary-100"></div>
+          <ul class="flex flex-col w-full gap-2">
+            <li
+              v-for="item in filterOptions"
+              :key="item.value"
+              class="w-full p-4 rounded-lg cursor-pointer text-st-two font-regular hover:bg-secondary-100 text-start"
+              :class="
+                cn({
+                  'bg-secondary-100': item.title === filterName
+                })
+              "
+              @click="
+                () => {
+                  isFilterMenu = false
+                  if (item.title === filterName) return
+                  orderByFilterParam = item.value
+                  orderTypefilterParam = item.order
+                  filterName = item.title
+                  commentArray = []
+                  page = 1
+                  lastScrollTop = 0
+                  commentRefetch()
+                }
+              "
+            >
+              {{ item.title }}
+            </li>
+          </ul>
+        </div>
+      </template>
+    </Drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Button, UserAvatar } from '@/components'
-import { FilterIcon, StarIcon, LikeIcon, MoreIcon } from '@/components/icons'
-import { cn } from '@/utils'
-import { ref } from 'vue'
+import {
+  FilterIcon,
+  StarIcon,
+  LikeIcon,
+  MoreIcon,
+  EmptyLikeIcon
+} from '@/components/icons'
+import { ApiClient, cn } from '@/utils'
+import { ref, watch } from 'vue'
+import { useQueryClient } from '@tanstack/vue-query'
+import { Comment, type CommentReactionParams } from '@/queries'
+import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
+import { ENDPOINTS } from '@/api'
+import { useTimeAgo } from '@vueuse/core'
+import EmptyLike from '@/components/icons/like/emptyLike.vue'
+import {
+  ScrollAreaRoot,
+  ScrollAreaThumb,
+  ScrollAreaViewport,
+  ScrollAreaScrollbar
+} from 'radix-vue'
+
+let lastScrollTop = 0
+
+const props = defineProps({
+  course_id: { type: Number }
+})
+const emit = defineEmits(['commentsCount'])
 const filterMenu = ref()
 const moreMenu = ref()
 const commentMore = ref(false)
+const replayMore = ref(false)
+const page = ref(1)
+const commentArray = ref<Array<Comment>>([])
+const queryClient = useQueryClient()
+const isFilterMenu = ref(false)
+const orderByFilterParam = ref('created_at')
+const orderTypefilterParam = ref<'ASC' | 'DESC'>('DESC')
+const filterName = ref('جدیدترین ها')
+const currentCommentId = ref('1')
+const toggleMenu=ref()
 
-const lorem = ref(
-  ' لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف  بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال  و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت  بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در  زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری  موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز  شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود  طراحی اساسا مورد استفاده قرار گیرد.ادگی  نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون  بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی  تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می  باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان  جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان'
-)
-
-const items = ref([
+const filterOptions = ref([
   {
-    label: 'Options',
-    items: [
-      {
-        label: 'Refresh',
-        icon: 'pi pi-refresh'
-      },
-      {
-        label: 'Export',
-        icon: 'pi pi-upload'
-      }
-    ]
+    title: 'جدیدترین ها',
+    value: 'created_at',
+    order: 'DESC'
+  },
+  {
+    title: 'مفیدترین',
+    value: 'like',
+    order: 'DESC'
+  },
+  {
+    title: 'رتبه‌بندی از بیشترین تا کمترین ',
+    value: 'score',
+    order: 'ASC'
+  },
+  {
+    title: ' رتبه‌بندی از کمترین تا بیشترین',
+    value: 'score',
+    order: 'DESC'
   }
 ])
 
-const toggle = (event) => {
+const filterToggle = (event: Event) => {
   filterMenu.value.toggle(event)
 }
 
-const toggleMore = (event) => {
-  moreMenu.value.toggle(event)
+
+const {
+  data: comments,
+  isPending: commentPending,
+  isFetching: commentFetching,
+  refetch: commentRefetch
+} = useQuery({
+  queryKey: ['course_comments'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseTypeV3<Array<Comment>>>(
+      ENDPOINTS.comments.course_comment(props?.course_id),
+      {
+        params: {
+          page: page.value,
+          orderBy: orderByFilterParam.value,
+          orderType: orderTypefilterParam.value
+        }
+      }
+    )
+})
+
+const { mutate: likeComment, isPending: likePending } = useMutation({
+  mutationFn: (params: CommentReactionParams) =>
+    ApiClient.post<ApiResponseTypeV3<any>>(ENDPOINTS.comments.comment_reaction, {
+      ...params
+    }),
+  onSuccess(data) {
+    queryClient.invalidateQueries({ queryKey: ['course_comments'] })
+  },
+  onError(error) {}
+})
+
+const handleLike = (commentId: string) => {
+  likeComment({ action: 'LIKE', commentId })
 }
+const infiniteScroll = (e: HTMLElement) => {
+  const element = document.querySelector('.scroll-wrapper')
+
+  if (!element) return
+
+  if (element.scrollTop < lastScrollTop) {
+    // upscroll
+
+    return
+  }
+  lastScrollTop = element.scrollTop <= 0 ? 0 : element.scrollTop
+  console.log(element.scrollTop, element.offsetHeight, element.scrollHeight)
+
+  if (
+    element.scrollTop + element.offsetHeight >= element.scrollHeight - 50 &&
+    comments.value?.meta.last_page !== page.value
+  ) {
+    page.value += 1
+    commentRefetch()
+  }
+}
+
+watch(
+  () => comments.value?.data,
+  () => {
+    if (comments.value?.data)
+      commentArray.value = [...commentArray.value, ...comments.value.data]
+    emit('commentsCount', commentArray.value.length)
+  }
+)
 </script>
 
-<style scoped>
+<style>
 .para {
   text-overflow: ellipsis;
+}
+.p-progressbar-value {
+  background: #ff9900 !important;
+}
+
+.p-progressbar {
+  height: 6px !important;
+
+  .p-progressbar-label {
+    display: none !important;
+  }
 }
 </style>

@@ -6,6 +6,8 @@ import { AppSettingsEndpoints } from './app-settings'
 import { CountryEndpoints } from "./countries";
 import { AvatarsEndpoints } from './avatars'
 import { CourseEndpoint } from './course'
+import { CommentsEndPoint } from './comment'
+
 
 
 export const ENDPOINTS = {
@@ -16,5 +18,6 @@ export const ENDPOINTS = {
 	Settings: AppSettingsEndpoints,
 	Country: CountryEndpoints,
 	Avatars:AvatarsEndpoints,
-	Courses:CourseEndpoint
+	Courses:CourseEndpoint,
+	comments:CommentsEndPoint
 };

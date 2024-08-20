@@ -1,0 +1,1 @@
+export type {Comment,Ratings,CommentReactionParams,CreateNewCommentParams} from './type'

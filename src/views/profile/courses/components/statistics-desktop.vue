@@ -1,16 +1,36 @@
 <template>
-  <div class="flex flex-col gap-6 card p-6">
+  <div class="flex flex-col gap-6 p-6 card">
     <img
-      :src="LoginImg"
-      class="w-full h-60 rounded-2xl object-cover"
+      :src="poster"
+      class="object-cover w-full h-60 rounded-2xl"
       alt="course-img"
     />
     <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
     <div class="h-[1px] w-full bg-secondary-100"></div>
     <div class="flex items-center gap-2">
-      <RankingIcon class="text-primary-400 w-5 h-5" />
+      <RankingIcon class="w-5 h-5 text-primary-400" />
       <span class="text-st-one font-demi-bold text-text-200">سطح :</span>
-      <span class="text-st-one font-demi-bold text-text-500"> A1</span>
+      <span class="text-st-one font-demi-bold text-text-500"> {{ levelTitle }}</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <RankingIcon class="w-5 h-5 text-primary-400" />
+      <span class="text-st-one font-demi-bold text-text-200">زبان :</span>
+      <span class="text-st-one font-demi-bold text-text-500"> {{ language_name }}</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <RankingIcon class="w-5 h-5 text-primary-400" />
+      <span class="text-st-one font-demi-bold text-text-200">مدت زمان :</span>
+      <span class="text-st-one font-demi-bold text-text-500"> {{ duration }}</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <RankingIcon class="w-5 h-5 text-primary-400" />
+      <span class="text-st-one font-demi-bold text-text-200">تعداد دانش‌آموز :</span>
+      <span class="text-st-one font-demi-bold text-text-500"> {{ users.length }}</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <RankingIcon class="w-5 h-5 text-primary-400" />
+      <span class="text-st-one font-demi-bold text-text-200">امتیاز دوره :</span>
+      <span class="text-st-one font-demi-bold text-text-500"> {{ score }}</span>
     </div>
   </div>
 
@@ -44,10 +64,8 @@
       <p class="font-normal text-sm-st-one">جایگاه شما در جدول امتیازات</p>
       <div class="flex items-center gap-1">
         <div class="flex">
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
-          <UserAvatar :avatar_url="CoinImg" width="20px" class="-mr-2" />
+          <UserAvatar v-for="user in users" :key="user.id" :avatar_url="user.avatar" width="20px" class="-mr-2 first:mr-0" />
+
         </div>
         <span class="text-sm-st-two font-demi-bold">سه کاربر برتر</span>
       </div>
@@ -57,20 +75,36 @@
       <div class="flex items-center gap-1 p-1 bg-confirmation-100 rounded-2xl">
         <ThunderIcon />
         <span class="font-normal text-cp">امتیاز شما</span>
-        <span class="font-regular text-cp">۲۰۰۰ </span>
+        <span class="font-regular text-cp">{{ score }} </span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import LoginImg from '@/assets/images/login.webp'
 import { ArrowLeft, CupIcon, PeoplesIcon, ThunderIcon } from '@/components/icons'
 import { Button } from '@/components'
 import { RankingIcon } from '@/components/icons'
 import LeaderboardImg from '@/assets/images/Leaderboard-Banner.png'
-import CoinImg from '@/assets/images/coin-silver.png'
 import RoadmapImg from '@/assets/images/Roadmap-Banner.png'
+
+type Props = {
+  levelTitle:string
+  language_name: string
+  duration: string
+  users: [
+    {
+      avatar: string
+      id: string
+      name: string
+    }
+  ]
+  score:number,
+  poster:string
+}
+
+const props=defineProps<Props>()
+
 </script>
 
 <style scoped></style>

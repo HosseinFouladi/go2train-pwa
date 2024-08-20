@@ -1,7 +1,7 @@
 <template>
   <div class="w-full overflow-hidden">
     <div
-      v-if="isPending || isFetching"
+      v-if="pageLoading"
       class="flex items-center justify-center w-full min-h-[540px]"
     >
       <Loading />
@@ -20,7 +20,6 @@
           class="relative z-50 p-4 -mt-4 bg-neutral-white rounded-t-2xl md:-mt-16 md:max-w-[672px] md:mx-auto md:p-6 md:shadow"
         >
           <IntroductionVideo
-            v-if="!currentPlanFetching && !currentPlanPending"
             :access_list="currentPlan?.data.results[0].access_list"
             :stream="courseInfo?.data?.stream"
             :teacher_name="courseInfo?.data.teacher.name"
@@ -33,24 +32,55 @@
             :users="courseInfo?.data.users.slice(-3)"
             :score="courseInfo?.data.score"
           />
-          <Rating />
-          <Comments />
+
+          <Rating
+            v-if="!ratingPending && !ratingFetching"
+            :ratings="rating?.data"
+            :comments_count="all_comment_count || 1"
+            :course_id="props.course_id"
+          />
+          <Comments
+            class=""
+            ref="scrollComponent"
+            :course_id="props.course_id"
+            @comments-count="(count) => (all_comment_count = count)"
+          />
         </div>
       </div>
       <div class="justify-center hidden gap-6 py-10 xl:flex">
         <div class="p-6 w-[700px] flex flex-col gap-6 card overflow-hidden">
           <CustomPlayer
-            v-if="!currentPlanFetching && !currentPlanPending"
             :access_list="currentPlan?.data.results[0].access_list"
             :stream="courseInfo?.data?.stream"
-            class="w-full h-[364px]"
           />
-          <IntroductionDesktop />
-          <Rating />
-          <Comments />
+          <IntroductionDesktop
+            :teacher_name="courseInfo?.data.teacher.name"
+            :title="courseInfo?.data.title"
+            :level-title="courseInfo?.data.level.title"
+            :description="courseInfo?.data.shortDescription"
+          />
+          <Rating
+            v-if="!ratingPending && !ratingFetching"
+            :ratings="rating?.data"
+            :comments_count="all_comment_count || 1"
+            :course_id="props.course_id"
+          />
+          <Comments
+            class=""
+            ref="scrollComponent"
+            :course_id="props.course_id"
+            @comments-count="(count) => (all_comment_count = count)"
+          />
         </div>
         <div class="flex flex-col gap-6 w-[406px]">
-          <StatisticsDesktop />
+          <StatisticsDesktop
+            :level-title="courseInfo?.data.level.title"
+            :language_name="courseInfo?.data.language.faName"
+            :duration="courseInfo?.data.duration"
+            :users="courseInfo?.data.users"
+            :score="courseInfo?.data.score"
+            :poster="courseInfo?.data.fullPoster"
+          />
         </div>
       </div>
     </div>
@@ -68,19 +98,22 @@ import {
   StatisticsDesktop,
   CustomPlayer
 } from './components'
-import { Button, Loading } from '@/components'
-import LoginImg from '@/assets/images/login.webp'
-import { ArrowLeft } from '@/components/icons'
+import {  Loading } from '@/components'
 import { useQuery } from '@tanstack/vue-query'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import type { Course } from '@/queries/course'
 import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
-import type { CurrentPlanResponseType } from '@/queries'
+import type { CurrentPlanResponseType, Comment, Ratings } from '@/queries'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   course_id: { type: Number }
 })
+
+const pageLoading=computed(()=> isPending.value || isFetching.value ||currentPlanFetching.value||currentPlanPending.value)
+const all_comment_count = ref(0)
+
 const {
   data: courseInfo,
   isPending,
@@ -102,6 +135,18 @@ const {
   queryFn: () =>
     ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, Message>>(
       ENDPOINTS.Profile.CurrentPlan
+    )
+})
+
+const {
+  data: rating,
+  isPending: ratingPending,
+  isFetching: ratingFetching
+} = useQuery({
+  queryKey: ['ratings'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseTypeV3<Ratings>>(
+      ENDPOINTS.comments.course_comment_rate(props?.course_id)
     )
 })
 </script>

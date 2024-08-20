@@ -29,6 +29,8 @@ import VueVideoPlayer from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
 
 
+
+
 import {
   GoogleLoginConfig,
   queryClientConfig,
@@ -75,6 +77,7 @@ app.use(VueVideoPlayer)
 
 //vue cropper component
 app.use(VueCropper)
+
 
 app.use(
 	createGtm({
