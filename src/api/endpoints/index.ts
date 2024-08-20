@@ -9,6 +9,7 @@ import { CourseEndpoint } from './course'
 import { CommentsEndPoint } from './comment'
 
 
+import { PaymentEndpoints } from "./payment";
 
 export const ENDPOINTS = {
 	Auth: AuthEndpoints,
@@ -19,5 +20,6 @@ export const ENDPOINTS = {
 	Country: CountryEndpoints,
 	Avatars:AvatarsEndpoints,
 	Courses:CourseEndpoint,
-	comments:CommentsEndPoint
+	comments:CommentsEndPoint,
+	Payment: PaymentEndpoints,
 };
