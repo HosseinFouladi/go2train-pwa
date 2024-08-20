@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { ref, watchEffect } from 'vue'
-
-import axios from 'axios'
 import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
 
 const props = withDefaults(
@@ -10,22 +7,17 @@ const props = withDefaults(
     width: '40px'
   }
 )
-
-const imagePlaceholder = ref('')
-
-watchEffect(() => {
-  axios
-    .get(props.avatar_url)
-    .then(() =>imagePlaceholder.value = props.avatar_url)
-    .catch(() =>imagePlaceholder.value = AvatarPlaceholder)
-})
 </script>
 
 <template>
-  <div :style="{ width: width,height:width }" class="relative isolate">
-    <img v-if="badge_url" :src="props.badge_url" class="absolute z-20 w-full h-full" />
+  <div :style="{ width: width, height: width }" class="relative isolate">
     <img
-      :src="imagePlaceholder"
+      v-if="badge_url"
+      :src="props.badge_url"
+      class="absolute z-20 w-full h-full"
+    />
+    <img
+      :src="!!props.avatar_url ? props.avatar_url : AvatarPlaceholder"
       class="absolute top-0 bottom-0 left-0 right-0 z-50 m-auto rounded-full h-[86%] w-[86%] aspect-square"
     />
   </div>
