@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { useQuery } from '@tanstack/vue-query'
 
 import { ApiClient } from '@/utils'
@@ -21,16 +20,7 @@ export const getCourseFilterLanguages = async () => {
       Array<CourseFilterLanguagesResponseType>,
       { id: ''; content: '' }
     >
-  >(ENDPOINTS.Languages.CourseFilterLanguages).then((res) =>
-    _.set(
-      _.cloneDeep(res),
-      'data.results',
-      _.head(res.data.results) as unknown as ApiResponseType<
-        CourseFilterLanguagesResponseType,
-        { id: ''; content: '' }
-      >
-    )
-  )
+  >(ENDPOINTS.Languages.CourseFilterLanguages)
 }
 
 export const useGetCourseFilterLanguages = () => {

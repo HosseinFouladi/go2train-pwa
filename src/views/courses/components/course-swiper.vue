@@ -1,17 +1,36 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Language } from '@/queries'
-import { useGetCourseList } from '@/queries'
-import { CourseCard, CourseCardAction } from '@/views/courses/components'
+import { computed, h, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
+import type { Language } from '@/queries'
+import { getCourseList } from '@/queries'
+import { CourseCard, CourseCardAction } from '@/views/courses/components'
+import { useQuery } from '@tanstack/vue-query'
+
+const route = useRoute()
+const rParams = computed(() =>
+  route.query.videoLanguageId ? Number(route.query.videoLanguageId) : undefined
+)
 const props = defineProps<Language>()
 
-const { data } = useGetCourseList({
-  page: 1,
-  languageId: props.id,
-  videoLanguageId: undefined
+const { data, refetch } = useQuery({
+  queryKey: [
+    'course',
+    'list',
+    1,
+    { languageId: props.id },
+    { videoLanguageId: rParams.value }
+  ],
+  queryFn: () =>
+    getCourseList({ page: 1, languageId: props.id, videoLanguageId: rParams.value }),
+  enabled: !!rParams.value
 })
-import { h } from 'vue'
+
+watch(
+  () => rParams,
+  () => refetch(),
+  { immediate: true, deep: true }
+)
 
 const courseList = computed(() => data.value?.data)
 </script>

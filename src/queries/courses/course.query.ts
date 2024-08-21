@@ -19,7 +19,8 @@ export const getCourseList = async (params: GetCourseListParams) => {
 
 export const useGetCourseList = (params: GetCourseListParams) => {
   return useQuery({
-    queryKey: ['course', 'list', ...Object.values(params)],
-    queryFn: () => getCourseList(params)
+    queryKey: ['course', 'list', ...Object.entries(params)],
+    queryFn: () => getCourseList(params),
+    enabled: !!params.videoLanguageId
   })
 }
