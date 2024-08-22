@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { ArrowLeftCircled, SelectGallery, SelectAvatar } from '@/components/icons'
+import { BorderAroowLeft, SelectGallery, SelectAvatar } from '@/components/icons'
 import { AvatarListModal,GalleryModal } from './'
 import { ref } from 'vue'
 

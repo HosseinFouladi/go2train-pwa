@@ -14,7 +14,9 @@
       <div class="flex flex-col items-center gap-1">
         <video-time-icon />
         <span class="text-st-two font-regular"
-          >{{ sessionCount }} ویدیو ( {{ duration }} ساعت)</span
+          >
+          {{ sessionCount }} ویدیو ( {{ duration }} ساعت)
+          </span
         >
       </div>
       <div class="w-[1px] h-9 divider"></div>
@@ -30,11 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import testVideo from '@/assets/videos/test.mp4'
-import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
+
 
 import { VideoTimeIcon, LanguageSquareIcon, ArrowLeft } from '@/components/icons'
-import CoinImg from '@/assets/images/coin-silver.png'
 import { Button } from '@/components'
 import { CustomPlayer } from './'
 import type { AccessList, Stream } from '@/queries'

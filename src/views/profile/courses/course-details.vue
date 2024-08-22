@@ -27,6 +27,7 @@
             :sessionCount="courseInfo?.data.sessionsCount"
             :duration="courseInfo?.data.duration"
             :users="courseInfo?.data.users"
+
           />
           <Statistics
             :users="courseInfo?.data.users.slice(-3)"
@@ -52,8 +53,9 @@
           <CustomPlayer
             :access_list="currentPlan?.data.results[0].access_list"
             :stream="courseInfo?.data?.stream"
+
           />
-          <IntroductionDesktop
+               <IntroductionDesktop
             :teacher_name="courseInfo?.data.teacher.name"
             :title="courseInfo?.data.title"
             :level-title="courseInfo?.data.level.title"

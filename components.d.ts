@@ -17,6 +17,7 @@ declare module 'vue' {
     Avatar: typeof import('./src/components/avatar/avatar.vue')['default']
     Button: typeof import('./src/components/button/button.vue')['default']
     Calendar: typeof import('./src/components/icons/calendar/index.vue')['default']
+    Carousel: typeof import('primevue/carousel')['default']
     Category: typeof import('./src/components/icons/category/index.vue')['default']
     Checkbox: typeof import('./src/components/checkbox/checkbox.vue')['default']
     Clock: typeof import('./src/components/icons/clock/index.vue')['default']
@@ -25,6 +26,7 @@ declare module 'vue' {
     Crown: typeof import('./src/components/icons/crown/index.vue')['default']
     Cup: typeof import('./src/components/icons/cup/cup.vue')['default']
     Danger: typeof import('./src/components/icons/danger/index.vue')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('./src/components/divider/divider.vue')['default']
     Drawer: typeof import('primevue/drawer')['default']
     DropDown: typeof import('./src/components/drop-down/drop-down.vue')['default']
@@ -55,6 +57,7 @@ declare module 'vue' {
     Minimize: typeof import('./src/components/icons/minimize/index.vue')['default']
     More: typeof import('./src/components/icons/more/index.vue')['default']
     Mute: typeof import('./src/components/icons/sound/mute.vue')['default']
+    Pause: typeof import('./src/components/icons/pause/index.vue')['default']
     People: typeof import('./src/components/icons/people/people.vue')['default']
     Play: typeof import('./src/components/icons/play/index.vue')['default']
     Popover: typeof import('primevue/popover')['default']
@@ -88,5 +91,6 @@ declare module 'vue' {
     UserAvatar: typeof import('./src/components/user-avatar/user-avatar.vue')['default']
     VideoTime: typeof import('./src/components/icons/video-time/video-time.vue')['default']
     Warning: typeof import('./src/components/icons/warning/index.vue')['default']
+    WhitePlay: typeof import('./src/components/icons/play/white-play.vue')['default']
   }
 }

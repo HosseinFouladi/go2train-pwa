@@ -1,5 +1,5 @@
 <template>
-  <div class="video-wrapper">
+  <div ref="wrapper" class="video-wrapper">
     <video
       @click="togglePlayPause"
       @loadedmetadata="totlaDuration"
@@ -105,7 +105,7 @@
                         <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
-                    <Popover ref="qualityMenu" id="speed_menu">
+                    <Popover ref="qualityMenu" id="speed_menu" position="top">
                       <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
                         <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
@@ -222,8 +222,7 @@
       class="flex flex-col items-center w-fit"
       @click="togglePlayPause"
     >
-      <PlayIcon class="w-10 h-10 text-neutral-white" />
-
+      <WhitePlayIcon class="w-10 h-10 " />
       <h2 class="text-neutral-white text-sm-st-one">ویدئو معرفی دوره</h2>
     </div>
   </div>
@@ -240,11 +239,13 @@ import {
   SettingIcon,
   ArrowRight,
   ArrowLeft,
-  PlayIcon,
+  WhitePlayIcon,
   QualityIcon
 } from '@/components/icons'
 import { cn } from '@/utils'
 import { Stream, AccessList } from '@/queries'
+import { useScreenOrientation } from '@vueuse/core'
+
 
 type Props = {
   stream: Stream
@@ -275,6 +276,8 @@ const qualityMenu = ref()
 const speedMenu = ref()
 const settingMenu = ref()
 const currentVideoSrc = ref(0)
+
+
 
 const speeds = ref([
   {
@@ -312,6 +315,7 @@ const speeds = ref([
 ])
 
 const handleVideoSrcError = () => {
+
   const allVideoSrc = [
     ...Object.values(props.stream?.streamProviders.cache.urls),
     props.stream?.streamProviders.cloudflare.meta.hls
@@ -346,7 +350,7 @@ const qualityToggle = (event: Event) => {
 }
 
 onMounted(() => {
-  wrapper.value = document.querySelector('.video-wrapper')
+
 
   if (wrapper.value) {
     video.value = wrapper.value.querySelector('.custom-video')
@@ -380,13 +384,15 @@ function formatTime(time: number) {
 // Helper function to toggle video playback
 function togglePlayPause() {
   if (video.value && (video.value.paused || video.value.ended)) {
-    console.log(video.value)
+
     video.value.play()
     playPauseButton.value.querySelector('.play').style.display = 'none'
     playPauseButton.value.querySelector('.pause').style.display = 'block'
     centerPlayButton.value.style.display = 'none'
     videoControls.value.classList.add('video-playing')
   } else {
+    console.log('else')
+
     video.value.pause()
     playPauseButton.value.querySelector('.play').style.display = 'block'
     playPauseButton.value.querySelector('.pause').style.display = 'none'
@@ -452,16 +458,16 @@ const changeVolume = (event) => {
 
 //toggle fullscreen
 const toggleFullScreen = () => {
+
   if (!document.fullscreenElement) {
     wrapper.value.requestFullscreen().catch((err) => {
       console.error(`Failed to enter fullscreen mode: ${err.message}`)
     })
-    document.body.classList.add('landscape')
+
     if (fullscreenButton.value) fullscreenButton.value.classList.add('active ')
   } else {
     document.exitFullscreen()
     if (fullscreenButton.value) fullscreenButton.value.classList.remove('active ')
-    document.body.classList.add('landscape')
   }
 }
 

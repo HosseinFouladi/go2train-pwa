@@ -44,3 +44,7 @@ export { default as SoundIcon } from './sound/sound.vue'
 export { default as QualityIcon } from './quality/index.vue'
 export { default as RankingIcon } from './ranking/index.vue'
 export { default as ArrowBack } from "./arrow-back/index.vue";
+export { default as WhitePlayIcon } from "./play/white-play.vue";
+export { default as PauseIcon } from "./pause/index.vue";
+
+

@@ -54,8 +54,8 @@
       style="--scrollbar-size: 1px"
     >
       <ScrollAreaViewport
-        class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper"
-        @scroll="infiniteScroll"
+        class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper "
+        @scroll="infiniteScroll "
       >
         <div
           v-for="comment in commentArray"
@@ -92,10 +92,10 @@
           <div class="flex items-center justify-between">
             <span class="text-sm-st-two font-regular"> {{ comment.title }}</span>
             <div class="flex gap-1">
-              <LikeIcon v-if="comment.isLike" class="cursor-pointer" />
-              <EmptyLikeIcon v-else />
+              <LikeIcon v-if="comment.isLike" class="cursor-pointer" @click="handleLike(comment.id,comment.isLike)" />
+              <EmptyLikeIcon v-else @click="handleLike(comment.id,comment.isLike)"  class="cursor-pointer"/>
               <span
-                @click="handleLike(comment.id)"
+                
                 class="text-sm-st-two font-regular text-success-500"
               >
                 {{ comment.likes }}</span
@@ -244,39 +244,37 @@ const props = defineProps({
 })
 const emit = defineEmits(['commentsCount'])
 const filterMenu = ref()
-const moreMenu = ref()
 const commentMore = ref(false)
 const replayMore = ref(false)
 const page = ref(1)
 const commentArray = ref<Array<Comment>>([])
 const queryClient = useQueryClient()
 const isFilterMenu = ref(false)
-const orderByFilterParam = ref('created_at')
-const orderTypefilterParam = ref<'ASC' | 'DESC'>('DESC')
+const orderByFilterParam = ref(2)
+const orderTypefilterParam = ref<1 | 2>(2)
 const filterName = ref('جدیدترین ها')
 const currentCommentId = ref('1')
-const toggleMenu=ref()
 
 const filterOptions = ref([
   {
     title: 'جدیدترین ها',
-    value: 'created_at',
-    order: 'DESC'
+    value: '2',
+    order: '2'
   },
   {
     title: 'مفیدترین',
-    value: 'like',
-    order: 'DESC'
+    value: '3',
+    order: '2'
   },
   {
     title: 'رتبه‌بندی از بیشترین تا کمترین ',
-    value: 'score',
-    order: 'ASC'
+    value: '1',
+    order: '1'
   },
   {
     title: ' رتبه‌بندی از کمترین تا بیشترین',
-    value: 'score',
-    order: 'DESC'
+    value: '1',
+    order: '2'
   }
 ])
 
@@ -302,7 +300,8 @@ const {
           orderType: orderTypefilterParam.value
         }
       }
-    )
+    ),
+    gcTime:0
 })
 
 const { mutate: likeComment, isPending: likePending } = useMutation({
@@ -310,14 +309,14 @@ const { mutate: likeComment, isPending: likePending } = useMutation({
     ApiClient.post<ApiResponseTypeV3<any>>(ENDPOINTS.comments.comment_reaction, {
       ...params
     }),
-  onSuccess(data) {
-    queryClient.invalidateQueries({ queryKey: ['course_comments'] })
+  async onSuccess() {
+    await queryClient.invalidateQueries({ queryKey: ['course_comments'] })
   },
   onError(error) {}
 })
 
-const handleLike = (commentId: string) => {
-  likeComment({ action: 'LIKE', commentId })
+const handleLike = (commentId: string,isLike:boolean) => {
+  likeComment({ action: isLike?0:1, commentId })
 }
 const infiniteScroll = (e: HTMLElement) => {
   const element = document.querySelector('.scroll-wrapper')
@@ -326,7 +325,6 @@ const infiniteScroll = (e: HTMLElement) => {
 
   if (element.scrollTop < lastScrollTop) {
     // upscroll
-
     return
   }
   lastScrollTop = element.scrollTop <= 0 ? 0 : element.scrollTop

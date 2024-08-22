@@ -45,7 +45,7 @@ export type Comment= {
 
   export type CommentReactionParams={
     commentId:string,
-    action:'LIKE'|'DISLIKE'
+    action:0|1
   }
   export type CreateNewCommentParams={
     score: number
