@@ -11,7 +11,31 @@ export const getLanguageList = async () => {
 }
 
 export const useGetLanguageList = () => {
-  return useQuery({ queryKey: ['languages', 'list'], queryFn: getLanguageList })
+  return useQuery({
+    queryKey: ['languages', 'list'],
+    queryFn: getLanguageList,
+    select(data) {
+      return {
+        ...data,
+        data: {
+          ...data.data,
+          results: [
+            {
+              id: 0,
+              name: 'all',
+              image: '',
+              fa_name: 'همه',
+              rtl: false,
+              course_count: 0,
+              user_count: 0,
+              show: true
+            },
+            ...data.data.results
+          ]
+        }
+      }
+    }
+  })
 }
 
 export const getCourseFilterLanguages = async () => {
@@ -26,6 +50,26 @@ export const getCourseFilterLanguages = async () => {
 export const useGetCourseFilterLanguages = () => {
   return useQuery({
     queryKey: ['languages', 'course_filter_languages'],
-    queryFn: getCourseFilterLanguages
+    queryFn: getCourseFilterLanguages,
+    select(data) {
+      return {
+        ...data,
+        data: {
+          results: [
+            {
+              id: 0,
+              name: 'all',
+              image: '',
+              fa_name: 'همه',
+              rtl: false,
+              course_count: 0,
+              user_count: 0,
+              show: true
+            },
+            ...data.data.results[0].to_languages
+          ]
+        }
+      }
+    }
   })
 }

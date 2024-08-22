@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { computed, h, watch } from 'vue'
 import { useRoute } from 'vue-router'
-
-import type { Language } from '@/queries'
-import { getCourseList } from '@/queries'
-import { CourseCard, CourseCardAction } from '@/views/courses/components'
+import { computed, h, watch } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
+
+import { getCourseList, type Language } from '@/queries'
+import {
+  CourseCard,
+  CourseCardAction,
+  CourseSwiperSkelton
+} from '@/views/courses/components'
 
 const route = useRoute()
 const rParams = computed(() =>
   route.query.videoLanguageId ? Number(route.query.videoLanguageId) : undefined
 )
-const props = defineProps<Language>()
+const props = defineProps<Language & { isLangsLoading: boolean }>()
 
-const { data, refetch } = useQuery({
+const { data, refetch, isLoading } = useQuery({
   queryKey: [
     'course',
     'list',
@@ -36,13 +39,14 @@ const courseList = computed(() => data.value?.data)
 </script>
 
 <template>
-  <div v-if="courseList && courseList?.length > 0" class="space-y-2">
+  <CourseSwiperSkelton v-if="isLoading || props.isLangsLoading" />
+  <div v-else-if="courseList && courseList?.length > 0" class="space-y-2">
     <h2 class="text-text-500 text-h4 font-extra-bold lg:ps-40 lg:pe-4">
       {{ props.fa_name }}
     </h2>
     <div
       v-dragscroll
-      class="flex flex-row gap-2 py-2 overflow-x-auto cursor-pointer fancy-scrollbar lg:ps-40 lg:pe-4"
+      class="flex flex-row gap-2 py-2 overflow-x-auto cursor-pointer lg:ps-40 lg:pe-4"
     >
       <CourseCard
         v-bind="course"

@@ -1,18 +1,20 @@
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
+import { computed, h } from 'vue'
 import { useRouter } from 'vue-router'
+import Skeleton from 'primevue/skeleton'
 import { useForm } from '@tanstack/vue-form'
 
 import { CountriesListbox } from '@/components'
 import { CourseSwiper } from '@/views/courses/components'
 import { useGetCourseFilterLanguages, useGetLanguageList } from '@/queries'
 
+const router = useRouter()
+
 const { data: langs, isLoading: langsLoading } = useGetLanguageList()
 const { data: vLangs, isLoading: vLangsLoading } = useGetCourseFilterLanguages()
 
-const router = useRouter()
 const languageList = computed(() => langs.value?.data.results)
-const videoLanguageList = computed(() => vLangs.value?.data.results[0].to_languages)
+const videoLanguageList = computed(() => vLangs.value?.data.results)
 
 const form = useForm({
   defaultValues: {
@@ -20,53 +22,76 @@ const form = useForm({
     videoLanguageId: undefined
   }
 })
-
-const langId = computed(() => form.state.values.languageId)
-
-watch(
-  () => languageList,
-  () => {
-    if (languageList.value) {
-      // form.setFieldValue('languageId', languageList.value[0])
-      form.setFieldValue('languageId', languageList.value[0].fa_name)
-    }
-  },
-  { immediate: true, deep: true }
-)
 </script>
 
 <template>
   <div>
-    {{ langId }}
     <form class="flex flex-row gap-4 my-10 lg:ps-40 lg:pe-4">
       <form.Field name="languageId">
         <template v-slot="{ field, state }">
-          <div class="w-full">
+          <div class="w-1/5">
+            <Skeleton
+              v-if="langsLoading || !languageList"
+              height="52px"
+              class="w-1/5 rounded-3xl"
+            />
             <CountriesListbox
+              v-else
               :state="state"
-              v-if="languageList"
+              optionIcon="image"
               optionLabel="fa_name"
-              :isLoading="langsLoading"
               :options="languageList"
+              :isLoading="langsLoading"
               :placeholder="languageList[0].fa_name"
-              @modelValue="(item) => field.handleChange(item)"
+              :iconRight="h('span', { class: 'text-text-500' }, ['آموزش'])"
+              @modelValue="
+                (item) => {
+                  field.handleChange(item)
+                  if (item.id === 0) {
+                    router.replace({ ...$route.query, languageId: undefined })
+                    return
+                  }
+                  router.replace({
+                    query: {
+                      ...$route.query,
+                      languageId: item.id
+                    }
+                  })
+                }
+              "
             />
           </div>
         </template>
       </form.Field>
       <form.Field name="videoLanguageId">
         <template v-slot="{ field, state }">
-          <di class="w-full">
+          <di class="w-1/5">
+            <Skeleton
+              v-if="langsLoading || !languageList"
+              height="52px"
+              class="w-1/5 rounded-3xl"
+            />
             <CountriesListbox
-              v-if="vLangs"
+              v-else
               :state="state"
+              optionIcon="image"
               optionLabel="fa_name"
               :isLoading="vLangsLoading"
               :options="videoLanguageList"
+              :iconRight="h('span', { class: 'text-text-500' }, ['به'])"
               @modelValue="
                 (item) => {
                   field.handleChange(item)
-                  router.push({ query: { videoLanguageId: item.id } })
+                  if (item.id === 0) {
+                    router.replace({ ...$route.query, videoLanguageId: undefined })
+                    return
+                  }
+                  router.push({
+                    query: {
+                      ...$route.query,
+                      videoLanguageId: item.id
+                    }
+                  })
                 }
               "
             />
@@ -74,8 +99,14 @@ watch(
         </template>
       </form.Field>
     </form>
-    <div class="space-y-10" v-if="languageList && !langsLoading">
+    <div class="space-y-10">
       <CourseSwiper
+        :isLangsLoading="langsLoading"
+        v-show="
+          Number($route.query.languageId)
+            ? language.id === Number($route.query.languageId)
+            : language.id
+        "
         v-bind="language"
         :key="language.id"
         v-for="language in languageList"
