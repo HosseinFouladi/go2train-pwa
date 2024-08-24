@@ -54,8 +54,8 @@
       style="--scrollbar-size: 1px"
     >
       <ScrollAreaViewport
-        class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper "
-        @scroll="infiniteScroll "
+        class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper"
+        @scroll="infiniteScroll"
       >
         <div
           v-for="comment in commentArray"
@@ -92,12 +92,17 @@
           <div class="flex items-center justify-between">
             <span class="text-sm-st-two font-regular"> {{ comment.title }}</span>
             <div class="flex gap-1">
-              <LikeIcon v-if="comment.isLike" class="cursor-pointer" @click="handleLike(comment.id,comment.isLike)" />
-              <EmptyLikeIcon v-else @click="handleLike(comment.id,comment.isLike)"  class="cursor-pointer"/>
-              <span
-                
-                class="text-sm-st-two font-regular text-success-500"
-              >
+              <LikeIcon
+                v-if="comment.isLike"
+                class="cursor-pointer"
+                @click="handleLike(comment.id, comment.isLike)"
+              />
+              <EmptyLikeIcon
+                v-else
+                @click="handleLike(comment.id, comment.isLike)"
+                class="cursor-pointer"
+              />
+              <span class="text-sm-st-two font-regular text-success-500">
                 {{ comment.likes }}</span
               >
             </div>
@@ -240,7 +245,7 @@ import {
 let lastScrollTop = 0
 
 const props = defineProps({
-  course_id: { type: Number }
+  course_id: { type: String }
 })
 const emit = defineEmits(['commentsCount'])
 const filterMenu = ref()
@@ -282,7 +287,6 @@ const filterToggle = (event: Event) => {
   filterMenu.value.toggle(event)
 }
 
-
 const {
   data: comments,
   isPending: commentPending,
@@ -301,7 +305,7 @@ const {
         }
       }
     ),
-    gcTime:0
+  gcTime: 0
 })
 
 const { mutate: likeComment, isPending: likePending } = useMutation({
@@ -309,14 +313,21 @@ const { mutate: likeComment, isPending: likePending } = useMutation({
     ApiClient.post<ApiResponseTypeV3<any>>(ENDPOINTS.comments.comment_reaction, {
       ...params
     }),
-  async onSuccess() {
-    await queryClient.invalidateQueries({ queryKey: ['course_comments'] })
-  },
   onError(error) {}
 })
 
-const handleLike = (commentId: string,isLike:boolean) => {
-  likeComment({ action: isLike?0:1, commentId })
+const handleLike = (commentId: string, isLike: boolean) => {
+  //handle like action in client side before waiting to server response:)
+  commentArray.value = commentArray.value.map((item) => {
+    if (item.id === commentId)
+      return {
+        ...item,
+        isLike: isLike ? false : true,
+        likes: isLike ? item.likes - 1 : item.likes + 1
+      }
+    return { ...item }
+  })
+  likeComment({ action: isLike ? 0 : 1, commentId })
 }
 const infiniteScroll = (e: HTMLElement) => {
   const element = document.querySelector('.scroll-wrapper')
@@ -328,7 +339,6 @@ const infiniteScroll = (e: HTMLElement) => {
     return
   }
   lastScrollTop = element.scrollTop <= 0 ? 0 : element.scrollTop
-  console.log(element.scrollTop, element.offsetHeight, element.scrollHeight)
 
   if (
     element.scrollTop + element.offsetHeight >= element.scrollHeight - 50 &&
@@ -342,9 +352,11 @@ const infiniteScroll = (e: HTMLElement) => {
 watch(
   () => comments.value?.data,
   () => {
-    if (comments.value?.data)
+    if (comments.value?.data) {
       commentArray.value = [...commentArray.value, ...comments.value.data]
+    }
     emit('commentsCount', commentArray.value.length)
+
   }
 )
 </script>

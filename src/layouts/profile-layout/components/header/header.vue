@@ -5,7 +5,8 @@ import { useQuery } from '@tanstack/vue-query'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import { computed } from 'vue'
-import { useGetUserProfileQuery, type CurrentPlanResponseType } from '@/queries'
+import {  type CurrentPlanResponseType } from '@/queries'
+import { useGetUserProfileQuery } from '@/queries/profile/user-profile.query'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 

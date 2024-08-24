@@ -20,6 +20,7 @@ declare module 'vue' {
     Carousel: typeof import('primevue/carousel')['default']
     Category: typeof import('./src/components/icons/category/index.vue')['default']
     Checkbox: typeof import('./src/components/checkbox/checkbox.vue')['default']
+    ClientSideAvatar: typeof import('./src/components/user-avatar/client-side-avatar.vue')['default']
     Clock: typeof import('./src/components/icons/clock/index.vue')['default']
     CountDown: typeof import('./src/components/count-down/count-down.vue')['default']
     CountriesListbox: typeof import('./src/components/countries-listbox/countries-listbox.vue')['default']

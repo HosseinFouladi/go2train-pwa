@@ -1,5 +1,8 @@
 <template>
   <div class="w-full overflow-hidden">
+    <div v-if="isError" class="h-[300px] flex items-center justify-center">
+      مشکلی در برقراری ارتباط رخ داده است. مجددا امتحان کنید
+    </div>
     <div
       v-if="pageLoading"
       class="flex items-center justify-center w-full min-h-[540px]"
@@ -53,7 +56,6 @@
           <CustomPlayer
             :access_list="currentPlan?.data.results[0].access_list"
             :stream="courseInfo?.data?.stream"
-
           />
                <IntroductionDesktop
             :teacher_name="courseInfo?.data.teacher.name"
@@ -90,6 +92,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 import {
   Header,
   IntroductionVideo,
@@ -107,7 +111,6 @@ import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import type { Course } from '@/queries/course'
 import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
 import type { CurrentPlanResponseType, Comment, Ratings } from '@/queries'
-import { computed, ref } from 'vue'
 
 const props = defineProps({
   course_id: { type: Number }
@@ -119,7 +122,9 @@ const all_comment_count = ref(0)
 const {
   data: courseInfo,
   isPending,
-  isFetching
+  isFetching,
+  isError,
+  error
 } = useQuery({
   queryKey: ['course-info', Date.now()],
   queryFn: () =>
@@ -152,5 +157,3 @@ const {
     )
 })
 </script>
-
-<style scoped></style>

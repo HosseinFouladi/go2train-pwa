@@ -1,14 +1,14 @@
 <template>
-  <div ref="wrapper" class="video-wrapper">
+  <div ref="wrapper" class="video-wrapper" >
     <video
       @click="togglePlayPause"
       @loadedmetadata="totlaDuration"
       :src="props.stream?.streamProviders?.cache?.urls?.p360"
-      class="custom-video"
+      class="custom-video "
       @timeupdate="updateProgressbar"
       @ended="showPlayIcon"
       :poster="props?.stream?.streamMeta.thumbnail"
-      controlslist=" nodownload"
+      controlslist="nodownload"
     ></video>
     <div class="video-controls">
       <div class="controls-items">
@@ -29,12 +29,12 @@
                 variant="text"
               />
               <label for="setting" class="-mr-10">
-                <SettingIcon class="w-4 h-4 text-neutral-white" />
+                <SettingIcon class="w-4 h-4 text-neutral-white " ref="settingIcon"  />
               </label>
             </div>
 
-            <Popover ref="settingMenu" id="overlay_tmenu">
-              <div class="flex flex-col gap-4 p-4 rounded-2xl font-demi-bold">
+            <Popover ref="settingMenu" id="overlay_tmenu" baseZIndex="5000" >
+              <div class="flex flex-col gap-4 p-4 rounded-2xl font-demi-bold ">
                 <h3 class="text-center text-sm-st-one">Video setting</h3>
                 <div class="w-full h-[1px] bg-secondary-100"></div>
                 <div class="flex items-center justify-between gap-8">
@@ -251,6 +251,7 @@ type Props = {
   stream: Stream
   access_list: Array<AccessList>
 }
+
 const props = defineProps<Props>()
 
 const wrapper = ref()
@@ -276,7 +277,7 @@ const qualityMenu = ref()
 const speedMenu = ref()
 const settingMenu = ref()
 const currentVideoSrc = ref(0)
-
+const settingIcon=ref()
 
 
 const speeds = ref([
@@ -327,6 +328,7 @@ const handleVideoSrcError = () => {
 }
 
 const settingToggle = (event: Event) => {
+  console.log("boooo")
   settingMenu.value.toggle(event)
 }
 
@@ -350,8 +352,6 @@ const qualityToggle = (event: Event) => {
 }
 
 onMounted(() => {
-
-
   if (wrapper.value) {
     video.value = wrapper.value.querySelector('.custom-video')
     playPauseButton.value = wrapper.value.querySelector('.play-pause')
@@ -391,8 +391,6 @@ function togglePlayPause() {
     centerPlayButton.value.style.display = 'none'
     videoControls.value.classList.add('video-playing')
   } else {
-    console.log('else')
-
     video.value.pause()
     playPauseButton.value.querySelector('.play').style.display = 'block'
     playPauseButton.value.querySelector('.pause').style.display = 'none'
