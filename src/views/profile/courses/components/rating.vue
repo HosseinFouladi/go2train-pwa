@@ -27,7 +27,7 @@
             class="flex items-center gap-3 py-[6px] progress-cotainer"
           >
             <span>{{ item.score }}</span>
-            <ProgressBar class="min-w-[200px] w-full" :value="item.average">
+            <ProgressBar class="min-w-[150px] w-full" :value="item.average">
             </ProgressBar>
           </div>
         </div>
@@ -110,7 +110,7 @@
 
 <script setup lang="ts">
 import { EmptyStarIcon } from '@/components/icons'
-import { Textarea, Button, InputText } from '@/components'
+import {  Button, InputText } from '@/components'
 import Toast from 'primevue/toast'
 import ProgressBar from 'primevue/progressbar'
 import { computed, ref } from 'vue'

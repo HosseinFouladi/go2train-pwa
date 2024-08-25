@@ -22,6 +22,7 @@ declare module 'vue' {
     Checkbox: typeof import('./src/components/checkbox/checkbox.vue')['default']
     ClientSideAvatar: typeof import('./src/components/user-avatar/client-side-avatar.vue')['default']
     Clock: typeof import('./src/components/icons/clock/index.vue')['default']
+    ConfirmPopup: typeof import('primevue/confirmpopup')['default']
     CountDown: typeof import('./src/components/count-down/count-down.vue')['default']
     CountriesListbox: typeof import('./src/components/countries-listbox/countries-listbox.vue')['default']
     Crown: typeof import('./src/components/icons/crown/index.vue')['default']

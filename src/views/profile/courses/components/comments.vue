@@ -221,20 +221,16 @@
 import { Button, UserAvatar } from '@/components'
 import {
   FilterIcon,
-  StarIcon,
   LikeIcon,
-  MoreIcon,
   EmptyLikeIcon
 } from '@/components/icons'
 import { ApiClient, cn } from '@/utils'
 import { ref, watch } from 'vue'
-import { useQueryClient } from '@tanstack/vue-query'
-import { Comment, type CommentReactionParams } from '@/queries'
+import type { Comment, CommentReactionParams } from '@/queries'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
 import { ENDPOINTS } from '@/api'
 import { useTimeAgo } from '@vueuse/core'
-import EmptyLike from '@/components/icons/like/emptyLike.vue'
 import {
   ScrollAreaRoot,
   ScrollAreaThumb,
@@ -253,7 +249,6 @@ const commentMore = ref(false)
 const replayMore = ref(false)
 const page = ref(1)
 const commentArray = ref<Array<Comment>>([])
-const queryClient = useQueryClient()
 const isFilterMenu = ref(false)
 const orderByFilterParam = ref(2)
 const orderTypefilterParam = ref<1 | 2>(2)

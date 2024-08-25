@@ -254,6 +254,8 @@ type Props = {
 
 const props = defineProps<Props>()
 
+
+
 const wrapper = ref()
 const video = ref<HTMLVideoElement>()
 const playPauseButton = ref<HTMLElement>()
@@ -315,42 +317,6 @@ const speeds = ref([
   }
 ])
 
-const handleVideoSrcError = () => {
-
-  const allVideoSrc = [
-    ...Object.values(props.stream?.streamProviders.cache.urls),
-    props.stream?.streamProviders.cloudflare.meta.hls
-  ]
-  currentVideoSrc.value += 1
-  if (currentVideoSrc.value < allVideoSrc.length) {
-    if (video.value) video.value.src = allVideoSrc[currentVideoSrc.value]
-  }
-}
-
-const settingToggle = (event: Event) => {
-  console.log("boooo")
-  settingMenu.value.toggle(event)
-}
-
-const speedToggle = (event: Event) => {
-  speedMenu.value.toggle(event)
-}
-
-const checkAcces = (quality: string): boolean => {
-  let isPro = true
-  props.access_list.forEach((item) => {
-    if (item.slug.includes(quality)) {
-      isPro = false
-      return
-    }
-  })
-  return isPro
-}
-
-const qualityToggle = (event: Event) => {
-  qualityMenu.value.toggle(event)
-}
-
 onMounted(() => {
   if (wrapper.value) {
     video.value = wrapper.value.querySelector('.custom-video')
@@ -373,6 +339,43 @@ onMounted(() => {
       video.value.addEventListener('error', () => handleVideoSrcError())
   }
 })
+
+const handleVideoSrcError = () => {
+
+  const allVideoSrc = [
+    ...Object.values(props.stream?.streamProviders.cache.urls),
+    props.stream?.streamProviders.cloudflare.meta.hls
+  ]
+  currentVideoSrc.value += 1
+  if (currentVideoSrc.value < allVideoSrc.length) {
+    if (video.value) video.value.src = allVideoSrc[currentVideoSrc.value]
+  }
+}
+
+const settingToggle = (event: Event) => {
+  settingMenu.value.toggle(event)
+}
+
+const speedToggle = (event: Event) => {
+  speedMenu.value.toggle(event)
+}
+
+const checkAcces = (quality: string): boolean => {
+  let isPro = true
+  props.access_list.forEach((item) => {
+    if (item.slug.includes(quality)) {
+      isPro = false
+      return
+    }
+  })
+  return isPro
+}
+
+const qualityToggle = (event: Event) => {
+  qualityMenu.value.toggle(event)
+}
+
+
 
 // Helper function to format time in minutes:seconds
 function formatTime(time: number) {
