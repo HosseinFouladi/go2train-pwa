@@ -783,4 +783,10 @@ const showPlayIcon = () => {
   top: 0;
   left: 0;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
 </style>
