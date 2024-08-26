@@ -30,7 +30,7 @@
             :sessionCount="courseInfo?.data.sessionsCount"
             :duration="courseInfo?.data.duration"
             :users="courseInfo?.data.users"
-
+            v-if="!isLargeScreen"
           />
           <Statistics
             :users="courseInfo?.data.users.slice(-3)"
@@ -56,6 +56,7 @@
           <CustomPlayer
             :access_list="currentPlan?.data.results[0].access_list"
             :stream="courseInfo?.data?.stream"
+            v-if="isLargeScreen"
           />
                <IntroductionDesktop
             :teacher_name="courseInfo?.data.teacher.name"
@@ -111,10 +112,15 @@ import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import type { Course } from '@/queries/course'
 import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
 import type { CurrentPlanResponseType, Comment, Ratings } from '@/queries'
+import { useMediaQuery } from '@vueuse/core'
+
 
 const props = defineProps({
   course_id: { type: Number }
 })
+
+const isLargeScreen = useMediaQuery('(min-width: 1280px)')
+
 
 const pageLoading=computed(()=> isPending.value || isFetching.value ||currentPlanFetching.value||currentPlanPending.value)
 const all_comment_count = ref(0)

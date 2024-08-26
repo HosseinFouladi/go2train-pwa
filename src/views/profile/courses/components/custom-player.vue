@@ -33,13 +33,13 @@
               </label>
             </div>
 
-            <Popover ref="settingMenu" id="overlay_tmenu" baseZIndex="5000" >
-              <div class="flex flex-col gap-4 p-4 rounded-2xl font-demi-bold ">
+            <div v-if="settingMenu" ref="settingMenu" id="overlay_tmenu"  class="absolute z-30 w-[280px] max-h-[200px] bg-neutral-white -top-48 overflow-hidden rounded-2xl " >
+              <div class="flex flex-col gap-4 p-4 font-demi-bold ">
                 <h3 class="text-center text-sm-st-one">Video setting</h3>
                 <div class="w-full h-[1px] bg-secondary-100"></div>
                 <div class="flex items-center justify-between gap-8">
-                  <div class="relative flex items-center">
-                    <div class="relative flex items-center justify-center">
+                  <div class="flex items-center ">
+                    <div class="flex items-center justify-center ">
                       <Button
                         id="speed"
                         class="w-0 opacity-0"
@@ -51,15 +51,15 @@
                         <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
-                    <Popover ref="speedMenu" id="speed_menu">
+                    <div v-if="speedMenu" ref="speedMenu" id="speed_menu" class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white">
                       <div
-                        class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px] max-h-[200px] overflow-auto"
+                        class="flex flex-col gap-2 "
                       >
                         <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">
                             Playback speed
                           </h3>
-                          <ArrowLeft class="text-[16px]" @click="settingToggle" />
+                          <ArrowLeft class="text-[16px]" @click="speedToggle" />
                         </div>
                         <div class="w-full h-[1px] bg-secondary-100"></div>
                         <ul class="flex flex-col w-full gap-2">
@@ -82,7 +82,7 @@
                           </li>
                         </ul>
                       </div>
-                    </Popover>
+                    </div>
                     <span class="text-sm-st-two font-demi-bold">Normal</span>
                   </div>
                   <div class="flex gap-1">
@@ -92,8 +92,8 @@
                 </div>
 
                 <div class="flex items-center justify-between gap-8">
-                  <div class="relative flex items-center">
-                    <div class="relative flex items-center justify-center">
+                  <div class="flex items-center ">
+                    <div class="flex items-center justify-center ">
                       <Button
                         id="quality"
                         class="w-0 opacity-0"
@@ -105,11 +105,11 @@
                         <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
-                    <Popover ref="qualityMenu" id="speed_menu" position="top">
-                      <div class="p-4 ronded-2xl flex flex-col gap-2 min-w-[200px]">
+                    <div v-if="qualityMenu" ref="qualityMenu" id="speed_menu"  class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white ronded-2xl">
+                      <div class="flex flex-col gap-2 ">
                         <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
-                          <ArrowLeft class="text-[16px]" @click="settingToggle" />
+                          <ArrowLeft class="text-[16px]" @click="qualityToggle" />
                         </div>
                         <div class="w-full h-[1px] bg-secondary-100"></div>
                         <ul class="flex flex-col w-full gap-2">
@@ -148,7 +148,7 @@
                           </li>
                         </ul>
                       </div>
-                    </Popover>
+                    </div>
                     <span class="text-sm-st-two font-demi-bold"
                       >Auto<span class="text-sm-cp">(360p)</span></span
                     >
@@ -159,7 +159,7 @@
                   </div>
                 </div>
               </div>
-            </Popover>
+            </div>
           </div>
 
           <div id="sound" @mouseenter="sliderDisplay" @mouseleave="sliderHide">
@@ -231,7 +231,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { Button, Loading } from '@/components'
+import { Button } from '@/components'
 import {
   MinimizeIcon,
   SoundIcon,
@@ -244,7 +244,6 @@ import {
 } from '@/components/icons'
 import { cn } from '@/utils'
 import { Stream, AccessList } from '@/queries'
-import { useScreenOrientation } from '@vueuse/core'
 
 
 type Props = {
@@ -353,11 +352,11 @@ const handleVideoSrcError = () => {
 }
 
 const settingToggle = (event: Event) => {
-  settingMenu.value.toggle(event)
+  settingMenu.value=!settingMenu.value
 }
 
 const speedToggle = (event: Event) => {
-  speedMenu.value.toggle(event)
+  speedMenu.value=!speedMenu.value
 }
 
 const checkAcces = (quality: string): boolean => {
@@ -372,7 +371,7 @@ const checkAcces = (quality: string): boolean => {
 }
 
 const qualityToggle = (event: Event) => {
-  qualityMenu.value.toggle(event)
+  qualityMenu.value=!qualityMenu.value
 }
 
 
@@ -386,6 +385,7 @@ function formatTime(time: number) {
 
 // Helper function to toggle video playback
 function togglePlayPause() {
+  settingMenu.value=false
   if (video.value && (video.value.paused || video.value.ended)) {
 
     video.value.play()
@@ -490,8 +490,8 @@ const seekVideo = (event) => {
 }
 
 const setSpeed = (speed: number) => {
-  speedMenu.value.toggle(event)
-  settingMenu.value.toggle(event)
+  speedMenu.value=!speedMenu.value
+  settingMenu.value=!settingMenu.value
   video.value.playbackRate = speed
   videoSpeed.value = speed
 }
@@ -499,8 +499,8 @@ const setSpeed = (speed: number) => {
 //change video quality that comes from api
 const setQuality = (quality: { key: string; quality: string }) => {
   const currentVideoTime = video.value?.currentTime
-  qualityMenu.value.toggle(event)
-  settingMenu.value.toggle(event)
+  qualityMenu.value=!qualityMenu.value
+  settingMenu.value=!settingMenu.value
   videoQuality.value = quality.key
   video.value.src = quality.quality
   video.value.currentTime = currentVideoTime
