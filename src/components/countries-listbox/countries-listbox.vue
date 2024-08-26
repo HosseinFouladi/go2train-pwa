@@ -6,15 +6,16 @@ import {
   ListboxOptions,
   ListboxOption
 } from '@headlessui/vue'
-import { cn } from '@/utils'
-import type { CountriesListboxProps } from './countries-listbox.types'
-import { ArrowLeft } from '../icons'
 import {
   ScrollAreaRoot,
   ScrollAreaThumb,
   ScrollAreaViewport,
   ScrollAreaScrollbar
 } from 'radix-vue'
+
+import { cn } from '@/utils'
+import { ArrowLeft } from '@/components/icons'
+import type { CountriesListboxProps } from './countries-listbox.types'
 
 defineOptions({
   inheritAttrs: false
@@ -44,17 +45,21 @@ const getDropdownValue = () => {
       <ListboxButton
         :class="
           cn(
-            'relative w-full gap-1  p-3 text-st-one text-secondary-600 border border-secondary-600 h-[52px] focus:outline-none rounded-[14px]',
+            'relative flex flex-row items-center w-full gap-1  p-3 text-st-one text-secondary-600 border border-secondary-600 h-[52px] focus:outline-none rounded-[14px]',
             {
               'hover:text-secondary-700 focus:text-secondary-900': !props.disabled,
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
                 props.state.meta.errors.length > 0,
-              'ps-8': !!props.iconRight,
-              'pe-3': !!props.iconLeft
+              'ps-2': !!props.iconRight
             }
           )
         "
       >
+        <span
+          class="top-0 flex items-center h-full px-2 pointer-events-none right-2"
+        >
+          <Component :is="props.iconRight" />
+        </span>
         <span class="flex w-full truncate">{{ selectedItem[optionLabel] }}</span>
         <span
           class="absolute top-0 left-0 flex items-center h-full px-2 -rotate-90 pointer-events-none"
@@ -107,7 +112,11 @@ const getDropdownValue = () => {
                     "
                   >
                     <span class="flex items-center justify-center">
-                      <img class="w-4 h-4 rounded-full" :src="option[optionIcon]" />
+                      <img
+                        v-if="option[optionIcon]"
+                        class="w-4 h-4 rounded-full"
+                        :src="option[optionIcon]"
+                      />
                     </span>
                     <span>{{ option[optionLabel] }}</span>
                   </div>
