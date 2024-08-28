@@ -6,3 +6,4 @@ export * from "./country";
 export * from "./course";
 export * from "./comment";
 export * from "./payment";
+export * from './languages'

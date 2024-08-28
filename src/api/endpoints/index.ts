@@ -3,12 +3,11 @@ import { ProfileEndpoints } from './profile'
 import { PlansEndpoints } from './plans'
 import { BugReport } from './reports'
 import { AppSettingsEndpoints } from './app-settings'
-import { CountryEndpoints } from "./countries";
+import { CountryEndpoints } from './countries'
 import { AvatarsEndpoints } from './avatars'
 import { CourseEndpoint } from './course'
 import { CommentsEndPoint } from './comment'
-
-
+import { LanguageEndpoints } from './languages'
 import { PaymentEndpoints } from "./payment";
 
 export const ENDPOINTS = {
@@ -22,4 +21,6 @@ export const ENDPOINTS = {
 	Courses:CourseEndpoint,
 	comments:CommentsEndPoint,
 	Payment: PaymentEndpoints,
+  Languages: LanguageEndpoints
 };
+

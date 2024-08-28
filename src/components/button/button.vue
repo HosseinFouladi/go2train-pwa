@@ -51,7 +51,9 @@ withDefaults(defineProps<ButtonProps>(), {
       <span v-if="isLoading">
         <SpinnerIcon class="animate-spin" />
       </span>
-      <span v-if="!isLoading">{{ label }}</span>
+
+      <span v-if="!isLoading && typeof label === 'string'">{{ label }}</span>
+      <Component v-if="!isLoading && typeof label === 'object'" :is="label" />
     </span>
     <Component v-if="iconLeft" :is="iconLeft" />
   </button>
