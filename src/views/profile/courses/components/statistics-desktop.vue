@@ -3,8 +3,8 @@
 import { ArrowLeft, CupIcon, PeoplesIcon, ThunderIcon } from '@/components/icons'
 import { Button } from '@/components'
 import { RankingIcon } from '@/components/icons'
-import LeaderboardImg from '@/assets/images/Leaderboard-Banner.png'
-import RoadmapImg from '@/assets/images/Roadmap-Banner.png'
+import LeaderboardImg from '@/assets/images/Leaderboard-Banner.webp'
+import RoadmapImg from '@/assets/images/Roadmap-Banner.webp'
 
 type Props = {
   levelTitle:string

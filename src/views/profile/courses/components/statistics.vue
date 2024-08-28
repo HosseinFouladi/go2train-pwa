@@ -1,3 +1,24 @@
+
+
+<script setup lang="ts">
+import { CupIcon, ThunderIcon, ArrowLeft, PeoplesIcon } from '@/components/icons'
+import LeaderboardImg from '@/assets/images/Leaderboard-Banner.webp'
+import RoadmapImg from '@/assets/images/Roadmap-Banner.webp'
+import { Button } from '@/components'
+
+type Props={
+  score:number,
+  users: [
+    {
+      avatar: string
+      id: string
+      name: string
+    }
+  ]
+}
+const props=defineProps<Props>()
+</script>
+
 <template>
   <div class="flex flex-col gap-3 py-4">
     <div
@@ -53,26 +74,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
-import CoinImg from '@/assets/images/coin-silver.png'
-import { CupIcon, ThunderIcon, ArrowLeft, PeoplesIcon } from '@/components/icons'
-import LeaderboardImg from '@/assets/images/Leaderboard-Banner.png'
-import RoadmapImg from '@/assets/images/Roadmap-Banner.png'
-import { Button } from '@/components'
-
-type Props={
-  score:number,
-  users: [
-    {
-      avatar: string
-      id: string
-      name: string
-    }
-  ]
-}
-const props=defineProps<Props>()
-</script>
 
 <style scoped></style>
