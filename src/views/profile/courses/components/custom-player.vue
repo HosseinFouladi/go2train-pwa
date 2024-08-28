@@ -1,233 +1,3 @@
-<template>
-  <div ref="wrapper" class="video-wrapper" >
-    <video
-      @click="togglePlayPause"
-      @loadedmetadata="totlaDuration"
-      :src="props.stream?.streamProviders?.cache?.urls?.p360"
-      class="custom-video "
-      @timeupdate="updateProgressbar"
-      @ended="showPlayIcon"
-      :poster="props?.stream?.streamMeta.thumbnail"
-      controlslist="nodownload"
-    ></video>
-    <div class="video-controls">
-      <div class="controls-items">
-        <div class="flex items-center controls-item">
-          <MinimizeIcon
-            @click="toggleFullScreen"
-            id="fullscreen"
-            class="w-4 fullscreen"
-            aria-label="Fullscreen"
-          />
-          <div class="relative">
-            <div class="relative flex items-center justify-center">
-              <Button
-                id="setting"
-                class="w-0 opacity-0"
-                label=""
-                @click="settingToggle"
-                variant="text"
-              />
-              <label for="setting" class="-mr-10">
-                <SettingIcon class="w-4 h-4 text-neutral-white " ref="settingIcon"  />
-              </label>
-            </div>
-
-            <div v-if="settingMenu" ref="settingMenu" id="overlay_tmenu"  class="absolute z-30 w-[280px] max-h-[200px] bg-neutral-white -top-48 overflow-hidden rounded-2xl " >
-              <div class="flex flex-col gap-4 p-4 font-demi-bold ">
-                <h3 class="text-center text-sm-st-one">Video setting</h3>
-                <div class="w-full h-[1px] bg-secondary-100"></div>
-                <div class="flex items-center justify-between gap-8">
-                  <div class="flex items-center ">
-                    <div class="flex items-center justify-center ">
-                      <Button
-                        id="speed"
-                        class="w-0 opacity-0"
-                        label=""
-                        @click="speedToggle"
-                        variant="text"
-                      />
-                      <label for="speed" class="">
-                        <ArrowRight class="w-4 h-4 -mr-4" />
-                      </label>
-                    </div>
-                    <div v-if="speedMenu" ref="speedMenu" id="speed_menu" class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white">
-                      <div
-                        class="flex flex-col gap-2 "
-                      >
-                        <div class="flex items-center justify-between">
-                          <h3 class="text-sm-st-one font-demi-bold">
-                            Playback speed
-                          </h3>
-                          <ArrowLeft class="text-[16px]" @click="speedToggle" />
-                        </div>
-                        <div class="w-full h-[1px] bg-secondary-100"></div>
-                        <ul class="flex flex-col w-full gap-2">
-                          <li
-                            v-for="item in speeds"
-                            :key="item.speed"
-                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
-                            @click="() => setSpeed(item.speed)"
-                            :class="
-                              cn({ 'bg-secondary-100 ': item.speed === videoSpeed })
-                            "
-                          >
-                            <div
-                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
-                              v-if="item.isPro"
-                            >
-                              pro
-                            </div>
-                            <span class="text-sm-cp">{{ item.speed }}</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <span class="text-sm-st-two font-demi-bold">Normal</span>
-                  </div>
-                  <div class="flex gap-1">
-                    <span class="text-st-two">playback speed</span>
-                    <PlayIcon class="stroke-neutral-black" />
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between gap-8">
-                  <div class="flex items-center ">
-                    <div class="flex items-center justify-center ">
-                      <Button
-                        id="quality"
-                        class="w-0 opacity-0"
-                        label=""
-                        @click="qualityToggle"
-                        variant="text"
-                      />
-                      <label for="quality" class="">
-                        <ArrowRight class="w-4 h-4 -mr-4" />
-                      </label>
-                    </div>
-                    <div v-if="qualityMenu" ref="qualityMenu" id="speed_menu"  class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white ronded-2xl">
-                      <div class="flex flex-col gap-2 ">
-                        <div class="flex items-center justify-between">
-                          <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
-                          <ArrowLeft class="text-[16px]" @click="qualityToggle" />
-                        </div>
-                        <div class="w-full h-[1px] bg-secondary-100"></div>
-                        <ul class="flex flex-col w-full gap-2">
-                          <li
-                            v-for="[key, quality] in Object.entries(
-                              props.stream.streamProviders.cache.urls
-                            )"
-                            :key="quality"
-                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
-                            @click="
-                              () => {
-                                if (checkAcces(key)) setQuality({ key, quality })
-                              }
-                            "
-                            :class="
-                              cn({
-                                'bg-secondary-100 ': key == videoQuality
-                              })
-                            "
-                          >
-                            <span
-                              class="text-sm-cp"
-                              :class="
-                                cn({
-                                  'text-secondary-400': !checkAcces(key)
-                                })
-                              "
-                              >{{ key }}</span
-                            >
-                            <div
-                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
-                              v-if="!checkAcces(key)"
-                            >
-                              pro
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <span class="text-sm-st-two font-demi-bold"
-                      >Auto<span class="text-sm-cp">(360p)</span></span
-                    >
-                  </div>
-                  <div class="flex gap-1">
-                    <span class="text-st-two"> Quality</span>
-                    <QualityIcon class="stroke-neutral-black" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div id="sound" @mouseenter="sliderDisplay" @mouseleave="sliderHide">
-            <SoundIcon class="soundIcon" />
-            <MuteIcon class="muteIcon" />
-            <div class="volume-slider" @click="changeVolume" style="display: none">
-              <div class="volume-bar">
-                <div class="volume-level" style="width: 38.75%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="controls-item">
-          <div class="time">
-            <span class="total-duration">1:31</span><span>/</span
-            ><span class="current-time">0:11</span>
-          </div>
-          <div class="play-pause" @click="togglePlayPause">
-            <span class="play" style="display: block"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="15"
-                viewBox="0 0 14 15"
-                fill="none"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M1.89663 1.10432C0.909766 1.63909 0.370645 2.82076 0.370645 4.42507V10.5663C0.370645 12.1706 0.909766 13.3437 1.89663 13.8871C2.8835 14.4305 4.23587 14.2752 5.70702 13.473L11.3449 10.4024C12.8161 9.60027 13.6294 8.57386 13.6294 7.49569C13.6294 6.41752 12.8161 5.39111 11.3449 4.58895L5.70702 1.51834C4.81154 1.03532 3.97087 0.785182 3.22159 0.785182C2.72816 0.785182 2.28955 0.888686 1.89663 1.10432Z"
-                  fill="#FF9900"
-                ></path></svg></span
-            ><span class="pause" style="display: none"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="17"
-                height="17"
-                viewBox="0 0 17 17"
-                fill="none"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M4.5082 15C3.4918 15 3 14.4267 3 13.24V3.76C3 2.57333 3.4918 2 4.5082 2H6.4918C7.5082 2 8 2.57333 8 3.76V13.24C8 14.4267 7.5082 15 6.4918 15H4.5082ZM10.5082 15C9.4918 15 9 14.4267 9 13.24V3.76C9 2.57333 9.4918 2 10.5082 2H12.4918C13.5082 2 14 2.57333 14 3.76V13.24C14 14.4267 13.5082 15 12.4918 15H10.5082Z"
-                  fill="#FF9900"
-                ></path></svg
-            ></span>
-          </div>
-        </div>
-      </div>
-      <div class="progress-bar">
-        <div class="totalbar" @click="seekVideo">
-          <div class="current-bar" style="width: 12.2406%"></div>
-        </div>
-      </div>
-    </div>
-    <div
-      id="play-video"
-      class="flex flex-col items-center w-fit"
-      @click="togglePlayPause"
-    >
-      <WhitePlayIcon class="w-10 h-10 " />
-      <h2 class="text-neutral-white text-sm-st-one">ویدئو معرفی دوره</h2>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
@@ -525,6 +295,238 @@ const showPlayIcon = () => {
   videoControls.value.classList.remove('video-playing')
 }
 </script>
+
+<template>
+  <div ref="wrapper" class="video-wrapper" >
+    <video
+      @click="togglePlayPause"
+      @loadedmetadata="totlaDuration"
+      :src="props.stream?.streamProviders?.cache?.urls?.p360"
+      class="custom-video "
+      @timeupdate="updateProgressbar"
+      @ended="showPlayIcon"
+      :poster="props?.stream?.streamMeta.thumbnail"
+      controlslist="nodownload"
+    ></video>
+    <div class="video-controls">
+      <div class="controls-items">
+        <div class="flex items-center controls-item">
+          <MinimizeIcon
+            @click="toggleFullScreen"
+            id="fullscreen"
+            class="w-6 h-6 fullscreen"
+            aria-label="Fullscreen"
+          />
+          <div class="relative">
+            <div class="relative flex items-center justify-center">
+              <Button
+                id="setting"
+                class="w-0 opacity-0"
+                label=""
+                @click="settingToggle"
+                variant="text"
+              />
+              <label for="setting" class="-mr-10">
+                <SettingIcon class="w-6 h-6 text-neutral-white " ref="settingIcon"  />
+              </label>
+            </div>
+
+            <div v-if="settingMenu" ref="settingMenu" id="overlay_tmenu"  class="absolute z-30 w-[280px] max-h-[200px] bg-neutral-white -top-48 overflow-hidden rounded-2xl " >
+              <div class="flex flex-col gap-4 p-4 font-demi-bold ">
+                <h3 class="text-center text-sm-st-one">Video setting</h3>
+                <div class="w-full h-[1px] bg-secondary-100"></div>
+                <div class="flex items-center justify-between gap-8">
+                  <div class="flex items-center ">
+                    <div class="flex items-center justify-center ">
+                      <Button
+                        id="speed"
+                        class="w-0 opacity-0"
+                        label=""
+                        @click="speedToggle"
+                        variant="text"
+                      />
+                      <label for="speed" class="">
+                        <ArrowRight class="w-4 h-4 -mr-4" />
+                      </label>
+                    </div>
+                    <div v-if="speedMenu" ref="speedMenu" id="speed_menu" class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white">
+                      <div
+                        class="flex flex-col gap-2 "
+                      >
+                        <div class="flex items-center justify-between">
+                          <h3 class="text-sm-st-one font-demi-bold">
+                            Playback speed
+                          </h3>
+                          <ArrowLeft class="text-[16px]" @click="speedToggle" />
+                        </div>
+                        <div class="w-full h-[1px] bg-secondary-100"></div>
+                        <ul class="flex flex-col w-full gap-2">
+                          <li
+                            v-for="item in speeds"
+                            :key="item.speed"
+                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
+                            @click="() => setSpeed(item.speed)"
+                            :class="
+                              cn({ 'bg-secondary-100 ': item.speed === videoSpeed })
+                            "
+                          >
+                            <div
+                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
+                              v-if="item.isPro"
+                            >
+                              pro
+                            </div>
+                            <span class="text-sm-cp">{{ item.speed }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <span class="text-sm-st-two font-demi-bold">Normal</span>
+                  </div>
+                  <div class="flex gap-1">
+                    <span class="text-st-two">playback speed</span>
+                    <PlayIcon class="stroke-neutral-black" />
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-8">
+                  <div class="flex items-center ">
+                    <div class="flex items-center justify-center ">
+                      <Button
+                        id="quality"
+                        class="w-0 opacity-0"
+                        label=""
+                        @click="qualityToggle"
+                        variant="text"
+                      />
+                      <label for="quality" class="">
+                        <ArrowRight class="w-4 h-4 -mr-4" />
+                      </label>
+                    </div>
+                    <div v-if="qualityMenu" ref="qualityMenu" id="speed_menu"  class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white rounded-2xl">
+                      <div class="flex flex-col gap-2 ">
+                        <div class="flex items-center justify-between">
+                          <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
+                          <ArrowLeft class="text-[16px]" @click="qualityToggle" />
+                        </div>
+                        <div class="w-full h-[1px] bg-secondary-100"></div>
+                        <ul class="flex flex-col w-full gap-2">
+                          <li
+                            v-for="[key, quality] in Object.entries(
+                              props.stream.streamProviders.cache.urls
+                            )"
+                            :key="quality"
+                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
+                            @click="
+                              () => {
+                                if (checkAcces(key)) setQuality({ key, quality })
+                              }
+                            "
+                            :class="
+                              cn({
+                                'bg-secondary-100 ': key == videoQuality
+                              })
+                            "
+                          >
+                            <span
+                              class="text-sm-cp"
+                              :class="
+                                cn({
+                                  'text-secondary-400': !checkAcces(key)
+                                })
+                              "
+                              >{{ key }}</span
+                            >
+                            <div
+                              class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
+                              v-if="!checkAcces(key)"
+                            >
+                              pro
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <span class="text-sm-st-two font-demi-bold"
+                      >Auto<span class="text-sm-cp">(360p)</span></span
+                    >
+                  </div>
+                  <div class="flex gap-1">
+                    <span class="text-st-two"> Quality</span>
+                    <QualityIcon class="stroke-neutral-black" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="sound" @mouseenter="sliderDisplay" @mouseleave="sliderHide">
+            <SoundIcon class="w-6 h-6 soundIcon" />
+            <MuteIcon class="w-6 h-6 muteIcon" />
+            <div class="volume-slider" @click="changeVolume" style="display: none">
+              <div class="volume-bar">
+                <div class="volume-level" style="width: 38.75%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-item">
+          <div class="time">
+            <span class="total-duration">1:31</span><span>/</span
+            ><span class="current-time">0:11</span>
+          </div>
+          <div class="play-pause" @click="togglePlayPause">
+            <span class="play" style="display: block"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="15"
+                viewBox="0 0 14 15"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M1.89663 1.10432C0.909766 1.63909 0.370645 2.82076 0.370645 4.42507V10.5663C0.370645 12.1706 0.909766 13.3437 1.89663 13.8871C2.8835 14.4305 4.23587 14.2752 5.70702 13.473L11.3449 10.4024C12.8161 9.60027 13.6294 8.57386 13.6294 7.49569C13.6294 6.41752 12.8161 5.39111 11.3449 4.58895L5.70702 1.51834C4.81154 1.03532 3.97087 0.785182 3.22159 0.785182C2.72816 0.785182 2.28955 0.888686 1.89663 1.10432Z"
+                  fill="#FF9900"
+                ></path></svg></span
+            ><span class="pause" style="display: none"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M4.5082 15C3.4918 15 3 14.4267 3 13.24V3.76C3 2.57333 3.4918 2 4.5082 2H6.4918C7.5082 2 8 2.57333 8 3.76V13.24C8 14.4267 7.5082 15 6.4918 15H4.5082ZM10.5082 15C9.4918 15 9 14.4267 9 13.24V3.76C9 2.57333 9.4918 2 10.5082 2H12.4918C13.5082 2 14 2.57333 14 3.76V13.24C14 14.4267 13.5082 15 12.4918 15H10.5082Z"
+                  fill="#FF9900"
+                ></path></svg
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div class="totalbar" @click="seekVideo">
+          <div class="current-bar" style="width: 12.2406%"></div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="play-video"
+      class="flex flex-col items-center w-fit"
+      @click="togglePlayPause"
+    >
+      <WhitePlayIcon class="w-14 h-14 " />
+      <h2 class="text-neutral-white text-sm-st-one">ویدئو معرفی دوره</h2>
+    </div>
+  </div>
+</template>
+
+
 
 <style scoped lang="scss">
 .video-wrapper {

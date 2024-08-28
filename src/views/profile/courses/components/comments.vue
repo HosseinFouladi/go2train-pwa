@@ -1,3 +1,141 @@
+<script setup lang="ts">
+import { Button, UserAvatar } from '@/components'
+import {
+  FilterIcon,
+  LikeIcon,
+  EmptyLikeIcon
+} from '@/components/icons'
+import { ApiClient, cn } from '@/utils'
+import { ref, watch } from 'vue'
+import type { Comment, CommentReactionParams } from '@/queries'
+import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
+import { ENDPOINTS } from '@/api'
+import { useTimeAgo } from '@vueuse/core'
+import {
+  ScrollAreaRoot,
+  ScrollAreaThumb,
+  ScrollAreaViewport,
+  ScrollAreaScrollbar
+} from 'radix-vue'
+
+let lastScrollTop = 0
+
+const props = defineProps({
+  course_id: { type: String }
+})
+const emit = defineEmits(['commentsCount'])
+const filterMenu = ref()
+const commentMore = ref(false)
+const replayMore = ref(false)
+const page = ref(1)
+const commentArray = ref<Array<Comment>>([])
+const isFilterMenu = ref(false)
+const orderByFilterParam = ref(2)
+const orderTypefilterParam = ref<1 | 2>(2)
+const filterName = ref('جدیدترین ها')
+const currentCommentId = ref('1')
+
+const filterOptions = ref([
+  {
+    title: 'جدیدترین ها',
+    value: '2',
+    order: '2'
+  },
+  {
+    title: 'مفیدترین',
+    value: '3',
+    order: '2'
+  },
+  {
+    title: 'رتبه‌بندی از بیشترین تا کمترین ',
+    value: '1',
+    order: '1'
+  },
+  {
+    title: ' رتبه‌بندی از کمترین تا بیشترین',
+    value: '1',
+    order: '2'
+  }
+])
+
+const filterToggle = (event: Event) => {
+  filterMenu.value.toggle(event)
+}
+
+const {
+  data: comments,
+  isPending: commentPending,
+  isFetching: commentFetching,
+  refetch: commentRefetch
+} = useQuery({
+  queryKey: ['course_comments'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseTypeV3<Array<Comment>>>(
+      ENDPOINTS.comments.course_comment(props?.course_id),
+      {
+        params: {
+          page: page.value,
+          orderBy: orderByFilterParam.value,
+          orderType: orderTypefilterParam.value
+        }
+      }
+    ),
+  gcTime: 0
+})
+
+const { mutate: likeComment, isPending: likePending } = useMutation({
+  mutationFn: (params: CommentReactionParams) =>
+    ApiClient.post<ApiResponseTypeV3<any>>(ENDPOINTS.comments.comment_reaction, {
+      ...params
+    }),
+  onError(error) {}
+})
+
+const handleLike = (commentId: string, isLike: boolean) => {
+  //handle like action in client side before waiting to server response:)
+  commentArray.value = commentArray.value.map((item) => {
+    if (item.id === commentId)
+      return {
+        ...item,
+        isLike: isLike ? false : true,
+        likes: isLike ? item.likes - 1 : item.likes + 1
+      }
+    return { ...item }
+  })
+  likeComment({ action: isLike ? 0 : 1, commentId })
+}
+const infiniteScroll = (e: HTMLElement) => {
+  const element = document.querySelector('.scroll-wrapper')
+
+  if (!element) return
+
+  if (element.scrollTop < lastScrollTop) {
+    // upscroll
+    return
+  }
+  lastScrollTop = element.scrollTop <= 0 ? 0 : element.scrollTop
+
+  if (
+    element.scrollTop + element.offsetHeight >= element.scrollHeight - 50 &&
+    comments.value?.meta.last_page !== page.value
+  ) {
+    page.value += 1
+    commentRefetch()
+  }
+}
+
+watch(
+  () => comments.value?.data,
+  () => {
+    if (comments.value?.data) {
+      commentArray.value = [...commentArray.value, ...comments.value.data]
+    }
+    emit('commentsCount', commentArray.value.length)
+
+  }
+)
+</script>
 <template>
   <div>
     <Button
@@ -56,6 +194,7 @@
       <ScrollAreaViewport
         class="flex flex-col h-[800px] overflow-auto gap-2 scroll-wrapper"
         @scroll="infiniteScroll"
+
       >
         <div
           v-for="comment in commentArray"
@@ -217,144 +356,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { Button, UserAvatar } from '@/components'
-import {
-  FilterIcon,
-  LikeIcon,
-  EmptyLikeIcon
-} from '@/components/icons'
-import { ApiClient, cn } from '@/utils'
-import { ref, watch } from 'vue'
-import type { Comment, CommentReactionParams } from '@/queries'
-import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
-import { ENDPOINTS } from '@/api'
-import { useTimeAgo } from '@vueuse/core'
-import {
-  ScrollAreaRoot,
-  ScrollAreaThumb,
-  ScrollAreaViewport,
-  ScrollAreaScrollbar
-} from 'radix-vue'
 
-let lastScrollTop = 0
-
-const props = defineProps({
-  course_id: { type: String }
-})
-const emit = defineEmits(['commentsCount'])
-const filterMenu = ref()
-const commentMore = ref(false)
-const replayMore = ref(false)
-const page = ref(1)
-const commentArray = ref<Array<Comment>>([])
-const isFilterMenu = ref(false)
-const orderByFilterParam = ref(2)
-const orderTypefilterParam = ref<1 | 2>(2)
-const filterName = ref('جدیدترین ها')
-const currentCommentId = ref('1')
-
-const filterOptions = ref([
-  {
-    title: 'جدیدترین ها',
-    value: '2',
-    order: '2'
-  },
-  {
-    title: 'مفیدترین',
-    value: '3',
-    order: '2'
-  },
-  {
-    title: 'رتبه‌بندی از بیشترین تا کمترین ',
-    value: '1',
-    order: '1'
-  },
-  {
-    title: ' رتبه‌بندی از کمترین تا بیشترین',
-    value: '1',
-    order: '2'
-  }
-])
-
-const filterToggle = (event: Event) => {
-  filterMenu.value.toggle(event)
-}
-
-const {
-  data: comments,
-  isPending: commentPending,
-  isFetching: commentFetching,
-  refetch: commentRefetch
-} = useQuery({
-  queryKey: ['course_comments'],
-  queryFn: () =>
-    ApiClient.get<ApiResponseTypeV3<Array<Comment>>>(
-      ENDPOINTS.comments.course_comment(props?.course_id),
-      {
-        params: {
-          page: page.value,
-          orderBy: orderByFilterParam.value,
-          orderType: orderTypefilterParam.value
-        }
-      }
-    ),
-  gcTime: 0
-})
-
-const { mutate: likeComment, isPending: likePending } = useMutation({
-  mutationFn: (params: CommentReactionParams) =>
-    ApiClient.post<ApiResponseTypeV3<any>>(ENDPOINTS.comments.comment_reaction, {
-      ...params
-    }),
-  onError(error) {}
-})
-
-const handleLike = (commentId: string, isLike: boolean) => {
-  //handle like action in client side before waiting to server response:)
-  commentArray.value = commentArray.value.map((item) => {
-    if (item.id === commentId)
-      return {
-        ...item,
-        isLike: isLike ? false : true,
-        likes: isLike ? item.likes - 1 : item.likes + 1
-      }
-    return { ...item }
-  })
-  likeComment({ action: isLike ? 0 : 1, commentId })
-}
-const infiniteScroll = (e: HTMLElement) => {
-  const element = document.querySelector('.scroll-wrapper')
-
-  if (!element) return
-
-  if (element.scrollTop < lastScrollTop) {
-    // upscroll
-    return
-  }
-  lastScrollTop = element.scrollTop <= 0 ? 0 : element.scrollTop
-
-  if (
-    element.scrollTop + element.offsetHeight >= element.scrollHeight - 50 &&
-    comments.value?.meta.last_page !== page.value
-  ) {
-    page.value += 1
-    commentRefetch()
-  }
-}
-
-watch(
-  () => comments.value?.data,
-  () => {
-    if (comments.value?.data) {
-      commentArray.value = [...commentArray.value, ...comments.value.data]
-    }
-    emit('commentsCount', commentArray.value.length)
-
-  }
-)
-</script>
 
 <style>
 .para {

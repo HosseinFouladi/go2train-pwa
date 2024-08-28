@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="z-30 flex flex-col items-center justify-center gap-2">
-        <CupIcon />
+        <CupIcon class="w-12 h-12" />
         <div class="flex items-center gap-1 p-1 bg-confirmation-100 rounded-2xl">
           <ThunderIcon />
           <span class="font-normal text-cp">امتیاز شما</span>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="z-30 flex flex-col items-center justify-center gap-2">
-        <PeoplesIcon />
+        <PeoplesIcon class="w-12 h-12"/>
         <span class="font-normal text-sm-st-two text-accent-50">درس ۱</span>
       </div>
     </div>

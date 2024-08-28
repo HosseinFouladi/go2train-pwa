@@ -1,3 +1,29 @@
+
+<script setup lang="ts">
+import { ArrowLeft, CupIcon, PeoplesIcon, ThunderIcon } from '@/components/icons'
+import { Button } from '@/components'
+import { RankingIcon } from '@/components/icons'
+import LeaderboardImg from '@/assets/images/Leaderboard-Banner.png'
+import RoadmapImg from '@/assets/images/Roadmap-Banner.png'
+
+type Props = {
+  levelTitle:string
+  language_name: string
+  duration: string
+  users: [
+    {
+      avatar: string
+      id: string
+      name: string
+    }
+  ]
+  score:number,
+  poster:string
+}
+
+defineProps<Props>()
+
+</script>
 <template>
   <div class="flex flex-col gap-6 p-6 card">
     <img
@@ -46,7 +72,7 @@
       <div class="px-2 py-1 -mr-16 rounded-2xl bg-accent-200 text-cp">50%</div>
     </div>
     <div class="z-30 flex flex-col items-center justify-center gap-2">
-      <PeoplesIcon />
+      <PeoplesIcon class="w-12 h-12" />
       <span class="font-normal text-sm-st-two text-accent-50">درس ۱</span>
     </div>
   </div>
@@ -71,7 +97,7 @@
       </div>
     </div>
     <div class="z-30 flex flex-col items-center justify-center gap-2">
-      <CupIcon />
+      <CupIcon class="w-12 h-12" />
       <div class="flex items-center gap-1 p-1 bg-confirmation-100 rounded-2xl">
         <ThunderIcon />
         <span class="font-normal text-cp">امتیاز شما</span>
@@ -81,30 +107,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ArrowLeft, CupIcon, PeoplesIcon, ThunderIcon } from '@/components/icons'
-import { Button } from '@/components'
-import { RankingIcon } from '@/components/icons'
-import LeaderboardImg from '@/assets/images/Leaderboard-Banner.png'
-import RoadmapImg from '@/assets/images/Roadmap-Banner.png'
 
-type Props = {
-  levelTitle:string
-  language_name: string
-  duration: string
-  users: [
-    {
-      avatar: string
-      id: string
-      name: string
-    }
-  ]
-  score:number,
-  poster:string
-}
-
-const props=defineProps<Props>()
-
-</script>
 
 <style scoped></style>
