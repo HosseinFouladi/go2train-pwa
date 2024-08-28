@@ -1,7 +1,27 @@
 import { googleTokenLogin } from 'vue3-google-login'
 
-import { ENDPOINTS, type ApiResponseTypeV3 } from '@/api'
-import { ApiClient } from '@/utils'
+import { ENDPOINTS } from "@/api";
+import { ApiClient } from "@/utils";
+
+export type ApiResponseTypeV3<T> = {
+	data: T;
+	message: Array<Message>;
+	meta?:{
+		simple_paginate: boolean
+		per_page: number
+		count: number
+		current_page: number
+		next_page: any
+		prev_page: number
+		total: number
+		last_page: number
+	}
+};
+
+export interface Message {
+	id: string;
+	content: string;
+}
 
 export type ExternalAuthResponseType = {
   token: string

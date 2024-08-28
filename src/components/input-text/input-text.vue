@@ -2,6 +2,7 @@
 import { cn } from '@/utils'
 import type { InputTextProps } from '.'
 import InputInfo from '@/components/input-info'
+import { ref } from 'vue';
 
 defineOptions({
   inheritAttrs: false
@@ -13,6 +14,16 @@ const props = withDefaults(defineProps<InputTextProps>(), {
   iconRight: undefined,
   fluid: false
 })
+
+const emit = defineEmits(['modelValue'])
+
+
+const text = ref(props.value || '')
+
+const getInputTextValue = () => {
+  emit('modelValue', text.value)
+}
+
 </script>
 
 <template>
@@ -37,13 +48,15 @@ const props = withDefaults(defineProps<InputTextProps>(), {
             'h-[52px] w-full focus:outline-none rounded-[14px] p-3',
             {
               'border-danger-500 hover:border-danger-500 focus:border-danger-500':
-                props.state.meta.errors.length > 0,
+                props?.state?.meta.errors.length > 0,
               'ps-8': !!props.iconRight,
               'pe-3': !!props.iconLeft,
               'hover:border-secondary-700 focus:border-secondary-900': !props.disabled
             }
           )
         "
+        v-model="text"
+        @input="getInputTextValue"
         :disabled="props.disabled"
         v-bind="$attrs"
       />
@@ -54,10 +67,10 @@ const props = withDefaults(defineProps<InputTextProps>(), {
         <Component :is="props.iconRight" />
       </div>
     </div>
-    <div class="min-h-8">
+    <div class="min-h-8" v-if="props.state">
       <InputInfo
         :key="err || ''"
-        v-for="err in props.state.meta.errors"
+        v-for="err in props?.state?.meta.errors"
         :error="err"
       />
     </div>

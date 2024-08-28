@@ -58,7 +58,6 @@ import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 
 import { useAvatarModals } from '@/stores'
-import { BorderAroowLeft, SelectGallery, SelectAvatar } from '@/components/icons'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import type { Avatar, StoreAvatarParams } from '@/queries/avatars'

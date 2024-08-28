@@ -5,19 +5,22 @@ import { BugReport } from './reports'
 import { AppSettingsEndpoints } from './app-settings'
 import { CountryEndpoints } from './countries'
 import { AvatarsEndpoints } from './avatars'
-import { PaymentEndpoints } from './payment'
-import { CourseEndpoints } from './courses'
+import { CourseEndpoint } from './course'
+import { CommentsEndPoint } from './comment'
 import { LanguageEndpoints } from './languages'
+import { PaymentEndpoints } from "./payment";
 
 export const ENDPOINTS = {
-  Auth: AuthEndpoints,
-  Profile: ProfileEndpoints,
-  Plans: PlansEndpoints,
-  BugReport,
-  Settings: AppSettingsEndpoints,
-  Country: CountryEndpoints,
-  Avatars: AvatarsEndpoints,
-  Payment: PaymentEndpoints,
-  Course: CourseEndpoints,
+	Auth: AuthEndpoints,
+	Profile: ProfileEndpoints,
+	Plans: PlansEndpoints,
+	BugReport,
+	Settings: AppSettingsEndpoints,
+	Country: CountryEndpoints,
+	Avatars:AvatarsEndpoints,
+	Courses:CourseEndpoint,
+	comments:CommentsEndPoint,
+	Payment: PaymentEndpoints,
   Languages: LanguageEndpoints
-}
+};
+

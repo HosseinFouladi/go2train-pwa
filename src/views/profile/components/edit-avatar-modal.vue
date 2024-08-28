@@ -46,7 +46,7 @@
             <p class="text-st-two font-regular text-secondary-700">
               از میان آواتار های ما انتخاب کنید
             </p>
-            <BorderAroowLeft />
+            <BorderArrowLeft />
             <SelectAvatar class="absolute md:left-0 -top-1 -left-6" />
           </div>
         </div>
@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import { useAvatarModals } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { ArrowLeftCircled, SelectGallery, SelectAvatar } from '@/components/icons'
+import { BorderArrowLeft, SelectGallery, SelectAvatar } from '@/components/icons'
 import { AvatarListModal,GalleryModal } from './'
 import { ref } from 'vue'
 

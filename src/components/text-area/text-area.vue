@@ -40,6 +40,7 @@ const getTextAreaValue = () => {
         })
       "
       v-bind="$attrs"
+      
     />
   </div>
 </template>

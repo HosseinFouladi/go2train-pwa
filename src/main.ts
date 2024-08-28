@@ -27,6 +27,9 @@ import 'cropperjs/dist/cropper.css'
 import VueVideoPlayer from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
 
+
+
+
 import {
   GoogleLoginConfig,
   queryClientConfig,
@@ -73,6 +76,7 @@ app.use(VueVideoPlayer)
 //vue cropper component
 app.use(VueCropper)
 
+
 app.use(
   createGtm({
     id: import.meta.env.VITE_GTAG_ID, // Your GTM single container ID, array of container ids ['GTM-xxxxxx', 'GTM-yyyyyy'] or array of objects [{id: 'GTM-xxxxxx', queryParams: { gtm_auth: 'abc123', gtm_preview: 'env-4', gtm_cookies_win: 'x'}}, {id: 'GTM-yyyyyy', queryParams: {gtm_auth: 'abc234', gtm_preview: 'env-5', gtm_cookies_win: 'x'}}], // Your GTM single container ID or array of container ids ['GTM-xxxxxx', 'GTM-yyyyyy']
@@ -89,6 +93,8 @@ app.use(
 app.use(VueDragscroll)
 
 app.mount('#app')
+
+
 
 declare global {
   interface String {

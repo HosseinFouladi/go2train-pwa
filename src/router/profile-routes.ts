@@ -45,6 +45,7 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				path: "course/:course_id",
 				name: "course details",
 				component: () => import("@/views/profile/courses/course-details.vue"),
+				props: (route) => ({ course_id: route.params.course_id }),
 			},
 		],
 	},
