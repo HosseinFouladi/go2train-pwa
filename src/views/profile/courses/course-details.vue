@@ -130,12 +130,11 @@ const {
   isPending,
   isFetching,
   isError,
-  error
 } = useQuery({
   queryKey: ['course-info', Date.now()],
   queryFn: () =>
     ApiClient.get<ApiResponseTypeV3<Course>>(
-      ENDPOINTS.Courses.course_info(props?.course_id)
+      ENDPOINTS.Course.course_info(props?.course_id)
     )
 })
 

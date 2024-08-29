@@ -54,7 +54,7 @@ const userLogin = async (params: UserLoginParams) => {
     .then((data) => {
       if (data.success) {
         const token = data?.data.results.token ?? ''
-        setAuth(token, () => router.replace({ name: 'user-subscriptions' }))
+        setAuth(token, () => router.replace({ name: 'user-subscriptions' }),{...data.data.results.user})
       }
     })
     .catch((error) => {

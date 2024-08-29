@@ -199,7 +199,7 @@ watch(
         <div
           v-for="comment in commentArray"
           :key="comment.id"
-          class="flex flex-col gap-2"
+          class="flex flex-col gap-2 mt-4"
         >
           <div class="flex justify-between">
             <div class="flex items-center gap-2">

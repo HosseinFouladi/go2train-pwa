@@ -18,7 +18,7 @@
       <div
         class="flex gap-1 text-neutral-white px-2 py-[2px] text-sm-st-two font-regular rounded-2xl gadget"
       >
-        <StarIcon />
+        <StarIcon class="w-4 h-4" />
         {{ score }}
       </div>
       <div class="flex flex-col items-end gap-2 text-sm-st-two md:text-st-two">
@@ -89,6 +89,7 @@ const showMore = ref(false)
 .gadget {
   background: rgba(34, 35, 40, 0.8);
   width: fit-content;
+  align-items: center;
 }
 
 .p-drawer-bottom .p-drawer {

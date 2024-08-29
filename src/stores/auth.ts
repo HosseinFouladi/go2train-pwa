@@ -4,12 +4,17 @@ import { defineStore } from 'pinia'
 
 import { COOKIE_KEYS } from '@/constants'
 import { ApiClient, setAuthCredentials } from '@/utils'
+import type { User } from '@/queries/auth/login/type'
 
 export const useAuthStore = defineStore('auth', () => {
   const errors = ref({})
   const isAuthenticated = ref(!!Cookies.get(COOKIE_KEYS.userToken))
+  const user=ref<User>()
 
-  function setAuth(token: string, cb?: () => void) {
+  function setAuth(token: string, cb?: () => void,userInfo?:User) {
+    if(userInfo)
+      user.value={...userInfo}
+    
 			isAuthenticated.value = true;
 			errors.value = {};
 			setAuthCredentials(token, cb);
@@ -35,6 +40,9 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     logout,
     setAuth,
-    purgeAuth
+    purgeAuth,
+    user
   }
+},{
+  persist: true
 })

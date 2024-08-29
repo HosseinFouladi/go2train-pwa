@@ -5,7 +5,7 @@ import { BugReport } from './reports'
 import { AppSettingsEndpoints } from './app-settings'
 import { CountryEndpoints } from './countries'
 import { AvatarsEndpoints } from './avatars'
-import { CourseEndpoint } from './course'
+import { CourseEndpoints } from './courses'
 import { CommentsEndPoint } from './comment'
 import { LanguageEndpoints } from './languages'
 import { PaymentEndpoints } from "./payment";
@@ -18,7 +18,7 @@ export const ENDPOINTS = {
 	Settings: AppSettingsEndpoints,
 	Country: CountryEndpoints,
 	Avatars:AvatarsEndpoints,
-	Courses:CourseEndpoint,
+	Course:CourseEndpoints,
 	comments:CommentsEndPoint,
 	Payment: PaymentEndpoints,
   Languages: LanguageEndpoints

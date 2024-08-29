@@ -6,7 +6,7 @@ import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import { computed } from 'vue'
 import {  type CurrentPlanResponseType } from '@/queries'
-import { useGetUserProfileQuery } from '@/queries/profile/user-profile.query'
+import {useGetUserProfileQuery} from '@/queries/profile/user-profile.query'
 
 const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
 
