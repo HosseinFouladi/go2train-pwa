@@ -14,7 +14,7 @@ const props=defineProps<Course>()
   <div
     :class="
       cn(
-        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-full xl:w-[253px]',
+        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-[253px]',
         $props.class as string
       )
     "
