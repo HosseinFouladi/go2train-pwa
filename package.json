@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "main.js",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "electron:serve": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "vite build && electron-builder",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
@@ -24,6 +27,7 @@
     "@tanstack/vue-query-devtools": "^5.41.0",
     "@tanstack/zod-form-adapter": "^0.26.4",
     "@videojs-player/vue": "^1.0.0",
+    "@vue/cli-service": "^5.0.8",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -78,6 +82,9 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
+    "electron": "^32.0.1",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "npm-run-all2": "^6.1.2",
@@ -91,7 +98,23 @@
     "vite-plugin-pwa": "^0.20.0",
     "vite-plugin-vue-devtools": "^7.0.25",
     "vue-tsc": "^2.0.11",
+    "wait-on": "^8.0.0",
     "workbox-window": "^7.1.0"
+  },
+  "build": {
+    "productName": "go2train",
+    "appId": "com.go2train.com",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js"
+    ],
+    "mac": {
+      "target": "dmg"
+    }
   },
   "resolutions": {
     "sharp": "0.32.6",
