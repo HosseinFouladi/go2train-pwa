@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-     "electron:start": "electron .",
+    "electron:start": "electron .",
     "electron:serve": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
     "electron:build": "vite build && electron-builder",
     "preview": "vite preview",
@@ -113,8 +113,15 @@
       "main.js",
       "preload.js"
     ],
+    "win": {
+      "icon": "src/assets/favicon.ico"
+    },
     "mac": {
-      "target": "dmg"
+      "icon": "src/assets/icons/favicon.icns",
+       "target": "dmg"
+    },
+    "linux": {
+      "icon": "assets/favicon.ico"
     }
   },
   "resolutions": {
