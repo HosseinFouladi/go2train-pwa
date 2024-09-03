@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import { Container } from '..'
 import { Logo, UserAvatar } from '@/components'
 import { useQuery } from '@tanstack/vue-query'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
 import { computed } from 'vue'
-import { useGetUserProfileQuery, type CurrentPlanResponseType } from '@/queries'
+import { useUserProfileQuery, type CurrentPlanResponseType } from '@/queries'
 
-const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
+const { data: profile, isLoading: profileLoading } = useUserProfileQuery()
 
 const {
   data: currentPlan,
@@ -33,7 +32,7 @@ const isLoadedDatas = computed(
 
 <template>
   <header class="w-full bg-neutral-white">
-    <Container>
+    <div class="w-full h-full max-w-[1128px] mx-auto">
       <nav
         class="flex items-center justify-between py-6 mx-auto max-w-[1440px]"
         aria-label="Profile Navigation"
@@ -49,7 +48,7 @@ const isLoadedDatas = computed(
           <!-- <TokenBadge :token_count="20" /> -->
         </div>
       </nav>
-    </Container>
+    </div>
   </header>
 </template>
 

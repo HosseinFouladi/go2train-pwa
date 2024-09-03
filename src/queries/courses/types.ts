@@ -1,28 +1,6 @@
-export type CoursesResponseType = Array<Course>
+import type { Course } from '../course/type'
 
-export type Course = {
-  id: string
-  title: string
-  poster: string
-  fullPoster: string
-  shortDescription: string
-  price: string
-  oldPrice: string
-  score: number
-  teacher: CourseTeacher
-  inLanguage: CourseInLanguage
-  language: CourseLanguage
-  level: CourseLevel
-  userCount: number
-  sessionCount: number
-  contentLanguage: string
-  duration: number
-  isActive: number
-  enDateOfRelease: any
-  dateOfRelease: any
-  bought: boolean
-  users: Array<CourseStudent>
-}
+export type CoursesResponseType = Array<Course>
 
 export type CourseTeacher = {
   id: string

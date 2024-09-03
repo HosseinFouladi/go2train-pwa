@@ -8,19 +8,22 @@ import { AvatarsEndpoints } from './avatars'
 import { CourseEndpoint } from './course'
 import { CommentsEndPoint } from './comment'
 import { LanguageEndpoints } from './languages'
-import { PaymentEndpoints } from "./payment";
+import { PaymentEndpoints } from './payment'
+import { UserEndpoints } from './user'
+import { CourseEndpoints } from './courses'
 
 export const ENDPOINTS = {
-	Auth: AuthEndpoints,
-	Profile: ProfileEndpoints,
-	Plans: PlansEndpoints,
-	BugReport,
-	Settings: AppSettingsEndpoints,
-	Country: CountryEndpoints,
-	Avatars:AvatarsEndpoints,
-	Courses:CourseEndpoint,
-	comments:CommentsEndPoint,
-	Payment: PaymentEndpoints,
-  Languages: LanguageEndpoints
-};
-
+  Auth: AuthEndpoints,
+  Profile: ProfileEndpoints,
+  Plans: PlansEndpoints,
+  BugReport,
+  Settings: AppSettingsEndpoints,
+  Country: CountryEndpoints,
+  Avatars: AvatarsEndpoints,
+  Courses: CourseEndpoint,
+  comments: CommentsEndPoint,
+  Payment: PaymentEndpoints,
+  Languages: LanguageEndpoints,
+  Course: CourseEndpoints,
+  User: UserEndpoints
+}

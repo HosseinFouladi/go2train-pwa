@@ -14,14 +14,14 @@ import { ProfileInfo } from './components'
 import { ApiClient } from '@/utils'
 import { ENDPOINTS, type Message, type ApiResponseType } from '@/api'
 import { InputText, Textarea, CountriesListbox } from '@/components'
-import { useGetCountriesList, useGetUserProfileQuery } from '@/queries'
+import { useGetCountriesList, useUserProfileQuery } from '@/queries'
 import { Button, Loading } from '@/components'
 import { useUpdateProfileMutation } from '@/queries/profile/user-profile.query'
 
-const { data: profile, isLoading: profileLoading } = useGetUserProfileQuery()
+const { data: profile, isLoading: profileLoading } = useUserProfileQuery()
 const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
 
-const queryClient=useQueryClient();
+const queryClient = useQueryClient()
 
 const birthCountry = ref()
 const immigrationCountry = ref()
@@ -98,12 +98,12 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
       severity: 'success',
       life: 3000
     })
-    queryClient.invalidateQueries({queryKey:['user_profile']})
+    queryClient.invalidateQueries({ queryKey: ['user_profile'] })
   },
   onError: (error) => {
     toast.add({
       summary: 'خطادرویرایش پروفایل',
-      detail:error?.response.data.message[0].content,
+      detail: error?.response.data.message[0].content,
       severity: 'info',
       life: 3000
     })
@@ -112,14 +112,14 @@ const { mutate: updateUserProfile } = useUpdateProfileMutation({
 
 const editProfile = () => {
   updateUserProfile({
-    name:form.state.values.name,
-    username:form.state.values.username,
+    name: form.state.values.name,
+    username: form.state.values.username,
     living_country: livingCountry.value?.id,
     birth_country: birthCountry.value?.id,
     immigration_country: immigrationCountry.value?.id,
     bio: bio.value,
-    avatar:undefined,
-    avatar_id:undefined
+    avatar: undefined,
+    avatar_id: undefined
   })
 }
 const cancelEdit = () => {
@@ -239,7 +239,7 @@ const cancelEdit = () => {
               <InputLabel name="birth_country" text="محل تولد" />
               <CountriesListbox
                 v-if="countries"
-                @modelValue="(item) => birthCountry=item"
+                @modelValue="(item) => (birthCountry = item)"
                 :isLoading="countriesLoading"
                 :options="countries.data.results"
                 :state="state"
@@ -257,7 +257,7 @@ const cancelEdit = () => {
               <InputLabel name="living_country" text="محل زندگی" />
               <CountriesListbox
                 v-if="countries"
-                @modelValue="(item) => livingCountry=item"
+                @modelValue="(item) => (livingCountry = item)"
                 :isLoading="countriesLoading"
                 :options="countries.data.results"
                 :state="state"
@@ -284,7 +284,7 @@ const cancelEdit = () => {
                 :disabled="!isEditPopupButtonDisplay"
                 optionIcon="flag"
                 :value="immigrationCountry"
-                @modelValue="(item) => immigrationCountry=item"
+                @modelValue="(item) => (immigrationCountry = item)"
               />
             </InputWrapper>
           </template>
@@ -304,13 +304,16 @@ const cancelEdit = () => {
                 @input="(e) => field.handleChange(e.target.value)"
                 :value="bio"
                 :name="field.name"
-                @model-value="(item) => bio=item"
+                @model-value="(item) => (bio = item)"
               />
             </InputWrapper>
           </template>
         </form.Field>
       </div>
-      <div v-if="isEditPopupButtonDisplay" class="flex items-center justify-end gap-3 mt-8">
+      <div
+        v-if="isEditPopupButtonDisplay"
+        class="flex items-center justify-end gap-3 mt-8"
+      >
         <Button label="انصراف" variant="outlined" @click="cancelEdit" />
         <Button label="ثبت تغییرات" @click="editProfile" />
       </div>

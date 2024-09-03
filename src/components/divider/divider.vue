@@ -3,8 +3,9 @@ import type { ClassValue } from 'clsx'
 
 import { cn } from '@/utils'
 
-withDefaults(defineProps<{ sx: ClassValue }>(), {
-  sx: ''
+withDefaults(defineProps<{ sx: ClassValue; label?: string }>(), {
+  sx: '',
+  label: 'یا'
 })
 </script>
 
@@ -15,7 +16,7 @@ withDefaults(defineProps<{ sx: ClassValue }>(), {
     "
   >
     <span class="h-[1px] flex-1 w-full bg-secondary-200" />
-    <span>یا</span>
+    <span>{{ label }}</span>
     <span class="h-[1px] flex-1 w-full bg-secondary-200" />
   </div>
 </template>

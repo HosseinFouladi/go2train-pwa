@@ -1,7 +1,6 @@
 export { getCourseList, useGetCourseList } from './course.query'
 export type {
   CoursesResponseType,
-  Course,
   CourseInLanguage,
   CourseLanguage,
   CourseLevel as Level,
