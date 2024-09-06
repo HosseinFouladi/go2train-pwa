@@ -10,6 +10,9 @@
     "electron:start": "electron .",
     "electron:serve": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
     "electron:build": "vite build && electron-builder",
+    "electron:build:win": "vite build && electron-builder --win --x64",
+    "electron:build:mac": "vite build && electron-builder --mac --x64",
+    "electron:build:linux": "vite build && electron-builder --linux",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
@@ -103,7 +106,7 @@
     "workbox-window": "^7.1.0"
   },
   "build": {
-    "productName": "go2train",
+    "productName": "GO2TRain",
     "appId": "com.go2train.com",
     "directories": {
       "output": "build"
@@ -114,14 +117,16 @@
       "preload.js"
     ],
     "win": {
-      "icon": "src/assets/favicon.ico"
+      "icon": "src/assets/icons/favicon.ico",
+      "target": ["nsis", "zip"]
     },
     "mac": {
       "icon": "src/assets/icons/favicon.icns",
-       "target": "dmg"
+      "target": ["dmg", "zip"]
     },
     "linux": {
-      "icon": "assets/favicon.ico"
+      "icon": "assets/favicon.ico",
+      "target": ["deb", "AppImage"]
     }
   },
   "resolutions": {
