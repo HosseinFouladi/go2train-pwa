@@ -1,21 +1,18 @@
 <template>
   <ProgressSpinner
-    :style="style"
+    :style="props.style"
     strokeWidth="6"
-    :fill="fill"
-    :animationDuration="animationDuration"
+    :fill="props.fill"
+    :animationDuration="props.animationDuration"
     aria-label="Custom ProgressSpinner"
   />
 </template>
 
 <script setup lang="ts">
 import type { LoadingProps } from './loading'
-const { style, fill, animationDuration } = withDefaults(
-  defineProps<LoadingProps>(),
-  {
-    style: 'width: 50px; height: 50px',
-    fill: 'transparent',
-    animationDuration: '.5s'
-  }
-)
+const props = withDefaults(defineProps<LoadingProps>(), {
+  style: 'width: 50px; height: 50px',
+  fill: 'transparent',
+  animationDuration: '.5s'
+})
 </script>

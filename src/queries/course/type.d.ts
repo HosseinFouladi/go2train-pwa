@@ -35,7 +35,6 @@ export type Teacher = {
   stream: Stream
 }
 
-
 export type InLanguage = {
   id: string
   name: string
@@ -96,11 +95,11 @@ export type Stream = {
       }
     }
     cloudflare: {
-      meta:{
-        dash:string,
-        hls:string
-      },
-      type:stream
+      meta: {
+        dash: string
+        hls: string
+      }
+      type: stream
     }
     streamStatus: number
   }

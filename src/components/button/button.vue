@@ -32,7 +32,8 @@ withDefaults(defineProps<ButtonProps>(), {
           'w-full': fluid,
           'w-fit': !fluid,
           'pointer-events-none': disabled
-        }
+        },
+        $props.class as string
       )
     "
     :disabled="disabled"

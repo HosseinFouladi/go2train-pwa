@@ -17,12 +17,12 @@ export const getUserProfile = () =>
     ApiResponseType<UserProfileApiResponseType, { id: 'all'; content: string }>
   >
 
-export const useGetUserProfileQuery = () =>
-	useQuery({
-		queryKey: ["user_profile", Date.now()],
-		queryFn: getUserProfile,
-    gcTime:0
-	});
+export const useUserProfileQuery = () =>
+  useQuery({
+    queryKey: ['user_profile', Date.now()],
+    queryFn: getUserProfile,
+    gcTime: 0
+  })
 
 export const updateUserProfile = (params: UpdateUserProfileParams) => {
   return ApiClient.postForm<
@@ -65,11 +65,8 @@ export const useUpdateProfileMutation = ({
         typeof onSuccess === 'function' &&
         onSuccess(data, variables, context)
     },
-    onError: (error ,variables, context) => {
-		onError&&
-		typeof onError === 'function' &&
-        onError(error, variables, context)
-	}
-
+    onError: (error, variables, context) => {
+      onError && typeof onError === 'function' && onError(error, variables, context)
+    }
   })
 }

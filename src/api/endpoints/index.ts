@@ -8,7 +8,8 @@ import { AvatarsEndpoints } from './avatars'
 import { CourseEndpoints } from './courses'
 import { CommentsEndPoint } from './comment'
 import { LanguageEndpoints } from './languages'
-import { PaymentEndpoints } from "./payment";
+import { PaymentEndpoints } from './payment'
+import { UserEndpoints } from './user'
 
 export const ENDPOINTS = {
 	Auth: AuthEndpoints,
@@ -21,6 +22,9 @@ export const ENDPOINTS = {
 	Course:CourseEndpoints,
 	comments:CommentsEndPoint,
 	Payment: PaymentEndpoints,
-  Languages: LanguageEndpoints
+  Languages: LanguageEndpoints,
+  User: UserEndpoints,
+  Courses: CourseEndpoints,
+
 };
 
