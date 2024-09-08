@@ -14,7 +14,7 @@ const props=defineProps<Course>()
   <div
     :class="
       cn(
-        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-[253px]',
+        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-[300px]',
         $props.class as string
       )
     "
@@ -23,7 +23,8 @@ const props=defineProps<Course>()
       <div
         class="relative w-[85px] min-h-[158px] rounded-xl overflow-hidden flex flex-col justify-end p-2"
       >
-        <img :src="props.fullPoster" alt="" class="absolute top-0 left-0 w-full h-full" />
+        <img :src="props.fullPoster" alt="" class="absolute top-0 left-0 object-cover w-full h-full" />
+        <div class="absolute top-0 left-0 w-full h-full overlay"></div>
         <div class="z-20 flex items-center justify-between">
           <img
             :src="props.language.image"
@@ -31,7 +32,7 @@ const props=defineProps<Course>()
             class="w-4 rounded-full aspect-square"
           />
           <div class="flex gap-[2px] items-center">
-            <StarIcon />
+            <StarIcon class="w-5 h-5 text-primary-200" />
             <span class="text-primary-200 text-sm-cp font-demi-bold">{{score}}</span>
           </div>
         </div>
@@ -49,7 +50,7 @@ const props=defineProps<Course>()
         <div class="flex items-center gap-1">
           <div class="flex">
             <UserAvatar
-              v-for="user in props.users.slice(-3)"
+              v-for="user in props.users.slice(-4)"
               :key="user.id"
               :avatar_url="user.avatar"
               :badge_url="user.plan.icon"
@@ -58,7 +59,7 @@ const props=defineProps<Course>()
             />
             
           </div>
-          <span class="text-sm-cp font-demi-bold text-accent-600">+{{props.users.length}}</span>
+          <span class="text-sm-cp font-demi-bold text-accent-600">{{props.users.length}}+</span>
         </div>
         <div class="">
           <div class="flex gap-2">
@@ -80,7 +81,7 @@ const props=defineProps<Course>()
           <img
             :src="props.teacher.avatar"
             alt=""
-            class="w-6 rounded-lg aspect-square object-fit"
+            class="object-cover w-6 rounded-lg aspect-square"
           />
           <div class="flex gap-1">
             <span class="text-sm-cp font-demi-bold text-text-300">مدرس :</span>
@@ -89,10 +90,14 @@ const props=defineProps<Course>()
         </div>
       </div>
     </div>
-    <router-link to="/course/32">
+    <router-link :to="`/course/${props.id}`">
       <Button label="ادامه دوره" fluid variant="outlined" />
     </router-link>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.overlay{
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%);
+}
+</style>
