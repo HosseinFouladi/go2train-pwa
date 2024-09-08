@@ -37,6 +37,7 @@ declare module 'vue' {
     Eye: typeof import('./src/components/icons/eye/index.vue')['default']
     EyeSlash: typeof import('./src/components/icons/eye-slash/index.vue')['default']
     Filter: typeof import('./src/components/icons/filter/index.vue')['default']
+    Flag: typeof import('./src/components/icons/flag/index.vue')['default']
     FormFieldInfo: typeof import('./src/components/form-field-info/FormFieldInfo.vue')['default']
     Goal: typeof import('./src/components/icons/goal/index.vue')['default']
     Google: typeof import('./src/components/icons/google/index.vue')['default']
@@ -57,6 +58,7 @@ declare module 'vue' {
     Message: typeof import('./src/components/icons/message/index.vue')['default']
     Minimize: typeof import('./src/components/icons/minimize/index.vue')['default']
     More: typeof import('./src/components/icons/more/index.vue')['default']
+    MoreCircle: typeof import('./src/components/icons/more-circle/index.vue')['default']
     Mute: typeof import('./src/components/icons/sound/mute.vue')['default']
     Pause: typeof import('./src/components/icons/pause/index.vue')['default']
     People: typeof import('./src/components/icons/people/people.vue')['default']
@@ -84,7 +86,8 @@ declare module 'vue' {
     Teacher: typeof import('./src/components/icons/teacher/index.vue')['default']
     TelInput: typeof import('./src/components/tel-input/tel-input.vue')['default']
     TextArea: typeof import('./src/components/text-area/text-area.vue')['default']
-    Thunder: typeof import('./src/components/icons/thunder/thunder.vue')['default']
+    Thunder: typeof import('./src/components/icons/thunder/index.vue')['default']
+    TickCircle: typeof import('./src/components/icons/tick-circle/index.vue')['default']
     TickSquared: typeof import('./src/components/icons/tick-squared/index.vue')['default']
     Timer: typeof import('./src/components/icons/timer/index.vue')['default']
     Toast: typeof import('./src/components/toast/toast.vue')['default']
@@ -95,5 +98,8 @@ declare module 'vue' {
     VideoTime: typeof import('./src/components/icons/video-time/video-time.vue')['default']
     Warning: typeof import('./src/components/icons/warning/index.vue')['default']
     WhitePlay: typeof import('./src/components/icons/play/white-play.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }
