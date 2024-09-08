@@ -4,6 +4,7 @@ import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import TabPanel from 'primevue/tabpanel'
 import TabPanels from 'primevue/tabpanels'
+
 import CourseItemsTab from './course-items-tab.vue'
 import LessonContentTab from './lesson-content-tab.vue'
 </script>

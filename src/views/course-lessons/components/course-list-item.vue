@@ -11,11 +11,12 @@ const props = defineProps<CourseSection>()
 <template>
   <div
     @click="
-      () =>
+      () => {
         router.push({
           path: $route.path,
           query: { section_id: props.id }
         })
+      }
     "
     class="flex flex-row w-full h-16 gap-3 px-4 py-5 cursor-pointer shadow_list-item rounded-2xl"
   >

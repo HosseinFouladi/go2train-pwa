@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref, shallowRef } from 'vue'
-import { FlagIcon } from '@/components/icons'
 import { computed } from 'vue'
+import { first } from 'lodash'
+import { FlagIcon } from '@/components/icons'
 import {
   CourseStatus,
   LessonsList,
@@ -16,9 +16,11 @@ const { data: courseSections } = useCourseSectionsQuery(
   String(route.params.courseId)
 )
 
-const section = shallowRef(() =>
-  courseSections.value?.data.filter((item) => item.id !== route.query.section_id)
-)
+const section = computed(() => {
+  return first(
+    courseSections.value?.data.filter((item) => item.id == route.query.section_id)
+  )
+})
 </script>
 
 <template>
@@ -31,7 +33,7 @@ const section = shallowRef(() =>
       <div class="w-full p-6 card">
         <div class="space-y-3">
           <h2 v-if="section" class="text-h5 font-demi-bold text-text-500">
-            {{ section[0].title }}
+            {{ section.title }}
           </h2>
           <div
             class="w-full border-2 bg-secondary-50 h-96 rounded-2xl border-secondary-400"
@@ -53,6 +55,6 @@ const section = shallowRef(() =>
 </template>
 
 <!-- course/section/{courseId} [*] -->
-<!-- user/profile -->
-<!-- user/cups [] -->
-<!-- profile/statistics [] -->
+<!-- user/profile [ * ] -->
+<!-- user/cups [ * ] -->
+<!-- profile/statistics [ * ] -->
