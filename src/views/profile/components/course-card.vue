@@ -5,13 +5,16 @@ import AvatarPlaceholder from '@/assets/images/avatar-placeholder.png'
 import CoinImg from '@/assets/images/coin-silver.png'
 import LoginImg from '@/assets/images/login.webp'
 import { cn } from '@/utils'
+import type { Course } from '@/queries';
+
+const props=defineProps<Course>()
 </script>
 
 <template>
   <div
     :class="
       cn(
-        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-full xl:w-[253px]',
+        'flex flex-col gap-3 p-3 border shadow rounded-2xl border-secondary-200 w-[300px]',
         $props.class as string
       )
     "
@@ -20,16 +23,17 @@ import { cn } from '@/utils'
       <div
         class="relative w-[85px] min-h-[158px] rounded-xl overflow-hidden flex flex-col justify-end p-2"
       >
-        <img :src="LoginImg" alt="" class="absolute top-0 left-0 w-full h-full" />
+        <img :src="props.fullPoster" alt="" class="absolute top-0 left-0 object-cover w-full h-full" />
+        <div class="absolute top-0 left-0 w-full h-full overlay"></div>
         <div class="z-20 flex items-center justify-between">
           <img
-            :src="AvatarPlaceholder"
-            alt=""
+            :src="props.language.image"
+            alt="lang_icon"
             class="w-4 rounded-full aspect-square"
           />
           <div class="flex gap-[2px] items-center">
-            <StarIcon />
-            <span class="text-primary-200 text-sm-cp font-demi-bold">۴.۵</span>
+            <StarIcon class="w-5 h-5 text-primary-200" />
+            <span class="text-primary-200 text-sm-cp font-demi-bold">{{score}}</span>
           </div>
         </div>
       </div>
@@ -37,74 +41,63 @@ import { cn } from '@/utils'
         <div class="flex flex-col gap-1">
           <span
             class="px-2 py-1 border text-sm-cp font-regular rounded-2xl border-success-500 text-success-500 w-fit"
-            >به زبان فارسی</span
+            >به زبان {{ props.inLanguage.faName }}</span
           >
           <h2 class="text-st-two font-extra-bold text-text-500">
-            دوره انگلیسی - A2
+            دوره {{props.title}} - {{props.level.title}}
           </h2>
         </div>
         <div class="flex items-center gap-1">
           <div class="flex">
             <UserAvatar
-              :avatar_url="CoinImg"
-              :badge_url="AvatarPlaceholder"
+              v-for="user in props.users.slice(-4)"
+              :key="user.id"
+              :avatar_url="user.avatar"
+              :badge_url="user.plan.icon"
               width="20px"
-              class=""
+              class="-mr-2 first:mr-0"
             />
-            <UserAvatar
-              :avatar_url="CoinImg"
-              :badge_url="AvatarPlaceholder"
-              width="20px"
-              class="-mr-2"
-            />
-            <UserAvatar
-              :avatar_url="CoinImg"
-              :badge_url="AvatarPlaceholder"
-              width="20px"
-              class="-mr-2"
-            />
-            <UserAvatar
-              :avatar_url="CoinImg"
-              :badge_url="AvatarPlaceholder"
-              width="20px"
-              class="-mr-2"
-            />
+            
           </div>
-          <span class="text-sm-cp font-demi-bold text-accent-600">۴۳۵+</span>
+          <span class="text-sm-cp font-demi-bold text-accent-600">{{props.users.length}}+</span>
         </div>
         <div class="">
           <div class="flex gap-2">
             <ClockIcon class="w-4 h-4 text-secondary-500" />
             <p class="text-sm-cp font-regular">
-              <strong class="text-sm-cp font-extra-bold">23</strong>
+              <strong class="text-sm-cp font-extra-bold">{{props.duration}}</strong>
               ساعت دوره آموزشی
             </p>
           </div>
           <div class="flex gap-2">
             <PlayIcon class="w-4 h-4" />
             <p class="text-sm-cp font-regular">
-              <strong class="text-sm-cp font-extra-bold">23</strong>
+              <strong class="text-sm-cp font-extra-bold">{{ props.sessionsCount }}</strong>
               جلسه
             </p>
           </div>
         </div>
         <div class="flex items-center gap-2">
           <img
-            :src="AvatarPlaceholder"
+            :src="props.teacher.avatar"
             alt=""
-            class="w-6 rounded-lg aspect-square object-fit"
+            class="object-cover w-6 rounded-lg aspect-square"
           />
           <div class="flex gap-1">
             <span class="text-sm-cp font-demi-bold text-text-300">مدرس :</span>
-            <span class="text-sm-cp font-demi-bold">فعلا مشخص نشده</span>
+            <span class="text-sm-cp font-demi-bold">{{ props.teacher.title }}  </span>
           </div>
         </div>
       </div>
     </div>
-    <router-link to="/course/32">
+    <router-link :to="`/course/${props.id}`">
       <Button label="ادامه دوره" fluid variant="outlined" />
     </router-link>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.overlay{
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%);
+}
+</style>

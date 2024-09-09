@@ -1,8 +1,91 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+
+import Message from 'primevue/message'
+import { useMediaQuery } from '@vueuse/core'
+import { useQuery } from '@tanstack/vue-query'
+
+import {
+  Header,
+  IntroductionVideo,
+  Statistics,
+  Rating,
+  Comments,
+  IntroductionDesktop,
+  StatisticsDesktop,
+  CustomPlayer
+} from './components'
+import { Loading } from '@/components'
+import { ApiClient } from '@/utils'
+import { ENDPOINTS, type ApiResponseType, type Message as MessageType } from '@/api'
+import type { Course } from '@/queries/course'
+import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
+import type { CurrentPlanResponseType, Ratings } from '@/queries'
+
+const props = defineProps({
+  course_id: { type: Number }
+})
+
+const serverError = ref('')
+const isLargeScreen = useMediaQuery('(min-width: 1280px)')
+const pageLoading = computed(
+  () =>
+    isPending.value ||
+    isFetching.value ||
+    currentPlanFetching.value ||
+    currentPlanPending.value
+)
+const all_comment_count = ref(0)
+
+const {
+  data: courseInfo,
+  isPending,
+  isFetching
+} = useQuery({
+  queryKey: ['course-info', Date.now()],
+  queryFn: () =>
+    ApiClient.get<ApiResponseTypeV3<Course>>(
+      ENDPOINTS.Course.course_info(props?.course_id)
+    ).catch((err) => {
+      serverError.value = err.response.data.message[0].content
+    })
+})
+
+const {
+  data: currentPlan,
+  isPending: currentPlanPending,
+  isFetching: currentPlanFetching
+} = useQuery({
+  queryKey: ['current-plan'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, MessageType>>(
+      ENDPOINTS.Profile.CurrentPlan
+    ).catch((err) => {
+      serverError.value = err.response.data.message[0].content
+    })
+})
+
+const {
+  data: rating,
+  isPending: ratingPending,
+  isFetching: ratingFetching
+} = useQuery({
+  queryKey: ['ratings'],
+  queryFn: () =>
+    ApiClient.get<ApiResponseTypeV3<Ratings>>(
+      ENDPOINTS.comments.course_comment_rate(props?.course_id)
+    ).catch((err) => {
+      serverError.value = err.response.data.message[0].content
+    })
+})
+</script>
+
 <template>
   <div class="w-full overflow-hidden">
-    <div v-if="isError" class="h-[300px] flex items-center justify-center">
-      مشکلی در برقراری ارتباط رخ داده است. مجددا امتحان کنید
+    <div v-if="serverError" class="h-[300px] flex items-center justify-center">
+      <Message severity="error" v-if="serverError">{{ serverError }}</Message>
     </div>
+
     <div
       v-if="pageLoading"
       class="flex items-center justify-center w-full min-h-[540px]"
@@ -58,7 +141,7 @@
             :stream="courseInfo?.data?.stream"
             v-if="isLargeScreen"
           />
-               <IntroductionDesktop
+          <IntroductionDesktop
             :teacher_name="courseInfo?.data.teacher.name"
             :title="courseInfo?.data.title"
             :level-title="courseInfo?.data.level.title"
@@ -91,75 +174,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-
-import {
-  Header,
-  IntroductionVideo,
-  Statistics,
-  Rating,
-  Comments,
-  IntroductionDesktop,
-  StatisticsDesktop,
-  CustomPlayer
-} from './components'
-import {  Loading } from '@/components'
-import { useQuery } from '@tanstack/vue-query'
-import { ApiClient } from '@/utils'
-import { ENDPOINTS, type ApiResponseType, type Message } from '@/api'
-import type { Course } from '@/queries/course'
-import type { ApiResponseTypeV3 } from '@/utils/auth-providers'
-import type { CurrentPlanResponseType, Comment, Ratings } from '@/queries'
-import { useMediaQuery } from '@vueuse/core'
-
-
-const props = defineProps({
-  course_id: { type: Number }
-})
-
-const isLargeScreen = useMediaQuery('(min-width: 1280px)')
-
-
-const pageLoading=computed(()=> isPending.value || isFetching.value ||currentPlanFetching.value||currentPlanPending.value)
-const all_comment_count = ref(0)
-
-const {
-  data: courseInfo,
-  isPending,
-  isFetching,
-  isError,
-  error
-} = useQuery({
-  queryKey: ['course-info', Date.now()],
-  queryFn: () =>
-    ApiClient.get<ApiResponseTypeV3<Course>>(
-      ENDPOINTS.Courses.course_info(props?.course_id)
-    )
-})
-
-const {
-  data: currentPlan,
-  isPending: currentPlanPending,
-  isFetching: currentPlanFetching
-} = useQuery({
-  queryKey: ['current-plan'],
-  queryFn: () =>
-    ApiClient.get<ApiResponseType<Array<CurrentPlanResponseType>, Message>>(
-      ENDPOINTS.Profile.CurrentPlan
-    )
-})
-
-const {
-  data: rating,
-  isPending: ratingPending,
-  isFetching: ratingFetching
-} = useQuery({
-  queryKey: ['ratings'],
-  queryFn: () =>
-    ApiClient.get<ApiResponseTypeV3<Ratings>>(
-      ENDPOINTS.comments.course_comment_rate(props?.course_id)
-    )
-})
-</script>

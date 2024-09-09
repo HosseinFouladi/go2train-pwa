@@ -10,10 +10,11 @@ import {
   ArrowRight,
   ArrowLeft,
   WhitePlayIcon,
-  QualityIcon
+  QualityIcon,
+  PauseIcon
 } from '@/components/icons'
 import { cn } from '@/utils'
-import { Stream, AccessList } from '@/queries'
+import type { Stream, AccessList } from '@/queries'
 
 
 type Props = {
@@ -121,11 +122,11 @@ const handleVideoSrcError = () => {
   }
 }
 
-const settingToggle = (event: Event) => {
+const settingToggle = () => {
   settingMenu.value=!settingMenu.value
 }
 
-const speedToggle = (event: Event) => {
+const speedToggle = () => {
   speedMenu.value=!speedMenu.value
 }
 
@@ -140,7 +141,7 @@ const checkAcces = (quality: string): boolean => {
   return isPro
 }
 
-const qualityToggle = (event: Event) => {
+const qualityToggle = () => {
   qualityMenu.value=!qualityMenu.value
 }
 
@@ -173,8 +174,7 @@ function togglePlayPause() {
 }
 
 // Update total duration when metadata is loaded
-
-const totlaDuration = () => {
+const totalDuration = () => {
   if(totalDurationDisplay.value&&video.value)
   totalDurationDisplay.value.textContent = formatTime(video.value.duration)
 }
@@ -300,7 +300,7 @@ const showPlayIcon = () => {
   <div ref="wrapper" class="video-wrapper" >
     <video
       @click="togglePlayPause"
-      @loadedmetadata="totlaDuration"
+      @loadedmetadata="totalDuration"
       :src="props.stream?.streamProviders?.cache?.urls?.p360"
       class="custom-video "
       @timeupdate="updateProgressbar"
@@ -461,8 +461,8 @@ const showPlayIcon = () => {
           </div>
 
           <div id="sound" @mouseenter="sliderDisplay" @mouseleave="sliderHide">
-            <SoundIcon class="w-6 h-6 soundIcon" />
-            <MuteIcon class="w-6 h-6 muteIcon" />
+            <SoundIcon class="w-6 h-6 text-neutral-white soundIcon" />
+            <MuteIcon class="w-6 h-6 text-neutral-white muteIcon" />
             <div class="volume-slider" @click="changeVolume" style="display: none">
               <div class="volume-bar">
                 <div class="volume-level" style="width: 38.75%"></div>
@@ -522,6 +522,7 @@ const showPlayIcon = () => {
     >
       <WhitePlayIcon class="w-14 h-14 " />
       <h2 class="text-neutral-white text-sm-st-one">ویدئو معرفی دوره</h2>
+      <PauseIcon class="hidden w-14 h-14 pause-icon"/>
     </div>
   </div>
 </template>

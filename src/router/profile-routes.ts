@@ -14,11 +14,11 @@ export const ProfileRoutes: Array<RouteRecordRaw> = [
 				name: "user-account",
 				component: () => import("@/views/profile/account.vue"),
 			},
-			// {
-			// 	path: "user-courses",
-			// 	name: "user-courses",
-			// 	component: () => import("@/views/profile/courses/course-list.vue"),
-			// },
+			{
+				path: "user-courses",
+				name: "user-courses",
+				component: () => import("@/views/profile/courses/course-list.vue"),
+			},
 			{
 				path: "subscriptions",
 				name: "user-subscriptions",

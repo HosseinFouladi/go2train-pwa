@@ -90,8 +90,7 @@ defineProps<Props>()
       <p class="font-normal text-sm-st-one">جایگاه شما در جدول امتیازات</p>
       <div class="flex items-center gap-1">
         <div class="flex">
-          <UserAvatar v-for="user in users" :key="user.id" :avatar_url="user.avatar" width="20px" class="-mr-2 first:mr-0" />
-
+          <UserAvatar v-for="user in users.slice(-3)" :key="user.id" :avatar_url="user.avatar" width="20px" class="-mr-2 first:mr-0" />
         </div>
         <span class="text-sm-st-two font-demi-bold">سه کاربر برتر</span>
       </div>
@@ -106,7 +105,6 @@ defineProps<Props>()
     </div>
   </div>
 </template>
-
 
 
 <style scoped></style>
