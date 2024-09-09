@@ -113,6 +113,7 @@ const {
             :sessionCount="courseInfo?.data.sessionsCount"
             :duration="courseInfo?.data.duration"
             :users="courseInfo?.data.users"
+            :courseId="courseInfo?.data.id"
             v-if="!isLargeScreen"
           />
           <Statistics
@@ -168,6 +169,7 @@ const {
             :users="courseInfo?.data.users"
             :score="courseInfo?.data.score"
             :poster="courseInfo?.data.fullPoster"
+            :courseId="courseInfo?.data.id"
           />
         </div>
       </div>

@@ -18,7 +18,8 @@ type Props = {
     }
   ]
   score:number,
-  poster:string
+  poster:string,
+  courseId:number
 }
 
 defineProps<Props>()
@@ -31,7 +32,9 @@ defineProps<Props>()
       class="object-cover w-full h-60 rounded-2xl"
       alt="course-img"
     />
-    <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
+    <router-link :to="`/course_lessons/${courseId}`">
+      <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
+    </router-link>
     <div class="h-[1px] w-full bg-secondary-100"></div>
     <div class="flex items-center gap-2">
       <RankingIcon class="w-5 h-5 text-primary-400" />

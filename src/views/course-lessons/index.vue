@@ -9,6 +9,7 @@ import {
 } from '@/views/course-lessons/components'
 import { useCourseSectionsQuery } from '@/queries'
 import { useRoute } from 'vue-router'
+import { CustomPlayer } from '../profile/courses/components'
 
 const route = useRoute()
 
@@ -17,8 +18,10 @@ const { data: courseSections } = useCourseSectionsQuery(
 )
 
 const section = computed(() => {
-  return first(
-    courseSections.value?.data.filter((item) => item.id == route.query.section_id)
+  return (
+    first(
+      courseSections.value?.data.filter((item) => item.id == route.query.section_id)
+    ) || courseSections.value?.data[0]//if not exist section id in query params it takes first section
   )
 })
 </script>
@@ -37,7 +40,17 @@ const section = computed(() => {
           </h2>
           <div
             class="w-full border-2 bg-secondary-50 h-96 rounded-2xl border-secondary-400"
-          ></div>
+          >
+            <CustomPlayer
+              :access_list="[
+                { id: 0, title: 'p240', description: '', image: '', slug: 'has p240 access' },
+                { id: 1, title: 'p360', description: '', image: '', slug: '' },
+                { id: 2, title: 'p720', description: '', image: '', slug: '' },
+                { id: 3, title: 'p1080', description: '', image: '', slug: '' }
+              ]"
+              :stream="section?.stream"
+            />
+          </div>
           <div data-title="lesson_action">
             <div
               @click="() => console.log('')"
