@@ -24,8 +24,6 @@ type Props = {
 
 const props = defineProps<Props>()
 
-
-
 const wrapper = ref()
 const video = ref<HTMLVideoElement>()
 const playPauseButton = ref<HTMLElement>()
@@ -50,6 +48,7 @@ const speedMenu = ref()
 const settingMenu = ref()
 const currentVideoSrc = ref(0)
 const settingIcon=ref()
+const hasAccessSpeed=ref(false)
 
 
 const speeds = ref([
@@ -78,13 +77,13 @@ const speeds = ref([
     isPro: false
   },
   {
-    speed: 2,
+    speed: 1.75,
     isPro: false
   },
   {
-    speed: 2.5,
+    speed: 2,
     isPro: false
-  }
+  },
 ])
 
 onMounted(() => {
@@ -108,12 +107,15 @@ onMounted(() => {
     if (video.value)
       video.value.addEventListener('error', () => handleVideoSrcError())
   }
+
+  hasAccessSpeed.value=checkSpeedAccess();
 })
 
 const handleVideoSrcError = () => {
 
   const allVideoSrc = [
     ...Object.values(props.stream?.streamProviders.cache.urls),
+    ...Object.values(props.stream?.streamProviders.iran.urls),
     props.stream?.streamProviders.cloudflare.meta.hls
   ]
   currentVideoSrc.value += 1
@@ -130,22 +132,31 @@ const speedToggle = () => {
   speedMenu.value=!speedMenu.value
 }
 
-const checkAcces = (quality: string): boolean => {
+const checkAccess = (quality: string):boolean => {
   let isPro = true
   props.access_list.forEach((item) => {
     if (item.slug.includes(quality)) {
       isPro = false
-      return
+      return 
     }
   })
   return isPro
 }
 
+const checkSpeedAccess = ():boolean => {
+  let hasAccess = false
+  props.access_list.forEach((item) => {
+    if (item.slug==='course-section-stream-speed') {
+        hasAccess=true
+        return 
+    }
+  })
+  return hasAccess
+}
+
 const qualityToggle = () => {
   qualityMenu.value=!qualityMenu.value
 }
-
-
 
 // Helper function to format time in minutes:seconds
 function formatTime(time: number) {
@@ -349,7 +360,7 @@ const showPlayIcon = () => {
                         <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
-                    <div v-if="speedMenu" ref="speedMenu" id="speed_menu" class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white">
+                    <div v-if="speedMenu" ref="speedMenu" id="speed_menu" class="absolute top-0 right-0 z-50 w-full h-full p-4 overflow-auto bg-neutral-white">
                       <div
                         class="flex flex-col gap-2 "
                       >
@@ -360,23 +371,26 @@ const showPlayIcon = () => {
                           <ArrowLeft class="text-[16px]" @click="speedToggle" />
                         </div>
                         <div class="w-full h-[1px] bg-secondary-100"></div>
-                        <ul class="flex flex-col w-full gap-2">
+                        <ul class="flex flex-col items-center w-full gap-2 ">
                           <li
                             v-for="item in speeds"
                             :key="item.speed"
-                            class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
-                            @click="() => setSpeed(item.speed)"
+                            class="flex flex-row-reverse items-center justify-between w-full p-4 rounded-lg hover:bg-secondary-100"
+                            @click="() => {if(hasAccessSpeed)setSpeed(item.speed)}"
                             :class="
-                              cn({ 'bg-secondary-100 ': item.speed === videoSpeed })
+                              cn({ 'bg-secondary-100 ': item.speed === videoSpeed,
+                                'text-secondary-400':!hasAccessSpeed&&item.speed!==1
+                               })
                             "
                           >
+                 
+                            <span class="text-sm-cp">{{ item.speed }}</span>
                             <div
                               class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
-                              v-if="item.isPro"
+                              v-if="!hasAccessSpeed && item.speed!==1"
                             >
                               pro
                             </div>
-                            <span class="text-sm-cp">{{ item.speed }}</span>
                           </li>
                         </ul>
                       </div>
@@ -403,7 +417,7 @@ const showPlayIcon = () => {
                         <ArrowRight class="w-4 h-4 -mr-4" />
                       </label>
                     </div>
-                    <div v-if="qualityMenu" ref="qualityMenu" id="speed_menu"  class="absolute top-0 z-50 w-full h-full p-4 overflow-auto 2xl:right-0 bg-neutral-white rounded-2xl">
+                    <div v-if="qualityMenu" ref="qualityMenu" id="speed_menu"  class="absolute top-0 right-0 z-50 w-full h-full p-4 overflow-auto bg-neutral-white rounded-2xl">
                       <div class="flex flex-col gap-2 ">
                         <div class="flex items-center justify-between">
                           <h3 class="text-sm-st-one font-demi-bold">Quality</h3>
@@ -419,7 +433,7 @@ const showPlayIcon = () => {
                             class="flex flex-row-reverse items-center justify-between p-4 rounded-lg hover:bg-secondary-100"
                             @click="
                               () => {
-                                if (checkAcces(key)) setQuality({ key, quality })
+                                if (!checkAccess(key)) setQuality({ key, quality })
                               }
                             "
                             :class="
@@ -432,14 +446,14 @@ const showPlayIcon = () => {
                               class="text-sm-cp"
                               :class="
                                 cn({
-                                  'text-secondary-400': !checkAcces(key)
+                                  'text-secondary-400': checkAccess(key)
                                 })
                               "
                               >{{ key }}</span
                             >
                             <div
                               class="flex items-center justify-center p-1 rounded bg-secondary-100 font-500 text-sm-cp"
-                              v-if="!checkAcces(key)"
+                              v-if="checkAccess(key)"
                             >
                               pro
                             </div>

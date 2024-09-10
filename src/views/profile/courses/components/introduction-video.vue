@@ -27,7 +27,10 @@
         <span class="text-st-two font-regular">{{ users.length }}+</span>
       </div>
     </div>
-    <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
+    <router-link :to="`/course_lessons/${courseId}`">
+      <Button :fluid="true" label="همین حالا شروع کنید" :iconLeft="ArrowLeft" />
+
+    </router-link>
   </div>
 </template>
 
@@ -45,7 +48,8 @@ type Props = {
   teacher_name: string
   language_name: string
   sessionCount: string
-  duration: string
+  duration: string,
+  courseId:number,
   users: [
     {
       avatar: string

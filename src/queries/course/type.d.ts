@@ -101,6 +101,15 @@ export type Stream = {
       }
       type: stream
     }
+    iran:{
+      type: string
+      urls: {
+        p240: string
+        p360: string
+        p480: string
+        p720: string
+      }
+    }
     streamStatus: number
   }
 }
