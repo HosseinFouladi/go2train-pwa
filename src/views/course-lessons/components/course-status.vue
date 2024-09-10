@@ -18,7 +18,7 @@ const achievementRank = computed(
 
 <template>
   <div class="space-y-2.5">
-    <h2 class="text-h6 font-demi-bold text-text-500">وضعیت شما</h2>
+    <h2 class="hidden text-h6 font-demi-bold text-text-500 xl:block">وضعیت شما</h2>
     <Skeleton v-if="statsLoading || userLoading" height="76px" borderRadius="16px" />
     <div
       v-else
