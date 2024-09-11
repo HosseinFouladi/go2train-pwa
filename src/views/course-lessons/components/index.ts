@@ -3,4 +3,6 @@ export { default as CourseListItem } from './course-list-item.vue'
 export { default as LessonsList } from './lessons-list.vue'
 export { default as LessonTabs } from './lesson-tabs.vue'
 export { default as CourseItemsTab } from './lesson-tabs.vue'
+export { default as LessonAccordion } from './lessons-accordion.vue'
+
 
