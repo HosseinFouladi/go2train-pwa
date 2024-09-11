@@ -204,13 +204,13 @@ watch(
           <div class="flex justify-between">
             <div class="flex items-center gap-2">
               <UserAvatar
-                :avatar_url="comment.user.avatar"
-                :badge_url="comment.user.plan.icon"
+                :avatar_url="comment?.user?.avatar"
+                :badge_url="comment?.user?.plan.icon"
                 width="40px"
               />
               <div class="flex flex-col gap-1">
                 <span class="text-sm-st-two font-regular text-text-200">
-                  {{ comment.user.name }}</span
+                  {{ comment?.user?.name }}</span
                 >
                 <StarRating
                   :rtl="true"

@@ -114,3 +114,10 @@ const form = useForm({
     </div>
   </div>
 </template>
+
+<style >
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+</style>
