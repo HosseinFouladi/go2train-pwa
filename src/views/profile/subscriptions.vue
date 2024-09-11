@@ -6,7 +6,7 @@ import { useGetCallbackPlansList } from '@/queries'
 import { PlanCard, PlanStatusCard } from './components'
 import { useGetCurrentPlan } from '@/queries/profile/current-plan-query'
 
-const { data: plans } = useGetCallbackPlansList()
+const { data: plans,isFetching,isPending } = useGetCallbackPlansList()
 const { data: currentPlan, isLoading } = useGetCurrentPlan()
 
 const plans_list = computed(() => plans.value?.data.results)

@@ -7,6 +7,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Accordion: typeof import('primevue/accordion')['default']
+    AccordionContent: typeof import('primevue/accordioncontent')['default']
+    AccordionHeader: typeof import('primevue/accordionheader')['default']
+    AccordionPanel: typeof import('primevue/accordionpanel')['default']
     Apple: typeof import('./src/components/icons/apple/index.vue')['default']
     ArrowBack: typeof import('./src/components/icons/arrow-back/index.vue')['default']
     ArrowDown: typeof import('./src/components/icons/arrow-down/index.vue')['default']
