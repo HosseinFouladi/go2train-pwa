@@ -3,7 +3,8 @@ import { useRoute } from 'vue-router'
 import { computed, h, watch } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 
-import { getCourseList, type Language } from '@/queries'
+import { type Language } from '@/queries'
+import {getCourseList} from '@/queries/courses'
 import {
   CourseCard,
   CourseCardAction,

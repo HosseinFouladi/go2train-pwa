@@ -4,7 +4,10 @@ import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 </script>
 
 <template>
-  <router-view />
-  <VueQueryDevtools :initialIsOpen="true" />
-  <ModalsContainer />
+  <div id="app">
+    <router-view />
+    <VueQueryDevtools :initialIsOpen="true" />
+    <ModalsContainer />
+  </div>
+
 </template>
