@@ -1,4 +1,4 @@
-FROM node:20-alpine as  builder
+FROM node:18-alpine as  builder
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY . .
 RUN yarn
 RUN yarn run build-only
 
-FROM node:20-alpine as release
+FROM node:18-alpine as release
 
 ENV NODE_ENV=production
 
