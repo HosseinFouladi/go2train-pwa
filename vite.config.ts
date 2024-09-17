@@ -45,7 +45,6 @@ export default defineConfig({
 			resolvers: [PrimeVueResolver()],
 		}),
 	],
-	base: path.resolve(__dirname, "./dist/"),
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
