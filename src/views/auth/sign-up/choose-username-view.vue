@@ -13,6 +13,7 @@ import { SuggestedUsernames } from '@/views/auth/sign-up/components'
 import { isPromise } from 'remeda'
 
 const router = useRouter()
+const hasError=ref(false)
 
 type FieldServerError<T> = { id: T; content: string }
 
@@ -25,10 +26,16 @@ const suggestedUsernames = ref<Array<string> | undefined>(undefined)
 const checkUsername = async (params: CheckUsernameParams) => {
   return ApiClient.post(ENDPOINTS.Auth.Register.CheckUsername, {
     ...params
+  }).then(()=>{
+    router.push({
+                path: '/sign-up/choose-password',
+                query: { username: form.state.values.username }
+              })
   }).catch((error) => {
     const suggestedUsernamesServer = error.response.data.data.results.suggestions
     suggestedUsernames.value = suggestedUsernamesServer
     const serverError = error.response.data.message
+    hasError.value=true
     for (const e of serverError) {
       form.setFieldMeta('username', (meta) => {
         return { ...meta, errorMap: { onServer: e.content } }
@@ -57,8 +64,11 @@ const form = useForm({
   defaultValues: {
     username: ''
   },
-  onSubmit: ({ value }) => handleCheckUsername({ username: value.username })
 })
+
+const handleSignup=()=>{
+  handleCheckUsername({ username: form.state.values.username })
+}
 </script>
 
 <template>
@@ -84,11 +94,7 @@ const form = useForm({
             <form.Field
               name="username"
               :asyncDebounceMs="300"
-              :validators="{
-                // @ts-ignore
-                onChangeAsync: ({ value }) =>
-                  handleCheckUsername({ username: value })
-              }"
+ 
             >
               <template v-slot="{ field, state }">
                 <InputText
@@ -117,13 +123,7 @@ const form = useForm({
         <Button
           fluid
           label="بعدی"
-          @click="
-            () =>
-              router.push({
-                path: '/sign-up/choose-password',
-                query: { username: form.state.values.username }
-              })
-          "
+          @click="handleSignup"
         />
       </div>
     </form>

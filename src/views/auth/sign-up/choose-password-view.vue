@@ -98,7 +98,7 @@ const form = useForm({
             :validators="{
               onSubmit: z
                 .string()
-                .min(8, { message: 'نام کاربری باید حداقل ۸ کاراکتر باشد' })
+                .min(8, { message: 'گذرواژه  باید حداقل ۸ کاراکتر باشد' })
             }"
           >
             <template v-slot="{ field, state }">
